@@ -1,0 +1,29 @@
+h1 {
+    padding: 10px;
+    border-bottom: solid 1px #777777;
+    font-family: sans-serif;
+    font-size: 24px;
+    color: #777777;
+}
+
+p {
+    font-family: sans-serif;
+}
+
+.input {
+    padding: 10px;
+    border: solid 1px #777777;
+}
+
+.result {
+    padding: 10px;
+    background: #eeeeee;
+}
+
+[  C  ] {
+    color: #ff4444;
+}
+
+[  D  ] {
+    color: #4444ff;
+}

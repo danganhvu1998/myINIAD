@@ -1,0 +1,16 @@
+h1 {
+	color: green;
+	background-color: black;
+}
+
+h1#down {
+ 	color: pink;
+}
+
+h1.rand {
+	color: red;
+}
+
+.rand {
+	background-color: pink;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Assignment 15-1-2</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.0.3/css/ol.css">
+    <link rel="stylesheet" type="text/css" href="css/sample.css">
+  </head>
+
+  <body>
+    <h1>Assignment 15-1-2</h1>
+    <p>
+      <label for="input-city-postal">City name or Postal code</label>
+      <input id="input-city-postal" type="text">
+    </p>
+    <p>
+      <label for="use-postal">Search by postal code</label>
+      <input id="use-postal" type="checkbox">
+    </p>
+    <p>
+      <button onclick="findWeather()">Find weather</button>
+    </p>
+
+    <div class="result">
+      <p>
+        <b>Latitude:</b> <span id="lat"></span> <b>Longitude:</b> <span id="lon"></span> <br>
+        <b>City:</b> <span id="city"></span><br>
+        <b>Weather:</b> <span id="weather"></span>
+        <b>Temperature:</b> <span id="temperature"></span> degree
+        <b>Humidity:</b> <span id="humidity"></span> %
+        <b>Pressure:</b> <span id="pressure"></span> hPa
+      </p>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/assignment.js"></script>
+  </body>
+</html>

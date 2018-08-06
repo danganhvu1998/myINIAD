@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Dangerous</title>
+
+</head>
+
+<body>
+  Very dangerous web page.
+  Do not use for any purpose other than the homework.
+  <script type="text/javascript">
+    window.parent.document.body.style.backgroundColor = "black";
+
+    var buttons = window.parent.document.getElementsByTagName("button");
+    var i = 0;
+    while (i<buttons.length) {
+      buttons[i].onclick = function() {
+        window.parent.alert("Hello world");
+      };
+      i++;
+    }
+    window.parent.alert('Press the START button');
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+h1 {
+    color: #ff0000;
+    font-size: 40px;
+    width: 300px;
+    text-align: center;
+    padding-left: 100px;
+}
+
+p {
+    border-top: solid 3px black;
+    padding-top: 20px;
+    padding-bottom: 10px; 
+}

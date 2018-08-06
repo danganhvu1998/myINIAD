@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>JavaScript Sample 2</title>
+    <link rel="stylesheet" type="text/css" href="css/sample.css">
+    <script src="js/sample2.js"></script>
+  </head>
+
+  <body>
+    <h1 id="sample-2">DOM Samples 2</h1>
+    <div id="sample-2-1" class="sample-content">
+      <h2 class="sample-title">Sample 2-1 : Retrieve the content of the element</h2>
+      <button onclick="sample2_1_1()">Element.innerHTML</button>
+      <button onclick="sample2_1_2()">Element.textContent</button>
+    </div>
+
+    <div id="sample-2-2" class="sample-content">
+      <h2 class="sample-title">Sample 2-2 : Retrieve the attribute and class of the element</h2>
+      <p>
+        <a id="sample-2-link" href="http://www.iniad.org">Link</a>
+      </p>
+      <button onclick="sample2_2_1()">Element.getAttribute('href');</button>
+      <button onclick="sample2_2_2()">Element.classList.contains('sample-content');</button>
+    </div>
+
+    <div id="sample-2-3" class="sample-content">
+      <h2 class="sample-title">Sample 2-3 : Retrieve the value of a form</h2>
+      <form>
+        <p>
+          <label for="textbox">Textbox</label>
+  	      <input id="textbox" type="text">
+        </p>
+        <p>
+          <label for="checkbox">Checkbox</label>
+	        <input id="checkbox" type="checkbox">
+        </p>
+      </form>
+
+      <button onclick="sample2_3_1()">Element.value</button>
+      <button onclick="sample2_3_2()">Element.checked</button>
+      <button onclick="sample2_3_3()">Element.disabled</button>
+    </div>
+
+    <div id="sample-2-4" class="sample-content">
+      <h2 class="sample-title">Sample 2-4 : Update the content of the element</h2>
+      <div id="content">
+      </div>
+	    <p>
+        <textarea id="textarea" rows="10" cols="50">&lt;p&gt;&lt;b&gt;Hello&lt;/b&gt;&lt;/p&gt;</textarea>
+      </p>
+      <button onclick="sample2_4_1()">Element.innerHTML</button>
+      <button onclick="sample2_4_2()">Element.textContent</button>
+    </div>
+
+    <div id="sample-2-5" class="sample-content">
+      <h2 class="sample-title">Sample 2-5 : Update the attribute and class of the element</h2>
+      <p>
+        <img id="sample-2-img" src="img/logo.png" alt="Dummy">
+      </p>
+      <button onclick="sample2_5_1()">Element.setAttribute('src');</button>
+      <button onclick="sample2_5_2()">Element.classList.remove('sample-content');</button>
+      <button onclick="sample2_5_3()">Element.classList.add('sample-content');</button>
+    </div>
+
+    <div id="sample-2-6" class="sample-content">
+      <h2 class="sample-title">Sample 2-6 : Update the status of the form</h2>
+      <form>
+        <p>
+          <label for="textbox2">Textbox</label>
+  	      <input id="textbox2" type="text">
+        </p>
+        <p>
+          <label for="checkbox2">Checkbox</label>
+	        <input id="checkbox2" type="checkbox">
+        </p>
+      </form>
+
+      <button onclick="sample2_6_1()">Element.value = 'Hello'</button>
+      <button onclick="sample2_6_2()">Element.checked = true</button>
+      <button onclick="sample2_6_3()">Element.disabled = true</button>
+    </div>
+  </body>
+</html>

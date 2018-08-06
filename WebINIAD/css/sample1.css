@@ -1,0 +1,54 @@
+h1 {
+    font-family : sans-serif;
+    font-size : 24px;
+    text-shadow : 2px 2px 2px #aaaaaa;
+    text-align: center;
+}
+
+h2 {
+    font-family : sans-serif;
+    font-size : 18px;
+    text-decoration : underline;
+    background-color: #ffcccc;
+    padding: 10px;
+    border-left: solid 3px #ff7777;
+}
+
+p {
+    font-family : sans-serif;
+    font-size : 1em;
+}
+
+img {
+    background-color: #cccccc;
+    padding: 4px;
+}
+
+ul {
+    padding: 0px;
+}
+
+li {
+    display: inline-block;
+    font-family : sans-serif;
+    font-size : 0.8em;
+    text-align: center;
+    min-width: 100px;
+    height: 1.2em;
+    background: #ffcccc;
+    padding: 5px;
+}
+
+th {
+    font-family : sans-serif;
+    font-size : 0.8em;
+    background: #cccccc;
+    padding: 4px;
+}
+
+td {
+    font-family : sans-serif;
+    font-size : 0.8em;
+    background: #eeeeee;
+    padding: 4px;
+}

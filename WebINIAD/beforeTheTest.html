@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>What fucking ever</title>
+    <script>
+        function getAllElement(){
+            console.log(document.getElementById("name").value);
+            console.log(document.getElementById("littleCuteParagraph").innerHTML);
+            console.log(document.getElementById("littleCuteParagraph").innerText);
+        }
+
+        function changeAllElement(){
+            if(document.getElementById("name").value == "Changed"){
+                document.getElementById("name").value = "Mother fucker!";
+                document.getElementById("littleCuteParagraph").innerText = "Father Fucker!";
+            } else {
+                document.getElementById("name").value = "Changed";
+                document.getElementById("littleCuteParagraph").innerText = "Mother Fucker!";
+            }
+        }
+    </script>
+</head>
+<body>
+    <form>
+        <div>
+			<label>Name</label>
+			<input id="name" type="text" value="watashinonamae" name="userName"></input>
+		</div>
+        <input type="submit" value="Submit"></input>
+    </form>
+    <p id="littleCuteParagraph"><strong>Please help me say hello to your goddamn world!</strong></p>
+    <button onclick="getAllElement()">HELLO</button>
+    <button onclick="changeAllElement()">HELLO</button>
+</body>
+</html>

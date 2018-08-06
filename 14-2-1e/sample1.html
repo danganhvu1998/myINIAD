@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>JavaScript Sample 1</title>
+    <link rel="stylesheet" type="text/css" href="css/sample.css">
+    <script src="js/sample1.js"></script>
+  </head>
+
+  <body>
+    <h1 id="sample-1">DOM Samples 1</h1>
+    <div id="sample-1-1" class="sample-content">
+      <h2 class="sample-title">Sample 1-1 : getElementById</h2>
+      <p class="sample-description">Retrieve the element specified by ID.</p>
+      <button onclick="sample1_1()">document.getElementById('sample-1')</button>
+    </div>
+
+    <div id="sample-1-2" class="sample-content">
+      <h2 class="sample-title">Sample 1-2 : getElementsByTagName</h2>
+      <p class="sample-description">Retrieve the elements specified by the tag name.</p>
+      <button onclick="sample1_2_1()">document.getElementsByTagName('h2')</button>
+      <button onclick="sample1_2_2()">Element.getElementsByTagName('h2')</button>
+    </div>
+
+    <div id="sample-1-3" class="sample-content">
+      <h2 class="sample-title">Sample 1-3 : getElementsByClassName</h2>
+      <p class="sample-description">Retrieve the elements specified by the class name. </p>
+      <button onclick="sample1_3_1()">document.getElementsByClassName('sample-description')</button>
+      <button onclick="sample1_3_2()">Element.getElementsByClassName('sample-description')</button>
+    </div>
+
+    <div id="sample-1-4" class="sample-content">
+      <h2 class="sample-title">Sample 1-4 : querySelector</h2>
+      <p class="sample-description">Retrieve the elements specified by selector. </p>
+      <button onclick="sample1_4_1()">document.querySelectorAll('#sample-1-4 h2')</button>
+      <button onclick="sample1_4_2()">Element.querySelectorAll('.sample-description')</button>
+    </div>
+
+    <button onclick="test()">test</button>
+  </body>
+</html>

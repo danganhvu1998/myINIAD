@@ -1,0 +1,15 @@
+h1 {
+    font-family : sans-serif;
+    font-size : 24px;
+    padding : 32px;
+    color : #ffaaaa;
+    background-color : #333333;
+    border-left : #ffaaaa solid 4px;
+}
+
+p {
+    font-family : sans-serif;
+    background-color : #cccccc;
+    font-size : 18px;
+    padding-left : 32px;
+}

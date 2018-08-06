@@ -1,0 +1,15 @@
+#result {
+    background-color: #f6f6f6;
+    width:  500px;
+    height: 500px;
+    margin-bottom: 30px;
+  }
+  
+  button {
+    background-color: #009688;
+    color: #ffffff;
+    min-width: 64px;
+    height: 36px;
+    font-size: 14px;
+    font-weight: bold;
+  }

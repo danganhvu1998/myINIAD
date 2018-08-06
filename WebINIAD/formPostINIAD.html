@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FORM POST</title>
+	<link rel="stylesheet" type="text/css" href="css/formPostINIAD.css">
+</head>
+<body>
+	<ul>
+		<li><a href="#name">Name</a></li>
+		<li><a href="#message">Message</a></li>
+		<li><a href="#operatingSystem">Operating Systemm</a></li>
+		<li><a href="#browser">Browser</a></li>
+		<li><a href="#lang">Programming Language</a></li>
+	</ul>
+	<hr>
+	<form action="http://cs-practice.iniad.org/htmlpost" method="post">
+		<h1>Message From</h1>
+		<div>
+			<label>Name</label>
+			<input id="name" type="text" value="watashinonamae" name="userName">
+		</div>	
+		<div>
+			<label>Message</label>
+			 <textarea id="message" name="userQuestion" rows="7" cols="100">konnichiwa</textarea> 
+		</div>
+		<hr>
+		<h1>Questionnaire</h1>
+		<div id="operatingSystem">
+			<label for="system">Operating System: </label>
+				<input id="window" type="radio" name="userSystem" value="window"><label>Window</label>
+				<input id="mac" type="radio" name="userSystem" value="mac"><label>Mac</label>
+				<input id="linux "type="radio" name="userSystem" value="linux"><label>Linux</label>
+		</div>
+		<div>
+			<label for="browser">Browser: </label>
+			<select id="browser" name="userBrowser">
+				<option value="chrome">Chrome</option>
+				<option value="ie">IE</option>
+				<option value="firefox">Firefox</option>
+				<option value="opera">Opera</option>
+			</select> 
+		</div>
+		<div id="lang">
+			<label for="lang">Favorite Programming language: </label>
+				<input type="checkbox" name="userLang[0]" value="python"><label>Python</label>
+				<input type="checkbox" name="userLang[1]" value="html"><label>HTML</label>
+				<input type="checkbox" name="userLang[2]" value="other"><label>Other</label>
+		</div>
+		<input type="submit" value="Submit">
+		<input type="reset" value="Reset">
+	</form>
+</body>
+</html>

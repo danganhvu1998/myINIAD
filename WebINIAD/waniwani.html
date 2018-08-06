@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ワニワニ危機一髪</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="css/waniwani.css" >
+        <script type="text/javascript" src="../JavaScriptINIAD/waniwani.js" ></script>
+        <script type="text/javascript" >
+            document.addEventListener("mousemove", function(e){
+                var $sword = document.getElementById("sword");
+                $sword.style.left =  e.pageX -20 + "px"; 
+                $sword.style.top =  e.pageY + "px";  
+            });
+         </script>
+    </head>
+    <body>
+        <h1>ワニワニ危機一髪</h1>
+        <div id="wani" onclick="showWaniMessage()" >
+            <div id="eyes">
+                    <div class="eye" id="eye1"></div>
+                    <div class="eye" id="eye2"></div>
+            </div>
+            <div id="nose">
+                <div class="nose-hole"></div>
+                <div class="nose-hole"></div>
+            </div>
+        </div>
+        <div id="taru" >
+            <div class="ana" id="ana1" onclick="showResult(1)" ></div>
+            <div class="ana" id="ana2" onclick="showResult(2)" ></div>
+            <div class="ana" id="ana3" onclick="showResult(3)" ></div>
+            <div class="ana" id="ana4" onclick="showResult(4)" ></div>
+        </div>
+        <p>
+            樽に空いた黒い穴に剣を差し込もう(クリックしよう)
+        </p>
+        <div id="sword">
+            <div id="sword-line">
+
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>HTML elements summary</title>
+    <link rel="stylesheet" type="text/css" href="css/web2.css">
+  </head>
+
+  <body>
+    <h1 id="title">HTML elements we have learned</h1>
+
+    <div class="sidebar">
+      <ul>
+        <li><a href="#id-content-structure">Describe the structure of the document</a></li>
+        <li><a href="#id-content-text-decoration">Apply styles to the text</a></li>
+        <li><a href="#id-content-itemize">Itemization</a></li>
+        <li><a href="#id-content-link">Linking</a></li>
+        <li><a href="#id-content-image">Image</a></li>
+        <li><a href="#id-content-table">Table</a></li>
+        <li><a href="#id-content-form">Form</a></li>
+        <li><a href="#id-content-other">Others</a></li>
+      </ul>
+    </div>
+
+    <a href="#" id="top">Top</a>
+
+    <div class="content">
+      <div class="important">
+        <p>The following are elements used when describing contents in the body element. <br>
+        Do not forget to write document type declaration, html element, and head element.</p>
+      </div>
+      <h2 id="id-content-structure">Describe the structure of the document</h2>
+      <h3>h1 ~ h6</h3>
+      <p>Represents that it is a heading.<span class="alert">Do not use in a phrasing content (an element that do not constitute an independent block).</span></p>
+      <ul>
+        <li>H1 is the highest, h6 is the lowest</li>
+        <li>Generally the size decreases in order from h1 to h6</li>
+      </ul>
+      <div class="contentHighlight">
+        <h3>p</h3>
+        <p>Represents that it is a paragraph.<span class="alert">Do not use in a phrasing content.</span></p>
+      </div>
+      <h2 id="id-content-text-decoration">Apply styles to the text</h2>
+      <div class="contentHighlight">
+        <h3>b</h3>
+        <p>Displays in bold style.</p>
+      </div>
+      <div class="contentHighlight">
+        <h3>i</h3>
+        <p>Displays in italic style.</p>
+      </div>
+      <div class="contentHighlight">
+        <h3>strong</h3>
+        <p>Emphasizes. Browser display becomes bold.</p>
+      </div>
+      <div class="contentHighlight">
+        <h3>em</h3>
+        <p>Emphasizes. Browser display becomes italic.</p>
+      </div>
+
+      <h2 id="id-content-itemize">Itemization</h2>
+      <div class="contentHighlight">
+        <h3>ul</h3>
+        <p>Combine with the li element to display unordered list.<span class="alert">Do not use in a phrasing content.</span><span class="alert">Child elements must be li elements.</span></p>
+      </div>
+      <div class="contentHighlight">
+        <h3>ol</h3>
+        <p>Combine with the li element to display ordered list.<span class="alert">Do not use in a phrasing content.</span><span class="alert">Child elements must be li elements.</span></p>
+      </div>
+      <div class="contentHighlight">
+        <h3>li</h3>
+        <p>Displays each item of list.</p>
+      </div>
+
+      <h2 id="id-content-link">Linking</h2>
+      <div class="contentHighlight">
+        <h3>a</h3>
+        <p>Displays the content of elements as links to another web page.</p>
+        <ul>
+          <li>Specifies the URL of the linked page in its href attribute.</li>
+        </ul>
+      </div>
+
+      <h2 id="id-content-image">Image</h2>
+      <div class="contentHighlight">
+        <h3>img</h3>
+        <p>Displays an image.<span class="alert">Empty element.</span></p>
+        <ul>
+          <li>Specifies the URL of the image to be displayed with its src attribute.</li>
+        </ul>
+      </div>
+
+      <h2 id="id-content-table">Table</h2>
+      <div class="contentHighlight">
+        <h3>table</h3>
+        <p>Display the table by combining the tr, th and td. <span class="alert">Do not use in a phrasing content.</span><span class="alert">Child elements are tr and so on.</span></p>
+      </div>
+      <div class="contentHighlight">
+        <h3>tr</h3>
+        <p>Display one line in the table element. <span class="alert">Child elements must be th or td elements.</span></p>
+      </div>
+      <div class="contentHighlight">
+        <h3>th</h3>
+        <p>Display the header cell in the tr element.</p>
+      </div>
+      <div class="contentHighlight">
+        <h3>td</h3>
+        <p>Display cell representing data in tr element.</p>
+      </div>
+
+      <h2 id="id-content-form">Form</h2>
+      <div class="contentHighlight">
+        <h3>form</h3>
+        <p>Display the form to transmit information to the web server. <span class="alert">Do not use in a phrasing content.</span></p>
+      </div>
+      <div class="contentHighlight">
+        <h3>button</h3>
+        <p>Display a button.</p>
+      </div>
+      <div class="contentHighlight">
+        <h3>input</h3>
+        <p>Display controls for a form.</p>
+      </div>
+      <div class="contentHighlight">
+        <h3>textarea</h3>
+        <p>Display a multi-line text area.</p>
+      </div>
+      <div class="contentHighlight">
+        <h3>select</h3>
+        <p>Display a selection menu.<span class="alert">Child elements must be option elements.</span></p>
+      </div>
+      <div class="contentHighlight">
+        <h3>option</h3>
+        <p>Display individual choices in a select element.</p>
+      </div>
+      <div class="contentHighlight">
+        <h3>label</h3>
+        <p>Display labels for controls on forms.</p>
+      </div>
+
+      <h2 id="id-content-other">Others</h2>
+      <div class="contentHighlight">
+        <h3>hr</h3>
+        <p>Display breaks between paragraphs.<span class="alert">Empty element.</span><span class="alert">Do not use in a phrasing content.</span></p>
+      </div>
+      <div class="contentHighlight">
+        <h3>br</h3>
+        <p>Perform a linefeed within a paragraph.<span class="alert">Empty element.</span></p>
+      </div>
+    </div>
+    <div class="footer">
+      INIAD CS Essential 2018
+    </div>
+  </body>
+</html>

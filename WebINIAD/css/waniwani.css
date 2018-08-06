@@ -1,0 +1,110 @@
+#wani{
+    position :relative;
+    width: 300px;
+    height: 100px;
+    background-color:green;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#eyes{
+    position: relative;
+    width: 200px;
+    margin:  20px auto;
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.eye{
+    width: 20px;
+    height: 20px;
+    background-color:red;
+}
+
+#nose{
+    position: relative;
+    width: 240px;
+    height: 120px;
+    margin: 20px auto;
+    background-color:green;
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.nose-hole{
+    width: 20px;
+    height: 20px;
+    background-color:black;
+}
+
+#taru{
+    width: 300px;
+    height: 200px;
+    background-color: brown;
+    margin-top: 40px;
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.ana{
+    width: 20px;
+    height: 40px;
+    background-color:black;
+}
+
+#ana1{
+    margin-top :20px;
+}
+
+#ana2{
+    margin-top :40px;
+}
+
+#ana4{
+    margin-top :50px;
+}
+
+
+#sword{
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background-color: white;
+    transform: scaleX(0.3) rotateZ(45deg);
+    border: solid black;
+    pointer-events: none;
+}
+
+#sword:before{
+    position: absolute;
+    content: " ";
+    width: 70px;
+    height: 9px;
+    background: yellow;
+    top: 28px;
+    left: 0px;
+    transform: rotateZ(-45deg);
+}
+
+#sword:after{
+    position: absolute;
+    content: " ";
+    width: 31px;
+    height: 15px;
+    background: saddlebrown;
+    bottom: -10px;
+    left: 26px;
+    transform: rotateZ(-45deg);
+}
+
+#sword-line{
+    position: relative;
+    width: 0px;
+    border: solid black 1px;
+    height: 44px;
+    margin: -8px 14px;
+    transform: rotateZ(-45deg);
+}
