@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <a href="{% url 'index' %}">Top</a>
+
+    <h1>{{ article.title }}</h1>
+    <small>[{{ article.posted_at }}]</small>
+    <div>
+      {{ article.text | linebreaksbr }}
+    </div>
+    <div>
+      <a href="{% url 'update' article.id %}">
+        Update
+      </a>
+      <a href="{% url 'delete' article.id %}" class="btn btn-danger btn-xs">
+        Delete
+      </a>
+    </div>
+  </body>
+</html>

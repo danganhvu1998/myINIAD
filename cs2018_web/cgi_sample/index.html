@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>CGI Sample</title>
+  </head>
+  <body>
+    <h1>CGI Sample</h1>
+    <h2>Sample1</h2>
+    <a href="cgi-bin/sample1.py">Link to sample 1</a>
+    <hr>
+
+    <h2>Sample2</h2>
+    <form action="cgi-bin/sample2.py" method="post">
+      <p>
+        <label for="titleInput">Title</label>
+        <input id="titleInput" name="title" type="text" placeholder="Input title">
+      </p>
+        <p>
+          <label for="authorInput">Author</label>
+          <input id="authorInput" name="author" type="text" placeholder="Input author">
+        </p>
+      <p>
+        <label for="textarea">Text</label>
+        <textarea id="textarea" name="text" rows="3"></textarea>
+      </p>
+      <p>
+        <button type="submit">Submit</button>
+      </p>
+    </form>
+    <hr>
+
+    <h2>Sample3</h2>
+    <a href="cgi-bin/sample3.py">Link to sample 3</a>
+    <hr>
+
+    <h2>Sample4</h2>
+    <a href="cgi-bin/sample4.py">Link to sample 4</a>
+    <hr>
+
+  </body>
+</html>
