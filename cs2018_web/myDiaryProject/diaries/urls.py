@@ -19,5 +19,6 @@ from . import views
 
 urlpatterns = [
     path(r'', views.top),
-    path(r'second', views.second),
+    path(r'diaries/', views.index),
+
 ]

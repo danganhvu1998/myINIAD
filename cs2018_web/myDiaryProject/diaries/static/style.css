@@ -1,0 +1,19 @@
+h1 {
+    color: brown;
+}
+
+.title {
+    color: black;
+}
+
+.update {
+    color: blue;
+}
+
+.delete {
+    color: red;
+}
+
+td {
+    text-decoration: underline;
+}

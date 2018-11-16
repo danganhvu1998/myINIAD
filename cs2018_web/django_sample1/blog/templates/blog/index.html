@@ -1,37 +1,65 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/all.min.css' %}" />
+    <title>Django Sample Application</title>
   </head>
   <body>
-    <h1>Django Sample Application</h1>
-    <p>You can submit articles from the following form.</p>
-    <form action="{% url 'index' %}" method="post">
-      {% csrf_token %}
-      <div>
-        <label for="titleInput">Title</label>
-        <input id="titleInput" name="title" type="text" placeholder="Input title">
-      </div>
-      <div>
-        <label for="textInput">Text</label>
-        <textarea id="textInput" name="text" rows="3"></textarea>
-      </div>
-      <div>
-        <button type="submit">Submit</button>
-      </div>
-    </form>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top">
+      <a class="navbar-brand" href="#">
+        Django Sample Application
+      </a>
+    </nav>
 
-    <br>
-    {% if articles %}
-    {% for article in articles %}
-    <a href="{% url 'detail' article.id %}">{{ article.title }}</a>
-    <small>[{{ article.posted_at }}]</small>
-    <div>
-      {{ article.text | linebreaksbr }}
+    <div class="container-fluid mt-3">
+      <div class="jumbotron">
+        <h1>Django Sample Application</h1>
+        <p>You can submit articles from the following form.</p>
+        <form action="{% url 'index' %}" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="titleInput">Title</label>
+            <input id="titleInput" name="title" class="form-control" type="text" placeholder="Input title">
+          </div>
+          <div class="form-group">
+            <label for="textInput">Text</label>
+            <textarea id="textInput" name="text" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="float-right">
+        <a href="{% url 'index' %}?sort=date">Sort by date</a> |
+        <a href="{% url 'index' %}?sort=like">Sort by <i class="fas fa-thumbs-up"></i></a>
+      </div>
+      <br>
+      {% if articles %}
+      {% for article in articles %}
+      <div class="card mb-3">
+        <div class="card-header">
+          <a href="{% url 'detail' article.id %}">{{ article.title }}</a>
+          <small>[{{ article.posted_at }}]</small>
+          <div class="float-right">
+            <a href="{% url 'detail' article.id %}" class="btn btn-outline-dark btn-sm">
+              <i class="fas fa-thumbs-up"></i>
+              {{ article.like }}
+            </a>
+          </div>
+        </div>
+        <div class="card-body">
+          {{ article.text | linebreaksbr }}
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p>No article.</p>
+      {% endif %}
     </div>
-    {% endfor %}
-    {% else %}
-    <p>No article.</p>
-    {% endif %}
   </body>
 </html>

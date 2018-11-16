@@ -4,5 +4,6 @@ from django.shortcuts import render
 def top(request):
     return render(request, 'diaries/top.html')
 
-def second(request):
-    return render(request, 'diaries/second.html')
+def index(request):
+    diaries = ['Diary 1', 'Diary 2', 'Diary 3']
+    return render(request, 'diaries/index.html', {"diaries":diaries})
