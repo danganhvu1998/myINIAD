@@ -2,24 +2,33 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/all.min.css" />
+    <title>Django Sample Application</title>
   </head>
   <body>
-    <a href="{% url 'detail' article.id %}">Back</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top">
+      <a class="navbar-brand" href="/">
+        Django Sample Application
+      </a>
+    </nav>
 
-    <h1 >Edit article</h1>
-    <form action="{% url 'update' article.id %}" method="post">
-      {% csrf_token %}
-      <div>
-        <label for="titleInput">Title</label>
-        <input id="titleInput" name="title" type="text" placeholder="Input title" value="{{ article.title }}">
-      </div>
-      <div>
-        <label for="textInput">Text</label>
-        <textarea id="textInput" name="text" rows="3">{{ article.text }}</textarea>
-      </div>
-      <div>
-        <button type="submit">Submit</button>
-      </div>
-    </form>
+    <div class="container-fluid mt-3">
+      <h1>Edit article</h1>
+      <form action="{% url 'update' article.id %}" method="post">
+          {% csrf_token %}
+        <div class="form-group">
+          <label for="titleInput">Title</label>
+          <input id="titleInput" name="title" class="form-control" type="text" placeholder="Input title" value="{{ article.title }}">
+        </div>
+        <div class="form-group">
+          <label for="textInput">Text</label>
+          <textarea id="textInput" name="text" class="form-control" rows="3">{{ article.text }}</textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
   </body>
 </html>

@@ -13,9 +13,11 @@
     <table>
         {% for diary in diaries %}
             <tr>
-                <td class="title">{{diary}}</td>
-                <td class="update">Update</td>
-                <td class="delete">Delete</td>
+                <td class="title">
+                    <a href="detail/{{diary.id}}">{{diary.title}}</a>
+                </td>
+                <td><a href="" class="update">Update</a></td>
+                <td><a href="" class="delete">Delete</a></td>
             </tr>
         {% endfor %}
     </table>

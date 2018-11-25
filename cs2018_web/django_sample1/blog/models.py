@@ -5,3 +5,8 @@ class Article(models.Model):
     text = models.TextField()
     posted_at = models.DateTimeField('date published')
     like = models.IntegerField(default=0)
+
+class Comment(models.Model):
+    text = models.TextField()
+    posted_ad = models.DateTimeField('date published')
+    article = models.ForeignKey(Article, related_name="comments", on_delete=models.CASCADE)

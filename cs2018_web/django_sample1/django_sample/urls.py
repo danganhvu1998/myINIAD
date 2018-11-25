@@ -22,5 +22,6 @@ urlpatterns = [
     path('', blog_views.index, name='index'),
     path('<int:article_id>/', blog_views.detail, name='detail'),
     path('<int:article_id>/delete', blog_views.delete, name='delete'),
-    path('<int:article_id>/update', blog_views.update, name='update')
+    path('<int:article_id>/update', blog_views.update, name='update'),
+    path('<int:article_id>/like', blog_views.like, name='like')
 ]

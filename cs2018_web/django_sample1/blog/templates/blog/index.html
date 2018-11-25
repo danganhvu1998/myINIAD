@@ -46,7 +46,7 @@
           <a href="{% url 'detail' article.id %}">{{ article.title }}</a>
           <small>[{{ article.posted_at }}]</small>
           <div class="float-right">
-            <a href="{% url 'detail' article.id %}" class="btn btn-outline-dark btn-sm">
+            <a href="{% url 'like' article.id %}" class="btn btn-outline-dark btn-sm">
               <i class="fas fa-thumbs-up"></i>
               {{ article.like }}
             </a>
