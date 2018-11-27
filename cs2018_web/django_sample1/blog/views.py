@@ -25,10 +25,15 @@ def index(request):
 def detail(request, article_id):
     try:
         article = Article.objects.get(pk=article_id)
+        comments = Comment.objects.filter(article_id= article_id)
     except Article.DoesNotExist:
         raise Http404("Article does not exist")
+    if request.method == 'POST':
+        comment = Comment(article= article, text= request.POST["text"], posted_at= timezone.now())
+        comment.save()
     context = {
-        'article': article
+        'article': article,
+        'comments': comments
     }
     return render(request, 'blog/detail.html', context)
 

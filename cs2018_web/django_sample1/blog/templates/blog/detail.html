@@ -1,42 +1,72 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="/static/css/all.min.css" />
-    <title>Django Sample Application</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top">
-      <a class="navbar-brand" href="/">
-        Django Sample Application
-      </a>
-    </nav>
 
-    <div class="container-fluid mt-3">
-      <h1>{{ article.title }}</h1>
-      <small>[{{ article.posted_at }}]</small>
-      <div class="card mb-3">
-        <div class="card-body">
-          {{ article.text | linebreaksbr }}
-        </div>
-      </div>
-      <div>
-        <a href="/1/" class="btn btn-outline-dark btn-sm">
-          <i class="fas fa-thumbs-up"></i>
-          0
-        </a>
-        <span class="float-right">
-          <a href="{% url 'update' article.id %}" class="btn btn-warning btn-sm">
-            <i class="fas fa-pen"></i>
-            Update
-          </a>
-          <a href="{% url 'delete' article.id %}" class="btn btn-danger btn-sm">
-            <i class="fas fa-trash"></i>
-            Delete
-          </a>
-        </span>
-      </div>
-    </div>
-  </body>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/all.min.css" />
+	<title>Django Sample Application</title>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top">
+		<a class="navbar-brand" href="/">
+			Django Sample Application
+		</a>
+	</nav>
+
+	<div class="container-fluid mt-3">
+		<h1>{{ article.title }}</h1>
+		<small>[{{ article.posted_at }}]</small>
+		<div class="card mb-3">
+			<div class="card-body">
+				{{ article.text | linebreaksbr }}
+			</div>
+		</div>
+		<div>
+			<a href="/1/" class="btn btn-outline-dark btn-sm">
+				<i class="fas fa-thumbs-up"></i>
+				0
+			</a>
+			<span class="float-right">
+				<a href="{% url 'update' article.id %}" class="btn btn-warning btn-sm">
+					<i class="fas fa-pen"></i>
+					Update
+				</a>
+				<a href="{% url 'delete' article.id %}" class="btn btn-danger btn-sm">
+					<i class="fas fa-trash"></i>
+					Delete
+				</a>
+			</span>
+		</div>
+		<hr>
+		<h2>Comments</h2>
+		<form action="{% url 'detail' article.id %}" method="post">
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="textInput">Text</label>
+				<textarea id="textInput" name="text" class="form-control" rows="3"></textarea>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
+
+		{% if comments %}
+		{% for comment in comments %}
+		<div class="card mb-3">
+			<div class="card-header">
+				<small>[{{ comment.posted_at }}]</small>
+			</div>
+			<div class="card-body">
+				{{ comment.text | linebreaksbr }}
+			</div>
+		</div>
+		{% endfor %}
+		{% else %}
+		<p>No comment.</p>
+		{% endif %}
+	</div>
+</body>
+
 </html>

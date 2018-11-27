@@ -8,5 +8,5 @@ class Article(models.Model):
 
 class Comment(models.Model):
     text = models.TextField()
-    posted_ad = models.DateTimeField('date published')
+    posted_at = models.DateTimeField('date published')
     article = models.ForeignKey(Article, related_name="comments", on_delete=models.CASCADE)
