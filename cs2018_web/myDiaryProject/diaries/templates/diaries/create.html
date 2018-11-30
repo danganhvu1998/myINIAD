@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Django Sample Application</title>
+</head>
+
+<body>
+    <h2>Today Beautiful Diary</h2>
+    <hr>
+    <form action="{% url 'create' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="titleInput">Title: </label>
+            <input id="titleInput" name="title" class="form-control" type="text" placeholder="Input title">
+        </div>
+        <div class="form-group">
+            <label for="textInput">Text: </label>
+            <textarea id="textInput" name="content" class="form-control" cols="35" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="textInput">Date: </label>
+            <input type="date" name="date">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    <hr>
+    <a href="{% url 'index' %}">INDEX</a>
+</body>
+
+</html>
