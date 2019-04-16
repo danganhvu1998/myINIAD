@@ -4,24 +4,26 @@
 
 struct base10e4 {
     int value;
-    int position;
     struct linkedList *next;
 };
 
 void printBase10e4(struct base10e4 *num10e4){
     struct base10e4 *current;
+    int save[20000];
+    int len = 0;
     current = num10e4;
-    print("\n");
     while(current!=NULL){
-        printf("%d", current->value);
+        save[len] = current->value;
+        ++len;
         current = current->next;
     }
+    print("\n");
+    for(int i=len;)
     print("\n");
 }
 
 struct base10e4 charToBase10e4(char *base10e4Num){
-    struct base10e4 *newBase10e4=NULL;
-    struct base10e4 *temp={0,0,NULL};
+    struct base10e4 *t, *temp, *result = NULL;
     int len = strlen(base10e4Num);
     int curr = len - len%4 + 4;
     int currentPartValue = 0;
@@ -35,8 +37,8 @@ struct base10e4 charToBase10e4(char *base10e4Num){
         if(curr%4==1){
             temp->value = currentPartValue;
             currentPartValue = 0;
-            if(newBase10e4==NULL){
-                newBase10e4 = temp
+            if(result==NULL){
+                result = temp
             }
         }
     }
