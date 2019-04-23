@@ -16,5 +16,5 @@ int main(){
     for(int i=0;i<100;i++){
         fiboList[i]=0;
     }
-    printf("%d %d %d", fibo(10), fibo(4), fibo(5));
+    printf("%d",fibo(5));
 }
