@@ -2,12 +2,11 @@
 
 int main(void){
     FILE * fp =  fopen("text_copy.txt", "r");
-    char *file[100];
-    /* Thinking here */(fp, 0, /* Thinking here */);
-    int filesize = /* Thinking here */(fp);
+    fseek(fp, 0, SEEK_END);
+    int filesize = ftell(fp);
 
     /* Return the file pointer to the beginning */
-    /* Thinking here */(fp, 0, /* Thinking here */);
+    fseek(fp, 0, SEEK_SET);
 
     printf("File size = %d\n", filesize);
 
