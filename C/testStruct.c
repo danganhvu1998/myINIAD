@@ -198,11 +198,4 @@ int main(){
     scanf("%d", &N);
     testValue1 = factorialBase10e4(N);
     printBase10e4(testValue1);
-    //testValue1 = charToBase10e4("1234457855");
-    //testValue2 = charToBase10e4("5845552");
-    //testValue3 = multipleBase10e4(testValue1, testValue2);
-    //printBase10e4(testValue3);
-    //printBase10e4(&testValue3);
-    //testValue4 = intMultipleToBase10e4(8959, 9875, 2);
-    //printBase10e4(&testValue4);
 }
