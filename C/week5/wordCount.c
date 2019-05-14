@@ -8,23 +8,27 @@ short checkChar(char a){
 }
 
 int main(void){
-    char ch[10000];
-    fread(ch, sizeof(char), 10000, stdin );
-    int N = strlen(ch), count = 0, curr=0;
-    for(int i=0;i<N;i++){
-        if(curr == 1){
-            if(checkChar(ch[i])){
-                continue;
+    char ch[100];
+    int count = 0, curr=0;
+    while(!feof(stdin)){
+        fread(ch, 1, sizeof(ch), stdin );
+        int N = strlen(ch);
+        for(int i=0;i<N;i++){
+            if(curr == 1){
+                if(checkChar(ch[i])){
+                    curr = 1;
+                } else {
+                    curr = 0;
+                }
             } else {
-                curr = 0;
+                if(checkChar(ch[i])) {
+                    count++;
+                    curr=1;
+                } else {
+                    curr = 0;
+                }
             }
-        } else {
-            if(checkChar(ch[i])) {
-                count++;
-                curr=1;
-            } else {
-                curr = 0;
-            }
+            printf("%c %d %d\n", ch[i], count, N);
         }
     }
     printf("%d", count);

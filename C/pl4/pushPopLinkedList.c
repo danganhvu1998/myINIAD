@@ -4,7 +4,6 @@
 
 num_t *push(num_t **s, long v){
     num_t *temp, *run;
-    //printf("PUSH %p WHERE %p\n", temp, s);
     temp = malloc(sizeof(num_t));
     temp->n = v;
     if(*s==NULL){
@@ -14,7 +13,6 @@ num_t *push(num_t **s, long v){
         temp->next = run;
         *s = temp;
     }
-    //printf("PUSH %p WHERE %p POINT TO %p NEXT %p VALUE %ld\n\n", temp, s, *s, temp->next, temp->n);
     return *s;
 }
 
@@ -36,18 +34,12 @@ void printThisShit(num_t **s){
 num_t *pop(num_t **s){
     num_t *run, *result;
     if(*s==NULL){
-        //printf("THIS THIS IS SO FUCKING NOTHING FUCK\n");
         return NULL;
     }
     run = *s;
     result = run;
-    if(run->next==NULL){
-        *s=NULL;
-        return result;
-    }
     run = run->next;
     *s = run;
-    //printf("POP %p VALUE %ld NEXT %p %p\n", run, run->n, *s, run);
     return result;
 }
 
