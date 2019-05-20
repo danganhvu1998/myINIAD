@@ -7,6 +7,7 @@ int main(void){
 
   while (!feof(fp1)){
         fread(ch, sizeof(char), 1, fp1);
+        //if(feof(fp1)) break;
         fwrite(ch, sizeof(char), 1, fp2);
   }
   fclose(fp1);

@@ -43,7 +43,7 @@ num_t *pop(num_t **s){
     return result;
 }
 
-/*int main(){
+int main(){
     num_t *s;
     long a,b;
     s = NULL;
