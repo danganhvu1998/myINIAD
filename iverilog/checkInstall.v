@@ -6,7 +6,7 @@ output R, C;
     assign C = A & B;
 endmodule
 
-module my_FA(Cin, A, B, R, Cout);
+module MY_FA(Cin, A, B, R, Cout);
 input Cin, A, B;
 output R, Cout;
 wire r1, c1, c2;
@@ -14,6 +14,13 @@ my_HA ha1(A, B, r1, c1);
 my_HA ha2(r1, Cin, R, c2);
 
     assign Cout = c1|c2;
+endmodule
+
+module my_FA(Cin, A, B, R, Cout);
+input Cin, A, B;
+output R, Cout;
+    assign R = (A & ~B & ~Cin)|(~A & B & ~Cin)|(~A & ~B & Cin)|(A & B & Cin);
+    assign Cout = (A & B)|(A & Cin)|(Cin & B);
 endmodule
 
 module test_my_FA;
