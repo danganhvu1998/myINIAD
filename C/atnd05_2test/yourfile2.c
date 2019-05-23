@@ -3,37 +3,40 @@
 #include "atnd05_2.h"
 
 long read_from_file(num_t **pp, FILE *fp){
-    long num, cnt=0;
+    fseek(fp, 0, SEEK_END);
+    int filesize = ftell(fp);
+    printf("THE FUCK: %d\n", filesize);
+    fseek(fp, 0, SEEK_SET);
+
+
+    long num[1000005], cnt=0, N = filesize/8;
     num_t *temp, *last;
-    while(!feof(fp)){
-        fread(&num, sizeof(long), 1, fp );
-        if(feof(fp)) break;
+    fread(&num, sizeof(long), N, fp );
+    for(int i=0;i<N;i++){
         temp = malloc(sizeof(num_t));
         //printf("%ld\n", num);
-        temp->n = num;
+        temp->n = num[i];
         temp->next = NULL;
         ++cnt;
         if(*pp==NULL){
             *pp = temp;
+            last = temp;
         } else {
-            last = *pp;
-            while(last->next!=NULL){
-                last = last->next;
-            }
             last->next = temp;
+            last = temp;
         }
     }
-    return cnt;
+    return N;
 }
 
 long write_to_file(num_t *list, FILE *fp){
-    long num, cnt=0;
+    long num[1000005], cnt=0;
     while(list!=NULL){
-        num = list->n;
+        num[cnt] = list->n;
         ++cnt;
-        fwrite(&num, sizeof(long), 1, fp);
         list = list->next;
     }
+    fwrite(&num, sizeof(long), cnt, fp);
     return cnt;
 }
 
