@@ -14,9 +14,9 @@ initial begin
     clk <= 0;
     D <= 1'b0;
     #10 D <= 1'b1;
-    #50 D <= 1'b0;
-    #70 D <= 1'b1;
-    #100 
+    #30 D <= 1'b0;
+    #30 D <= 1'b1;
+    #30
     $finish;
 end
 endmodule
