@@ -34,8 +34,8 @@ Programming Language
 + ***VLA and Malloc***
   + VLA much faster than Malloc
   + Syntax:
-    + n = 100;
-    + m = 1000;
+    + N = 100;
+    + M = 1000;
     + int A[N][M]
   + Size: sizeof(A[0][0]) x M x N
 + ***Using math.h***
@@ -73,7 +73,7 @@ Programming Language
       + Sign (S) 1 bit
       + Biased Exponent (E)11 bits
       + Trailing Significand (T) 52 bits
-  + Float
+  + Long Double
     + 128 bits (But only use 80)
       + Sign (S) 1 bit
       + Biased Exponent (E) 15 bits
