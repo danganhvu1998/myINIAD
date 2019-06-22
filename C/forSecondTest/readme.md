@@ -36,7 +36,8 @@ Programming Language
   + Syntax:
     + n = 100;
     + m = 1000;
-    + int A[n][m]
+    + int A[N][M]
+  + Size: sizeof(A[0][0]) x M x N
 + ***Using math.h***
   + gcc mainfile.c -lm
   + double sqrt(double)
