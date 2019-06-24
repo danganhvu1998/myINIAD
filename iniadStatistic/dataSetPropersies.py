@@ -8,7 +8,7 @@ def listMedian(listNum):
     else:
         return listNum[int(N/2)]
 
-listNum = [3.5, 4.2, 2.8, 5.6, 3.3, 1.6, 6.4]
+listNum = [1,2,3]
 listNum.sort()
 listNumber = np.array(listNum)
 print("Mean:", listNumber.mean())

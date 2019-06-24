@@ -42,8 +42,8 @@ def unknownSD(listMeasurement):
     print("\n***************************************************")
 
 def __MAIN__():
-    listMeasurement = [25.4, 23.2, 27.6, 24.7, 25.8, 10, 11, 12, 13, 14]
-    #listMeasurement = []
+    #listMeasurement = [80,95,60,70,100]
+    listMeasurement = []
     if(len(listMeasurement)==0):
         numMeasurement = int(input("numMeasurement:"))
         for i in range(0,numMeasurement):
