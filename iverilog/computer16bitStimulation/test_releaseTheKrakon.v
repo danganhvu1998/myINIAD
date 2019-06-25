@@ -13,8 +13,9 @@ initial begin
 
     /// memory
     // ADD R0, R1
+    #0
+
     CK=0;
-    #10
     cpu16v1.memory1.mem[0] = 8'b0000_0000;
     cpu16v1.memory1.mem[1] = 8'b1010_0001;
     
@@ -38,7 +39,8 @@ initial begin
 	cpu16v1.register1.registers[6]= 21760;
     //<Please fill in here>   
     // add clock
-    //<Please fill in here>   
+    //<Please fill in here>  
+
     #50
    $finish;
 end
