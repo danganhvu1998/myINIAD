@@ -8,15 +8,16 @@ def notRun():
     #norm.ppf(A)*B+C -> Value D that from -oo -> D with Mean(Expected Value) = C, Standard Deviation = C has Ratio = A
     print(norm.ppf(0.1)*15+60) #40.77672651683099
     #Value from -oo->40.78 is about 10% in total of a set with Mean(Expected Value) = 60, Standard Deviation = 15
+    
 
-mean = 1
+mean = 6
 standardDeviation = 3
-value1 = -0.5
-value2 = 1.2
+value1 = -3
+value2 = 9
 print("From", value1, "to", value2, "is",str(abs(norm.cdf(value1, loc=mean, scale=standardDeviation)-norm.cdf(value2, loc=mean, scale=standardDeviation))*100)+"% Data Quantity")
 
-mean = 1
-standardDeviation = 3
-percentDataQuantity = 50
+#Set mean = 0 and SD = 1 when to find persentage
+mean = 0
+standardDeviation = 1
+percentDataQuantity = 95
 print(str(percentDataQuantity)+"% Data Quantity is from -oo to",norm.ppf(percentDataQuantity/100.0)*standardDeviation+mean)
-print(1-norm.cdf(65, loc=52, scale=9))
