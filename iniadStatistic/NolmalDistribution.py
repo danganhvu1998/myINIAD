@@ -10,14 +10,14 @@ def notRun():
     #Value from -oo->40.78 is about 10% in total of a set with Mean(Expected Value) = 60, Standard Deviation = 15
     
 
-mean = 6
-standardDeviation = 3
-value1 = -3
-value2 = 9
+mean = 60
+standardDeviation = 7
+value1 = 70
+value2 = 80
 print("From", value1, "to", value2, "is",str(abs(norm.cdf(value1, loc=mean, scale=standardDeviation)-norm.cdf(value2, loc=mean, scale=standardDeviation))*100)+"% Data Quantity")
 
 #Set mean = 0 and SD = 1 when to find persentage
-mean = 0
-standardDeviation = 1
+mean = 60
+standardDeviation = 7
 percentDataQuantity = 95
 print(str(percentDataQuantity)+"% Data Quantity is from -oo to",norm.ppf(percentDataQuantity/100.0)*standardDeviation+mean)
