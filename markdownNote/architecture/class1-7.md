@@ -35,16 +35,42 @@ Architecture Class 1 -> 7
     + ![Example][archi10]
     + ![Example][archi11]
 + Class 7
-  + Clock signal and D-flipflop
-    + ![Clock signal][archi12]
-    + ![Clock signal][archi13]
-    + ![Clock signal][archi14]
-    + ![Clock signal][archi15]
-    + ![Clock signal][archi16]
-    + ![Clock signal][archi17]
+  + ***Clock signal and D-flipflop***
+    + Clock = 0: Input data in, hold, but not out
+      + ![Clock signal][archi12]
+    + Clock 0->1: Stop input, Hold and out last input
+      + ![Clock signal][archi13]
+    + Clock 1: Hold and out last input
+      + ![Clock signal][archi14]
+    + Clock 1->0: Output last input, input new input
+      + ![Clock signal][archi15]
+    + Clock = 0: Output last input, input and hold new input
+      + ![Clock signal][archi16]
+      + ![Clock signal][archi17]
+  + ***Illustrate with ALU***
     + ![Clock signal][archi18]
     + ![Clock signal][archi19]
     + ![Clock signal][archi20]
+  + ***Illustrate Instruction execution flow by CPU***
+    + ![Illustrate Instruction execution flow by CPU][archi21]
+      + At Clock rising edge:
+        + Update PC value
+        + Register data is updated (From last PC)
+        + Read instruction code from new PC value address
+        + Decode Op-code and Operand fields.
+        + Read operand registers.
+        + ALU operation. (But not yet updated to Register)
+    + The following are the steps of the instruction execution flow.
+      + Instruction fetch
+      + Decode
+      + Read operand registers
+      + Execute ALU operation
+      + Calculate address of next instruction to execute
+      + Write data to operand register and update PC value
+    + Exercise
+      + ![Exercise][archi22]
+      + ![Exercise][archi23]
+      + ![Exercise][archi24]
 
 [archi1]: ./../image/archi1.png
 [archi2]: ./../image/archi2.png
