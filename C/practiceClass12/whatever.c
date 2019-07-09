@@ -160,7 +160,7 @@ void print(){
       }
 
       printf("Over 20 years old: ");
-      switch(List[i].OverWenty){
+      switch(List[i].OverTwenty){
         case 0:
           printf("No\n\n");
           break;
