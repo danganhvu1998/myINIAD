@@ -1,7 +1,7 @@
-00architecture Class 1 -> 7
+architecture Class 8 -> 13
 ==================================
 
-+ Class 8: Propram and instructions
++ <span style="color:MediumSpringGreen ">***Class 8: Propram and instructions***</span>
   + <span style="color:tomato">***From Program To Machine cooe***</span>
     + Able to read simple machine code
     + Statements and expressions are translated into instruction sequences.
@@ -54,7 +54,7 @@
         + esp = esp-4
         + Memory[esp] = address of instruction next to “call”.
         + jump to <_factorial>
-+ Class 9: Memory
++ <span style="color:MediumSpringGreen ">***Class 9: Memory***</span>
   + <span style="color:tomato">***Memory Access***</span>
     + Machine code (instructions) is stored in memory and executed.
     + Instruction code length
@@ -114,7 +114,7 @@
       + DRAM: Placed outside the CPU as scalable external memory. (RAM)
   + <span style="color:tomato">***Cache Memory***</span>
     + Need to understand more
-+ Class 10: Pipelined instruction processing
++ <span style="color:MediumSpringGreen ">***Class 10: Pipelined instruction processing***</span>
   + <span style="color:tomato">***Append instructions to CPU16***</span>
     + ![pipelined instruction][00archi12]
     + ![pipelined instruction][00archi13]
@@ -142,7 +142,7 @@
     + Awaiting completion of previous stage
     + Occurrence of branching (jump)
     + ***Reducing stalls is the key for improving pipeline processing performance.***
-+ Class 11: Highiperformance instruction processing
++ <span style="color:MediumSpringGreen ">***Class 11: Highiperformance instruction processing***</span>
   + <span style="color:tomato">***Instruction pipeline basics***</span>
     + ![Highiperformance][00archi19]
     + Time required to set D-FF: tdff
@@ -208,7 +208,63 @@
     + Run multiple programs on multiple CPUs (multiple pipelines).
       + Operating system (OS) manages execution of multiple programs.
       + Various connection methods of multiple CPUs and memory systems.
-+ 
++ <span style="color:MediumSpringGreen ">***Class 13: OS assist functions***</span>
+  + <span style="color:tomato">***Role of OS***</span>
+    + OS (Operating System) is a program.
+    + OS is the program to be started first by power on and will continues until power off.
+    + The OS manages simultaneous execution of multiple programs
+      + <span style="color:Chartreuse ">***Important***</span> It is not completely simultaneous.
+      + Running multiple programs while switching their execution
+    + There are two types of triggers for switching from the execution of one program to the execution of another program
+      + Since the current program has been executed for a certain period of time, the execution of that program is suspended and the next program is executed.《Time sharing》
+      + Since it is necessary to wait for notification from an external device to continue program execution, another program is executed while waiting.《Event driven》
+        + There was a key input on the keyboard
+        + Email transmission to the network was accepted
+  + <span style="color:tomato">***OS and tasks***</span>
+    + ![OS][00archi25]
+    + The OS manages execution of multiple programs
+    + Two types of programs managed by the OS:
+      + <span style="color:Chartreuse ">***TASK***</span>
+        + A program that runs as a "task". (Application program started by the user)
+        + The task code is called from the OS as in the case of a function call.
+        + In the case of function calls, the function code is always executed from the beginning
+        + In the case of task calls
+          + In the first call, the task code is executed from the beginning.
+          + From the next call, the task code is executed from the point where it was suspended previously.
+        + ![TASK][00archi26]
+      + <span style="color:Chartreuse ">***INTERRUPT HANDLER***</span>
+        + A program that runs as an "interrupt handler". (Interrupt handlers are included in the OS code.)
+  + <span style="color:tomato">***Multi tasking***</span>
+    + ![TASK][00archi27]
+    + ![TASK][00archi28]
+    + When the OS suspends a task, the register values at that time are saved in the TCB.
+    + When the OS resumes the task, the values saved in the TCB are restored to the registers and the CPU jumps to the resume address.
+  + <span style="color:tomato">***Call interrupt handler***</span>
+    + Hardware assistance is essential to simultaneously execute task code and detect an interrupt from an I/O device.
+      + I/O devices operate in parallel with the CPU.
+      + The "timer" measuring time is also one of the I/O devices.
+    + <span style="color:MediumSpringGreen ">***How is interrupt detection implemented***</span>
+      + Each I/O device sets the I/O interrupt signal to 1 when an event requiring an interrupt occurs.
+      + The interrupt controller ORs the I/O interrupt signal and sends the result to the CPU as an external interrupt signal
+      + When the external interrupt signal=1, the CPU jumps to a special “interrupt processing sequence” without continuing the instruction sequence  being executed.
+      + ![interrupt][00archi29]
+  + <span style="color:tomato">***Interrupt disable mode***</span>
+    + The code of the interrupt processing sequence must be executed in interrupt disable mode.
+      + If the interrupt is not disabled, the operation of interrupt detection starts again before the first instruction of the interrupt processing sequence is executed.
+      + As a result, interrupt detection is repeated infinitely
+      + ![interrupt][00archi30]
+    + <span style="color:MediumSpringGreen">***The solution***</span>
+      + Turn on the interrupt disable mode before jumping to the interrupt processing sequence
+      + After processing the interrupt with the interrupt handler, reset the I/O interrupt signal to 0 and then turn off the interrupt disable mode
+      + This operation avoids repeated interrupt detection for the same I/O interrupt.
+    + <span style="color:MediumSpringGreen">***Interrupt detection in consideration of interrupt disable mode***</span>
+      + Each I/O device sets the I/O interrupt signal to 1 when an event requiring an interrupt occurs
+      + The interrupt controller ORs the I/O interrupt signal and sends the result to the CPU as an external interrupt signal.
+      + When the interrupt disable ***mode=Off*** and the external interrupt ***signal=1***, the CPU sets the interrupt disable mode to On and jumps to the interrupt processing sequence.
+      + ![interrupt][00archi31]
+    + The interrupt disable mode is essential to process multiple I/O interrupts one by one.
+    + If the interrupt disable period becomes long, an unhandled I/O interrupts occur.
+
 
 [00archi1]: ./../image/00archi1.png
 [00archi2]: ./../image/00archi2.png
@@ -239,24 +295,24 @@
 [00archi27]: ./../image/00archi27.png
 [00archi28]: ./../image/00archi28.png
 [00archi29]: ./../image/00archi29.png
-[00archi10]: ./../image/00archi30.png
-[00archi11]: ./../image/00archi31.png
-[00archi12]: ./../image/00archi32.png
-[00archi13]: ./../image/00archi33.png
-[00archi14]: ./../image/00archi34.png
-[00archi15]: ./../image/00archi35.png
-[00archi16]: ./../image/00archi36.png
-[00archi17]: ./../image/00archi37.png
-[00archi18]: ./../image/00archi38.png
-[00archi19]: ./../image/00archi39.png
-[00archi20]: ./../image/00archi40.png
-[00archi21]: ./../image/00archi41.png
-[00archi22]: ./../image/00archi42.png
-[00archi23]: ./../image/00archi43.png
-[00archi24]: ./../image/00archi44.png
-[00archi25]: ./../image/00archi45.png
-[00archi26]: ./../image/00archi46.png
-[00archi27]: ./../image/00archi47.png
-[00archi28]: ./../image/00archi48.png
-[00archi29]: ./../image/00archi49.png
+[00archi30]: ./../image/00archi30.png
+[00archi31]: ./../image/00archi31.png
+[00archi32]: ./../image/00archi32.png
+[00archi33]: ./../image/00archi33.png
+[00archi34]: ./../image/00archi34.png
+[00archi35]: ./../image/00archi35.png
+[00archi36]: ./../image/00archi36.png
+[00archi37]: ./../image/00archi37.png
+[00archi38]: ./../image/00archi38.png
+[00archi39]: ./../image/00archi39.png
+[00archi40]: ./../image/00archi40.png
+[00archi41]: ./../image/00archi41.png
+[00archi42]: ./../image/00archi42.png
+[00archi43]: ./../image/00archi43.png
+[00archi44]: ./../image/00archi44.png
+[00archi45]: ./../image/00archi45.png
+[00archi46]: ./../image/00archi46.png
+[00archi47]: ./../image/00archi47.png
+[00archi48]: ./../image/00archi48.png
+[00archi49]: ./../image/00archi49.png
 
