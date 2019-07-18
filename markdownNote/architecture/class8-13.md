@@ -113,7 +113,25 @@ architecture Class 8 -> 13
       + SRAM: Integrated with CPU as high-speed "cache memory“.
       + DRAM: Placed outside the CPU as scalable external memory. (RAM)
   + <span style="color:tomato">***Cache Memory***</span>
-    + Need to understand more
+    + Fully Associative
+      + ![cache][00archi32]
+      + Tag: A[0:26]
+      + Position of data in like: byte A[27:31] (lower 5 bit)
+      + When looking for data in cache, have to compare to all tags
+    + Direct Mapped
+      + ![cache][00archi33]
+      + Tag: A[0:26] but A[19:26](lower 8 bit of tag) also indicate the only line that allowed to contain it.
+      + Position of data in like: byte A[27:31] (lower 5 bit)
+      + When looking for data in cache, only have to compare with line A[19:26]
+    + 2-way set associative
+      + ![cache][00archi34]
+      + Tag: A[0:26] but A[20:26](lower 7 bit of tag) also indicate line that allowed to contain it (line A[20:26]\*2 and line A[20:26]\*2+1).
+        + If A[20:26] == 0 then it can be in line 0 or 1
+        + If A[20:26] == 1 then it can be in line 2 or 3
+        + ...
+        + If A[20:26] == 127 then it can be in line 254 or 255
+      + Position of data in like: byte A[27:31] (lower 5 bit)
+      + When looking for data in cache, only have to compare with line A[19:26]
 + <span style="color:MediumSpringGreen ">***Class 10: Pipelined instruction processing***</span>
   + <span style="color:tomato">***Append instructions to CPU16***</span>
     + ![pipelined instruction][00archi12]
@@ -264,6 +282,13 @@ architecture Class 8 -> 13
       + ![interrupt][00archi31]
     + The interrupt disable mode is essential to process multiple I/O interrupts one by one.
     + If the interrupt disable period becomes long, an unhandled I/O interrupts occur.
+    + <span style="color:MediumSpringGreen">***Shorten interrupt disable period***</span>
+      + ![interrupt][00archi35]
+      + The I/O processing code is divided into two parts. The part with high urgency (Ex: data reading) is executed immediately by an interrupt handler in the interrupt disable mode.
+      + Other processing on the read data is performed by a normal task
+        + ![interrupt][00archi36]
+      + <span style="color:OrangeRed">As a result, time in disable mode is shorten. And also interrupts can be handled in order from high priority to low priority</span>
+        + ![interrupt][00archi37]
 
 
 [00archi1]: ./../image/00archi1.png
