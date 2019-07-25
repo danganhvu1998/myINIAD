@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=/home/ise/ise_ca2019/my_cpu16v3/cpu16controller.ncd
+OUTFILE=/home/ise/ise_ca2019/my_cpu16v3/cpu16controller.bit
+FAMILY=Spartan6
+PART=xc6slx4-3tqg144
+WORKINGDIR=/home/ise/ise_ca2019/my_cpu16v3
+LICENSE=ISE
+USER_INFO=8416_11442_1478797146_620

@@ -1,0 +1,17 @@
+xst -intstyle ise -ifn "/home/ise/ise_ca2019/my_cpu16v3/cpu16controller.xst" -ofn "/home/ise/ise_ca2019/my_cpu16v3/cpu16controller.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc cpu16controller.ucf -p xc6slx4-tqg144-3 cpu16controller.ngc cpu16controller.ngd  
+map -intstyle ise -p xc6slx4-tqg144-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o cpu16controller_map.ncd cpu16controller.ngd cpu16controller.pcf 
+par -w -intstyle ise -ol high -mt off cpu16controller_map.ncd cpu16controller.ncd cpu16controller.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml cpu16controller.twx cpu16controller.ncd -o cpu16controller.twr cpu16controller.pcf -ucf cpu16controller.ucf 
+bitgen -intstyle ise -f cpu16controller.ut cpu16controller.ncd 
+xst -intstyle ise -ifn "/home/ise/ise_ca2019/my_cpu16v3/cpu16controller.xst" -ofn "/home/ise/ise_ca2019/my_cpu16v3/cpu16controller.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc cpu16controller.ucf -p xc6slx4-tqg144-3 cpu16controller.ngc cpu16controller.ngd  
+map -intstyle ise -p xc6slx4-tqg144-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o cpu16controller_map.ncd cpu16controller.ngd cpu16controller.pcf 
+par -w -intstyle ise -ol high -mt off cpu16controller_map.ncd cpu16controller.ncd cpu16controller.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml cpu16controller.twx cpu16controller.ncd -o cpu16controller.twr cpu16controller.pcf -ucf cpu16controller.ucf 
+bitgen -intstyle ise -f cpu16controller.ut cpu16controller.ncd 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc cpu16controller.ucf -p xc6slx4-tqg144-3 cpu16controller.ngc cpu16controller.ngd  
+map -intstyle ise -p xc6slx4-tqg144-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o cpu16controller_map.ncd cpu16controller.ngd cpu16controller.pcf 
+par -w -intstyle ise -ol high -mt off cpu16controller_map.ncd cpu16controller.ncd cpu16controller.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml cpu16controller.twx cpu16controller.ncd -o cpu16controller.twr cpu16controller.pcf -ucf cpu16controller.ucf 
+bitgen -intstyle ise -f cpu16controller.ut cpu16controller.ncd 

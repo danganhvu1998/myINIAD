@@ -1,0 +1,20 @@
+
+# PlanAhead Generated physical constraints 
+
+NET "LED[7]" LOC = P8;
+NET "LED[6]" LOC = P6;
+NET "LED[5]" LOC = P7;
+NET "LED[4]" LOC = P5;
+NET "LED[3]" LOC = P9;
+NET "LED[2]" LOC = P11;
+NET "LED[1]" LOC = P12;
+NET "LED[0]" LOC = P10;
+NET "SA[3]" LOC = P14;
+NET "SA[2]" LOC = P15;
+NET "SA[1]" LOC = P16;
+NET "SA[0]" LOC = P17;
+NET "SW[2]" LOC = P33;
+NET "SW[1]" LOC = P2;
+NET "SW[0]" LOC = P1;
+NET "Clk" LOC = P34;
+NET "Clk" CLOCK_DEDICATED_ROUTE = FALSE;

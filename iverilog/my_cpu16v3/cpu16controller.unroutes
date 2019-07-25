@@ -1,0 +1,14 @@
+Release 14.7 - par P.20160913 (lin64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+
+Wed Jul 24 06:35:32 2019
+
+All signals are completely routed.
+
+WARNING:ParHelpers:361 - There are 2 loadless signals in this design. This design will cause Bitgen to issue DRC
+   warnings.
+
+   cpu1/register1/Mram_registers11_RAMD_D1_O
+   cpu1/register1/Mram_registers1_RAMD_D1_O
+
+

@@ -1,0 +1,22 @@
+//! **************************************************************************
+// Written by: Map P.20160913 on Wed Jul 24 06:35:19 2019
+//! **************************************************************************
+
+SCHEMATIC START;
+COMP "SW<1>" LOCATE = SITE "P2" LEVEL 1;
+COMP "SW<2>" LOCATE = SITE "P33" LEVEL 1;
+COMP "SA<0>" LOCATE = SITE "P17" LEVEL 1;
+COMP "LED<0>" LOCATE = SITE "P10" LEVEL 1;
+COMP "LED<1>" LOCATE = SITE "P12" LEVEL 1;
+COMP "LED<2>" LOCATE = SITE "P11" LEVEL 1;
+COMP "LED<3>" LOCATE = SITE "P9" LEVEL 1;
+COMP "LED<4>" LOCATE = SITE "P5" LEVEL 1;
+COMP "LED<5>" LOCATE = SITE "P7" LEVEL 1;
+COMP "LED<6>" LOCATE = SITE "P6" LEVEL 1;
+COMP "LED<7>" LOCATE = SITE "P8" LEVEL 1;
+COMP "Clk" LOCATE = SITE "P34" LEVEL 1;
+PIN Clk_pin<0> = BEL "Clk" PINNAME PAD;
+PIN "Clk_pin<0>" CLOCK_DEDICATED_ROUTE = FALSE;
+COMP "SW<0>" LOCATE = SITE "P1" LEVEL 1;
+SCHEMATIC END;
+

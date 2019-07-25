@@ -1,0 +1,61 @@
+#-----------------------------------------------------------
+# PlanAhead v14.7 (64-bit)
+# Build 321239 by xbuild on Fri Sep 27 19:24:36 MDT 2013
+# Start of session at: Wed Jul 24 06:17:33 2019
+# Process ID: 2714
+# Log file: /home/ise/ise_ca2019/my_cpu16v3/planAhead_run_1/planAhead.log
+# Journal file: /home/ise/ise_ca2019/my_cpu16v3/planAhead_run_1/planAhead.jou
+#-----------------------------------------------------------
+start_gui
+source /home/ise/ise_ca2019/my_cpu16v3/pa.fromNetlist.tcl
+set_property package_pin "" [get_ports [list  {LED[6]}]]
+startgroup
+set_property package_pin P8 [get_ports {LED[7]}]
+endgroup
+startgroup
+set_property package_pin P6 [get_ports {LED[6]}]
+endgroup
+startgroup
+set_property package_pin P7 [get_ports {LED[5]}]
+endgroup
+startgroup
+set_property package_pin P5 [get_ports {LED[4]}]
+endgroup
+startgroup
+set_property package_pin P9 [get_ports {LED[3]}]
+endgroup
+startgroup
+set_property package_pin P11 [get_ports {LED[2]}]
+endgroup
+startgroup
+set_property package_pin P12 [get_ports {LED[1]}]
+endgroup
+startgroup
+set_property package_pin P10 [get_ports {LED[0]}]
+endgroup
+startgroup
+set_property package_pin P14 [get_ports {SA[3]}]
+endgroup
+startgroup
+set_property package_pin P15 [get_ports {SA[2]}]
+endgroup
+startgroup
+set_property package_pin P16 [get_ports {SA[1]}]
+endgroup
+startgroup
+set_property package_pin P17 [get_ports {SA[0]}]
+endgroup
+startgroup
+set_property package_pin P23 [get_ports {SW[2]}]
+endgroup
+set_property package_pin "" [get_ports [list  {SW[1]}]]
+startgroup
+set_property package_pin P33 [get_ports {SW[2]}]
+endgroup
+startgroup
+set_property package_pin P2 [get_ports {SW[1]}]
+endgroup
+startgroup
+set_property package_pin P1 [get_ports {SW[0]}]
+endgroup
+save_constraints
