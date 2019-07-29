@@ -2,7 +2,9 @@ import numpy as  np
 from scipy import stats
 from scipy.stats import t
 
-X = np.array([127,128, 130,131, 129]) - 130
+x1 = np.array([53.1, 50.3, 59.5, 62.0, 58.6, 56.5, 53.5])
+x2 = np.array([51.3, 48.8, 53.6, 56.2, 52.5, 53.0, 53.4])
+X = x1 - x2;
 twoside = 0
 mu_0 = 0
 avg = X.mean()

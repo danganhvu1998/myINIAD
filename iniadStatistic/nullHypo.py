@@ -2,11 +2,11 @@ import numpy as  np
 from scipy import stats
 from scipy.stats import norm
 
-X = np.array([4.7, 4.8, 4.9, 5.3, 5.5, 5.9, 6.0])
-twoside = 1
-mu_0 = 5
+X = np.array([96, 94,96,97,98,99,100,95,95,94])
+twoside = 0
+mu_0 = 95
 avg = X.mean()
-std = 1
+std = 12
 N = X.size
 z = (avg - mu_0) / (std / np.sqrt(N))
 p = norm.cdf(-np.abs(z), 0, 1)*(1+twoside)
