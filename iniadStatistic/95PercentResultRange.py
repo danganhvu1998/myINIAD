@@ -41,9 +41,10 @@ def unknownSD(listMeasurement):
     print("Unbiased Standard Deviation =", round(S, 2), S)
     print("\n***************************************************")
 
+
 def __MAIN__():
-    listMeasurement = [90, 100, 92, 103, 110, 115, 117]
-    standardDeviation = 4
+    listMeasurement = [3.45, 2.87, 2.3, 2.23]
+    standardDeviation = 1
     #listMeasurement = []
     if(len(listMeasurement)==0):
         numMeasurement = int(input("numMeasurement:"))

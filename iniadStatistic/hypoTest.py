@@ -5,8 +5,8 @@ from scipy.stats import t
 
 twoside = 0
 mu_0 = 95
-avg = 98.6
-std = 12
+avg = 125.9
+std = 1.6
 N = 70
 stat_t = (avg - mu_0) / (std / np.sqrt(N))
 #p = t.cdf(-np.abs(stat_t), df = N-1)*(1+twoside)

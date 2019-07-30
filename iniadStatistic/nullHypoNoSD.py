@@ -2,9 +2,9 @@ import numpy as  np
 from scipy import stats
 from scipy.stats import t
 
-X = np.array([127,128, 130,131, 129]) - 130
+X = np.array([20.1, 24.2, 23.4, 21.4, 24.6])
 twoside = 0
-mu_0 = 0
+mu_0 = 25
 avg = X.mean()
 std = np.std(X, ddof = 1)
 N = X.size
