@@ -11,6 +11,7 @@ int count = 0;
 
 int check(int num[], int in[]){
   ++count;
+  printf("Time: %d Check %d%d%d%d\n", count, in[0], in[1], in[2], in[3]);
   int blow = 0; 
   int hit = 0;
   for(int i=0;i<4;i++){
@@ -111,7 +112,6 @@ int main(void){
       if(numIn[In[i]]==0) flag = 1;
     }
     if (flag == 1) continue;
-    printf("check %d\n", I);
     if( check(Num, In) == 40 ){
       printf("Number is %d%d%d%d in %d steps", In[0], In[1], In[2], In[3], count);
       break;
