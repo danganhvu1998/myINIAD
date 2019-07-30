@@ -42,14 +42,16 @@ def unknownSD(listMeasurement):
     print("\n***************************************************")
 
 def __MAIN__():
-    #listMeasurement = [80,95,60,70,100]
-    listMeasurement = []
+    listMeasurement = [90, 100, 92, 103, 110, 115, 117]
+    standardDeviation = 4
+    #listMeasurement = []
     if(len(listMeasurement)==0):
         numMeasurement = int(input("numMeasurement:"))
         for i in range(0,numMeasurement):
             a = float(input("Result measurement number "+str(i)+": "))
             listMeasurement.append(a)
-    standardDeviation = float(input("standardDeviation (-1 if unknown):"))
+    if(standardDeviation == 0):
+        standardDeviation = float(input("standardDeviation (-1 if unknown):"))
     if( standardDeviation>=0 ):
         knownSD(listMeasurement, standardDeviation)
     else:
