@@ -63,12 +63,12 @@ struct IT_TREE{
     } else if(control_pos_from>pos_to){
       return 0;
     } else if( pos_from<=control_pos_from & control_pos_to<=pos_to) {
-      cout<<"SUM "<<curr_note<<" "<<control_pos_from<<" "<<control_pos_to<<" >> "<<tree_value[curr_note].child_notes_sum<<"\n";
+      //cout<<"SUM "<<curr_note<<" "<<control_pos_from<<" "<<control_pos_to<<" >> "<<tree_value[curr_note].child_notes_sum<<"\n";
       return tree_value[curr_note].child_notes_sum;
     } else {
       int A = _sum(curr_note*2, control_pos_from, (control_pos_to+control_pos_from)/2, pos_from, pos_to);
       int B = _sum(curr_note*2+1, (control_pos_to+control_pos_from)/2+1, control_pos_to, pos_from, pos_to);
-      cout<<"SUM "<<curr_note<<" "<<control_pos_from<<" "<<control_pos_to<<" >> "<<A+B<<"\n";
+      //cout<<"SUM "<<curr_note<<" "<<control_pos_from<<" "<<control_pos_to<<" >> "<<A+B<<"\n";
       return A+B;
     }
   }
