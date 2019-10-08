@@ -124,6 +124,9 @@
     + It keeps peering relationship with other Tier 1 ISP to maintain global reachability
   + Tier 2 ISPs wrap around the Internet core
   + Tier 3 ISPs (local ISPs) wrap around Tier 2 ISPs
+  + Multi-homed network
+    + ![Example][00comnet18]
+    + Multihoming is the practice of connecting a host or a computer network to more than one network
 + ***<span style="color:MediumSpringGreen">Network Performance</span>***
   + ***<span style="color:tomato">Per-hop Deley</span>***
     + ![Example][00comnet15]
@@ -137,8 +140,15 @@
   + ***<span style="color:tomato">End to End delay</span>***
     + ![Example][00comnet17]
   + ***<span style="color:tomato">Packet Loss Rate</span>***
+    + ![Example][00comnet19]
   + ***<span style="color:tomato">Jitter</span>***
+    + ![Example][00comnet20]
   + ***<span style="color:tomato">Throughput</span>***
+    + ![Example][00comnet21]
+
+## Class 3: HTTP Protocol
+
++ 
 
 [00comnet1]: ./../image/00comnet1.png
 [00comnet2]: ./../image/00comnet2.png
