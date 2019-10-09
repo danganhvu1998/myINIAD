@@ -13,7 +13,8 @@ struct IT_TREE{
 
   void init(int tree_size){
     size = tree_size;
-    tree_value = (II*)malloc(sizeof(II) * size * 10);
+    tree_value = (II*)malloc(sizeof(II) * size * 3);
+    
   }
 
   void lazy_update_child_notes(int curr_note,  int control_pos_from, int control_pos_to){

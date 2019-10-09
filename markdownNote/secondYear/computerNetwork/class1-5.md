@@ -148,7 +148,100 @@
 
 ## Class 3: HTTP Protocol
 
-+ 
++ HTTP Protocol
+  + Web protocol between client web browser and web server
+  + Client sends HTTP request message
+  + Server replies to the request message via HTTP response message
+  + Requires TCP connection
+    + ![Example][00comnet22]
+  + Most of the Web pages are composed of basic HTML files containing multiple reference objects
+  + Each object is recognized by a Universal Resource Locator
+  + URL is a host name followed by a path name
+    + ![Example][00comnet23]
+  + HTTP Protocol is based on REST architecture
+    + CRUD (Create, Read, Update, Delete) operation on resource
+    + REST: Representation State Transfer
+  + HTTP server is stateless in essence
+    + Server does not keep any state information regarding what service was asked and provided to clients including the very recent inquiry
+    + Client has to make a clear inquiry every time
+  + HTTP is Persistent or Non-persistent
+    + Non-persistent
+      + Establish of TCP connection is required for each HTTP request/response set
+      + HTTP v1.0 default
+      + Set `connection` field in HTTP header to `close`
+      + ![Example][00comnet24]
+    + Persistent
+      + Multiple requests\responses are possible for each TCP connection -> Better efficiency
+      + ![Example][00comnet25]
+      + HTTP v1.1 default
+      + Set `connection` field in HTTP header to `keep-alive`
+  + ***<span style="color:MediumSpringGreen">HTTP Request</span>***
+    + HTTP Request contains Request-Line, Request-header fields, HTTP body 
+    + ![Example][00comnet26]
+      + ***<span style="color:tomato">HTTP Request Line</span>***
+        + Consists of HTTP method, Requested-URI, and HTTP version
+          + Method
+            + GET
+            + PUT
+            + POST
+            + etc
+          + URL
+          + HTTP-Version
+            + HTTP/09 (1991~)
+            + HTTP.1.0 (RFC 1945 (1996~))
+            + HTTP/1.1 (RFC 2068 (1997~), RFC 2616, RFC 7239~7240)
+            + HTTP/2 (RFC 7540 (2015~)) 
+          + Example ```HTTP GET ~temp/my_pic.jpg HTTP/1.1```
+      + ***<span style="color:tomato">HTTP Request Header</span>***
+        + Define the oparating parameters of an HTTP transaction
+        + Colon-separated name-value pairs in clear-text string format
+        + Some fields and how to read
+          + Accept: Certain media types are acceptable for the response. If no Accept header is presented, server assume that client accepts all media types. A comma-separated list of entries, and a optional parameters are separated by semicolons to represents a relative preference ranges from 0 to 1(with 1 means the most preferred optin):q
+            + Accept: text/plain; q=0.5, text/html, text/x-dvi; q=0.8
+              + -> text/html > text/x-dvi > text/plain
+          + Accept-Encoding: compress; q=0.5, gzip; q=1.0
+        + Example
+
+          + ```html-request-header
+            Host: www.metro.tokyo.jp
+            User-Agent: Firefox/21.0
+            Connection: keep-alive
+            Accept: text/html
+            Accept-Encoding: compress; q=0.5, gzip; q=1.0
+            Accept-Language: en-US
+            ```
+
+  + ***<span style="color:MediumSpringGreen">HTTP Response</span>***
+    + HTTP Response contains of Status line, Response-header fields, Entity body field
+    + ![Example][00comnet27]
+      + Status line
+        + Protocol version
+        + Status Code and Status Phrase
+          + ![Example][00comnet28]
+      + Response-header fields
+
+        + ```html-request-header
+          Date: Sun, 29 ...\r\n
+          Last-Modified: Sat, ...\r\n
+            Content-Length: 18640\r\n
+          Content-Type: text/html\r\n
+          \r\n
+          ```
+
+      + Entity body field
+  + ***<span style="color:MediumSpringGreen">Cookies and Caching</span>***
+    + HTTP has stateless propersies for the sake of service scalability. But it is possible for the server to improve the service by maintaining a small amount of indo and shareing the ID associated with it with the client. That the idea of `Cookies`
+      + `Session Cookie` is kept only until the end of the session
+      + `Persistent Cookie` is maintained until the expiration data
+    + How Cookies work:
+      + User sends HTTP request
+      + The server creates a file that stores the data, assigns it to a unique ID
+      + The user saves a unique ID for each service in the database
+      + The server passes the ID from the client to the back-end database, and the servr considers the data corresponding to the user and provides the service more suitable for the user
+      + ![Example][00comnet29]
+    + Inaccurate Identify in Cookies
+      + Use of multiple browsers
+      + Shared environment
 
 [00comnet1]: ./../image/00comnet1.png
 [00comnet2]: ./../image/00comnet2.png
