@@ -229,7 +229,7 @@
           ```
 
       + Entity body field
-  + ***<span style="color:MediumSpringGreen">Cookies and Caching</span>***
+  + ***<span style="color:MediumSpringGreen">Cookies</span>***
     + HTTP has stateless propersies for the sake of service scalability. But it is possible for the server to improve the service by maintaining a small amount of indo and shareing the ID associated with it with the client. That the idea of `Cookies`
       + `Session Cookie` is kept only until the end of the session
       + `Persistent Cookie` is maintained until the expiration data
@@ -239,9 +239,32 @@
       + The user saves a unique ID for each service in the database
       + The server passes the ID from the client to the back-end database, and the servr considers the data corresponding to the user and provides the service more suitable for the user
       + ![Example][00comnet29]
+      + ![Example][00comnet30]
     + Inaccurate Identify in Cookies
       + Use of multiple browsers
       + Shared environment
+  + ***<span style="color:MediumSpringGreen">Caching</span>***
+    + To avoid retransmisson of the same content by accessing the cached(saved) content
+    + ***<span style="color:tomato">Time-based Caching</span>***
+      + For a given request from client, the server sends the content infomation as the value of `Last-Modified` response header field
+      + For subsequent request, the cliet checks for the latest content change by including the cached content information as an `If-Modified-Since` request header field value
+      + Server sends the content only if it has the newer update
+      + ![Example][00comnet31]
+    + ***<span style="color:tomato">Content-based Caching</span>***
+      + The server sends the signature associated with the content as the Etag response header field value
+      + For subsequent request, the cliet checks for the latest content change by including the cached content information as an `If-None-Match` request header field value
+      + Server sends the content only if it has the newer update
+      + ![Example][00comnet32]
+    + ***<span style="color:tomato">Caching Location</span>***
+      + ***<span style="color:SlateGray">Private Cache</span>***
+        + Browser's private cache
+        + Offline displace of cached content is possible
+        + Cache-Control: private
+        + ![Example][00comnet33]
+      + ***<span style="color:SlateGray">Shared Cache</span>***
+        + Shared cache locally installed to reduce network traffic and latency
+        + Cache-Control: public
+        + ![Example][00comnet34]
 
 [00comnet1]: ./../image/00comnet1.png
 [00comnet2]: ./../image/00comnet2.png
