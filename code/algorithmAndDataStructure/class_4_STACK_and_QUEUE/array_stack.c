@@ -53,6 +53,9 @@ int stack_empty(STACK stack) {
 
 // For Assignment 4-1
 T stack_top(STACK stack) {
-    // Implememnt here.
+    if(stack == NULL) {
+        return 0;
+    }
+    return stack->elements[stack->top-1];
     return 0;
 }

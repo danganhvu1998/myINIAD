@@ -55,6 +55,26 @@ int queue_empty(QUEUE queue) {
 
 // For Assignment 4-2
 T queue_front(QUEUE queue) {
-    // Implememnt here.
+    if(queue == NULL) {
+        return 0;
+    }
+    return queue->elements[queue->front];
     return 0;
+}
+
+void queue_pushfront(QUEUE queue, T value){
+    if((queue == NULL) || ((queue->front - 1 - queue->rear) % QUEUE_SIZE == 0)) {
+        return;
+    }
+    queue->front = (queue->front + QUEUE_SIZE - 1) % QUEUE_SIZE;
+    queue->elements[queue->front] = value;
+}
+
+T queue_popback(QUEUE queue){
+    if((queue == NULL) || (queue->front == queue->rear)) {
+        return 0;
+    }
+    T result = queue->elements[queue->rear-1];
+    queue->rear = (queue->rear - 1 + QUEUE_SIZE) % QUEUE_SIZE;
+    return result;
 }

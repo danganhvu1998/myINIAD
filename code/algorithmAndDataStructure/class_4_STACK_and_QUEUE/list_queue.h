@@ -14,3 +14,5 @@ T queue_dequeue(QUEUE queue);
 int queue_empty(QUEUE queue);
 
 T queue_front(QUEUE queue);
+void queue_pushfront(QUEUE queue, T value);
+T queue_popback(QUEUE queue);

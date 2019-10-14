@@ -18,6 +18,14 @@ int main(int argc, char* argv[]) {
                 queue_enqueue(queue, value);
                 printf("enqueue:%d\n", value);
                 break;
+            case 'p':
+                queue_pushfront(queue, value);
+                printf("pushfront:%d\n", value);
+                break;
+            case 'q':
+                value = queue_popback(queue);
+                printf("popback:%d\n", value);
+                break;
             case 'd':
                 value = queue_dequeue(queue);
                 printf("dequeue:%d\n", value);

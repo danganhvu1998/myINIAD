@@ -21,3 +21,5 @@ int queue_empty(QUEUE queue);
 
 // For Assignment 4-2
 T queue_front(QUEUE queue);
+void queue_pushfront(QUEUE queue, T value);
+T queue_popback(QUEUE queue);
