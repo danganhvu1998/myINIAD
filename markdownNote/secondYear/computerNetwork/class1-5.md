@@ -266,6 +266,57 @@
         + Cache-Control: public
         + ![Example][00comnet34]
 
+## Class 4: DHCP&DNS
+
++ ***<span style="color:MediumSpringGreen">DHCP: Dynamic Host Configuration Protocol</span>***
+  + IP address is allocated dynamically to each device out of a pool of IP address when it becomes a part of the network
+    + ![Example][00comnet35]
+    + ![Example][00comnet36]
+  + ***<span style="color:tomato">Time-based Caching</span>***
++ ***<span style="color:MediumSpringGreen">DNS: Domain Name System</span>***
+  + DNS can find IP addresses associated with domain names
+  + DNS is a distributed database
+  + ![Example][00comnet37]
+  + ![Example][00comnet38]
+  + A DNS query travels through multiple DNS servers recursively and/or iteratively
+    + Client wants to know IP address of hostname google.com
+    + A DNS query is first sent to local DNS server: What is the IP address for the hostname "google.com"?
+    + If local DNS server does not have the IP address of the hostname cached to itself, forward the query to Root DNS server
+    + Forward the query to Root DNS server -> which returns the IP address of com DNS server
+    + Local DNS server contacts com DNS server which returns the IP address of Google's DNS server
+    + DNS server contacts Google's DNS server which returns the IP address of Google's web server to Local DNS server
+    + Local DNS server return the IP address of the hostname google.com to the client!
+  + ***<span style="color:tomato">DNS Records</span>***
+    + Resource records (RR): Records for DNS database which has information such as host and IP address mapping
+    + One or more RRs are included in the DNS response message for the DNS query
+    + RR format: Name, Value, Type, TTL
+      + The meaning of Name and Value of RR changes by 4 types: A, NS, CNAME, MX
+      + TTL is the time when resources specified in the RR are deleted from the cache (in seconds)
+    + RR format Type = A:
+      + Name is hostname
+      + Value is IP address
+      + Example: relay1.bar.netone.com, 122.56.165.33, A, 300
+    + RR format Type = NS:
+      + Name is a domain
+      + Value is a hostname of authoritative DNS server that knows how to obtain the IP addresses for hosts in the domain
+      + Example: netone.com, dns.netone.com, NS, 300
+    + RR format Type = CNAME:
+      + Value is the canonical hostname for the alias hostname Name
+      + Example: netone.com, relay1.bar.netone.com, CNAME, 300
+    + RR format Type = MX:
+      + Value is the canonical name of a mail server that has an alias hostname Name
+      + Example: netone.com, mail.bar.netone.com, MX, 300
+  + ***<span style="color:tomato">DNS Query and Reply</span>***
+    + Query and reply message in same format
+      + Message header:
+      + Identification: 16 bit # for query and reply
+      + Flags:
+        + Query of reply
+        + Recursion desired
+        + Recursion available
+        + Reply is authoritative
+    + ![Example][00comnet39]
+
 [00comnet1]: ./../image/00comnet1.png
 [00comnet2]: ./../image/00comnet2.png
 [00comnet3]: ./../image/00comnet3.png
