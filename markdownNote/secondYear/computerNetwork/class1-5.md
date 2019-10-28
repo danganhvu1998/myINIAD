@@ -317,6 +317,116 @@
         + Reply is authoritative
     + ![Example][00comnet39]
 
+## Class 5: CoAP: Constrained Application Protocol
+
++ ***<span style="color:MediumSpringGreen">Challenges in IoT</span>***
+  + ***<span style="color:tomato">Evolution from M2M to IoT:</span>***
+    + M2M - Machine to machine:
+      + Direct communication
+      + Both wired/wireless
+      + Industrial instrumentation
+    + The Web:
+      + IP addressable services
+      + Scalable services
+      + The Web x M2M x Internet = IoT
+  + ***<span style="color:tomato">Challenges:</span>***
+    + Operation with constrained resources:
+      + Bandwidth
+      + Power
+      + Processing
+      + Memory capacity
++ ***<span style="color:MediumSpringGreen">CoAP</span>***
+  + ![Example][00comnet40]
+  + Protocol gaps between the Internet and resource constrained networks
+    + Conventional HTTP protocol tends to consume overhead that resource-constrained IoT devices cannot afford
+    + IoT still needs to reach out to other devices at the other side of the Internet and vice versa
+  + ***<span style="color:tomato">6LoWPAN</span>***
+    + IPv6:
+      + Address 128 bits
+      + All links must support MTU(Maximum Transmitsson Unit) of 1280 bytes or more
+    + IEEE 802.15.4:
+      + Address: 16 bits for PAN-specific local address (or extended 64 bits for globally unique device ID)
+      + Frame size: 127 octets
+    + **6LoWPAN** is an adaptation layer for interoperability with IPv6 and 802.15.4 standard.
+      + ![Example][00comnet42]
+      + ![Example][00comnet41]
+      + Utilizes header compression and fragmentation
+        + ***<span style="color:Chartreuse ">Fragmentation:</span>*** Each IP datagram is broken down in order to fit inside 802.15.4 frames
+          + ![Example][00comnet43]
+          + ![Example][00comnet44]
+        + ***<span style="color:Chartreuse ">Compression:</span>*** compressing IPv6 header in order to minimize its size as small as posible
+          + ![Example][00comnet45]
+    + **6LoWPAN SUMMARY**
+      + Each IPv6 datagram is fragmented into multiple smaller datagrams
+      + Each IPv6 is compressed
+      + By installing the **6LoWLAN** router as a gateway, it can be set to access the IoT device from other devices in the Internet
+  + ***<span style="color:MediumSpringGreen">CoAP</span>***
+    + Based on REST architecture for CRUD
+      + Creat, Read, Update, Delete
+      + REST: Representational State Transfer
+    + Resolves the gap between user-oriented and IoT device-oriented communications:
+      + HTTP for connection-oriented application
+      + CoAP as a light-weight protocol
+      + IoT devices can be accessed by other devices through proxy server
+    + ![Example][00comnet46]
+    + CoAP Architecture: Intended to work between
+      + Devices on the same constrained network
+      + Devices and nodes on the same internet
+      + Devices on different constrained networks both joined by the Internet
+      + ![Example][00comnet47]
+    + CoAP's Position in Layered Communication Model
+      + ![Example][00comnet40]
+      + CoAP is originally defined for UDP, but it supports reliable transfer model
+    + CoAP's Messaging
+      + CoAP uses simple message exchange between end-points (CON, NON, ACK, RST)
+        + CON - Confirmable message
+          + Some messages requires an acknowledgement. These messages are called "Confirmable"
+          + When no packets are lost, each Confirmable message elicits exactly one return message of type Acknowledge or type Reset
+        + NON - Non confirmable message
+          + Some other message do not require an acknowledgement
+          + This is true for messages that are repeated regularly for application requirements, such as repeated readings from a sensor
+        + ACK - ACK message
+          + An Acknowledgement message acknowledges that a specific confirmable message arrived
+          + An Acknowledge message does not indicate success or failure of any request encapsulated in the Confirmable message, but the Acknowledge message may also carry a Piggybacked Response
+        + RST - Reset message
+          + A Reset message indicates that a specific message (Confirm or Non) was received, but some context is missing to properly process it
+          + This condition is usually caused when the receiving node has rebooted and has forgotten some state that would be required to interpret the message. Provoking a Reset message is also useful as an inexpensive check of the liveness of an endpoint 
+    + CoAP's Messaging Support REST
+      + Request/Response piggybacked on messages
+      + Method, Response Code and Options (URI, content-type)
+    + CoAP's Messaging Data size is constrained by:
+      + UDP datagram for UDP
+      + IEEE 802.15.4 frame for 6LoWPAN
+    + CoAP's Messaging Format
+      + Base header followed by optional fields in an optimized Type-Length-Value format
+      + Base header:
+        + Message ID
+        + Method (GET, PUT, POST, HEAD, DELETE)
+        + Path
+          + ![Example][00comnet48]
+      + Message body
+    + CoAP's Messaging Scenario
+      + ![Example][00comnet49]
+      + ![Example][00comnet50]
+      + ![Example][00comnet51]
+      + ![Example][00comnet52]
+      + ![Example][00comnet53]
+  + ***<span style="color:MediumSpringGreen">Device Discovery:</span>***
+    + IoT devices need to be "discovered" before being accessed by client for associate services
+    + Device Discovery:
+      + Constrained RESTful Environments (CoRE) link Format
+      + Resource discovery for M2M/IoT
+      + Specification of the use of "Web Linking" for the description and discovery of resources hosted by constrained web servers
+      + A serialization of a typed linked used to describe relationships between resources
+    + CoRE Resource Discovery:
+    + Discovery of resources hosted by a constrained web server, their attributes, and other resource relations
+    + Resource discovery with CoRE Link Format
+    + GET /.well-known/core: a default entry point for requesting the list of links about resources hosted by a server thus performing CoRE Resource Discovery
+      + Returns a link-header style format: URL, relation, type, interface, content-type
+      + Registration of the resource follows
+      + ![Example][00comnet54]
+      + ![Example][00comnet55]
+
 [00comnet1]: ./../image/00comnet1.png
 [00comnet2]: ./../image/00comnet2.png
 [00comnet3]: ./../image/00comnet3.png
@@ -366,3 +476,24 @@
 [00comnet47]: ./../image/00comnet47.png
 [00comnet48]: ./../image/00comnet48.png
 [00comnet49]: ./../image/00comnet49.png
+[00comnet50]: ./../image/00comnet50.png
+[00comnet51]: ./../image/00comnet51.png
+[00comnet52]: ./../image/00comnet52.png
+[00comnet53]: ./../image/00comnet53.png
+[00comnet54]: ./../image/00comnet54.png
+[00comnet55]: ./../image/00comnet55.png
+[00comnet56]: ./../image/00comnet56.png
+[00comnet57]: ./../image/00comnet57.png
+[00comnet58]: ./../image/00comnet58.png
+[00comnet59]: ./../image/00comnet59.png
+[00comnet60]: ./../image/00comnet60.png
+[00comnet61]: ./../image/00comnet61.png
+[00comnet62]: ./../image/00comnet62.png
+[00comnet63]: ./../image/00comnet63.png
+[00comnet64]: ./../image/00comnet64.png
+[00comnet65]: ./../image/00comnet65.png
+[00comnet66]: ./../image/00comnet66.png
+[00comnet67]: ./../image/00comnet67.png
+[00comnet68]: ./../image/00comnet68.png
+[00comnet69]: ./../image/00comnet69.png
+[00comnet70]: ./../image/00comnet70.png
