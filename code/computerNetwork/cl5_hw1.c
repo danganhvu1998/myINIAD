@@ -6,8 +6,8 @@
 
 const int BUF_SIZE = 256;
 char SERVER_IP[100];
-unsigned short SERVER_PORTNUM = 8000;
-char MESSAGE[1000];
+unsigned short SERVER_PORTNUM = 9000;
+char MESSAGE[1000] = "What the fuck is that\n";
 const char END_MESSAGE[] = "\n\n";
 
 void error_handler(const char *message){
@@ -22,8 +22,6 @@ int main(int argc, char *argv[]){
       fgets(SERVER_IP, sizeof(SERVER_IP), stdin);
       printf("SERVER IP: ");
       scanf("%hd", &SERVER_PORTNUM);
-      printf("REQUEST: ");
-      fgets(MESSAGE, sizeof(MESSAGE), stdin);
       strcpy(MESSAGE, strcat(MESSAGE, END_MESSAGE));
       if ((sock = socket(PF_INET, SOCK_STREAM,IPPROTO_TCP)) < 0){
           error_handler("socket() failed.\n");
