@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 int main(int argc, char* argv[]){
-  unsigned char buf[1];
+  unsigned char buf[8192];
   int fr, fw, rlen, wlen;
 
   fr = open(argv[1], O_RDONLY);
