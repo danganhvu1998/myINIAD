@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "sort.h"
 
-int list[] = {1, 5, 10, 3, 2, 8, 6, 7};
+int list[] = {6,2,8,3,4,1,10,5,7,9};
 
 int main(int argc, char* argv[]) {
     int length = sizeof(list) / sizeof(int);

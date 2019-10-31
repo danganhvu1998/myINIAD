@@ -1,5 +1,8 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "sort.h"
+
+int LENGTH = 0;
 
 void merge(int* list, int *tmp, int start, int mid, int end) {
     int i = start;
@@ -32,6 +35,10 @@ void merge(int* list, int *tmp, int start, int mid, int end) {
     for(i = start; i <= end; i++) {
         list[i] = tmp[i];
     }
+    for(int i=0;i<LENGTH;i++){
+        printf("%d, ", list[i]);
+    } 
+    printf("\n");
 }
 
 void merge_sort(int* list, int *tmp, int start, int end) {
@@ -47,6 +54,7 @@ void merge_sort(int* list, int *tmp, int start, int end) {
 }
 
 void sort(int* list, int length) {
+    LENGTH = length;
     int* tmp = malloc(sizeof(int) * length);
     merge_sort(list, tmp, 0, length - 1);
     free(tmp);
