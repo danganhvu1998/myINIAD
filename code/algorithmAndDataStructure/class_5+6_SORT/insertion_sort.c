@@ -2,21 +2,17 @@
 #include <stdio.h>
 #include "sort.h"
 
-void sort(int *list, int length) {
+void sort(T *list, int length, Comparefn compare) {
     for(int i = 1; i < length; i++) {
-        int target = list[i];
+        T target = list[i];
         int j;
         for(j = i - 1; j >= 0; j--) {
-            if(target < list[j]) {
+            if(compare(target, list[j])<0) {
                 list[j + 1] = list[j];
             } else {
                 break;
             }
         }
         list[j + 1] = target;
-        for(int k=0; k<length; k++){
-            printf("%d, ", list[k]);
-        }
-        printf("\n");
     }
 }

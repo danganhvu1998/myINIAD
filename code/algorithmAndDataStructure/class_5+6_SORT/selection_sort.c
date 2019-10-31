@@ -2,20 +2,16 @@
 #include <stdio.h>
 #include "sort.h"
 
-void sort(int *list, int length) {
+void sort(T *list, int length, Comparefn compare) {
     for(int i = 0; i < length; i++) {
         int min_index = i;
         for(int j = i + 1; j < length; j++) {
-            if(list[j] < list[min_index]) {
+            if(compare(list[j], list[min_index])<0) {
                 min_index = j;
             }
         }
-        int tmp = list[i];
+        T tmp = list[i];
         list[i] = list[min_index];
         list[min_index] = tmp;
-        for(int k=0; k<length; k++){
-            printf("%d, ", list[k]);
-        }
-        printf("\n");
     }
 }
