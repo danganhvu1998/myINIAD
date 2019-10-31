@@ -8,7 +8,7 @@
 
 char buf[BUFF_SIZE];
 char *token;
-char* cmd[50];
+char* cmd[512];
 
 int curr_cmd_index;
 
@@ -28,10 +28,11 @@ void string_to_token(){
 
 int main(){
   for(;;){
-    init_func();
     printf("> ");
+    init_func();
     fgets(buf, sizeof(buf), stdin);
-    for(int i=0;i<=curr_cmd_index;i++){
+    string_to_token();
+    for(int i=0;i<curr_cmd_index;i++){
       printf("%s\n", cmd[i]);
     }
   }
