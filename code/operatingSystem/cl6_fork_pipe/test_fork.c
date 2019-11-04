@@ -9,7 +9,7 @@ int main(){
     waitpid(pid, &ret, 0);
     printf("Child returned %d\n", ret);
   } else {
-    char* cmd[] ={"ls", "-al", NULL};
+    char* cmd[] ={"cat", "-n", "hha\nhaha\n", NULL};
     execvp(cmd[0], cmd);
     return 0;
   }

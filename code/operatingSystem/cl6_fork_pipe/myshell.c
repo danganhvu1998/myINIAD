@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define BUFF_SIZE 5000
 #define CMD_SIZE 50
@@ -14,12 +15,14 @@ int curr_cmd_index;
 
 int init_func(){
   curr_cmd_index = 0;
+  buf[strlen(buf)-1] = '\0';
 }
 
 void string_to_token(){
+  init_func();
   token = strtok(buf, " ");
   while( token != NULL ) {
-    strcpy(cmd[curr_cmd_index], token);
+    cmd[curr_cmd_index] = token;
     ++curr_cmd_index;
     token = strtok(NULL, " ");
   }
@@ -28,12 +31,18 @@ void string_to_token(){
 
 int main(){
   for(;;){
-    printf("> ");
-    init_func();
+    printf("\n> ");
     fgets(buf, sizeof(buf), stdin);
     string_to_token();
-    for(int i=0;i<curr_cmd_index;i++){
-      printf("%s\n", cmd[i]);
+    pid_t pid = fork();
+    if(pid > 0){ // Parent
+      int ret;
+      waitpid(pid, &ret, 0);
+      continue;
+    } else {
+      //char* cmdd[] ={"ls", "-al", NULL};
+      execvp(cmd[0], cmd);
+      return 0;
     }
   }
 }
