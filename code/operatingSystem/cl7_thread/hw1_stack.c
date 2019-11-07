@@ -37,12 +37,11 @@ int stack_pop(struct stack* stk)
 void* crazy_push_pop_sieu_to_khong_lo(void* arg){
     struct stack* stk = arg;
     for(int i=0; i<1000; i++){
-        printf("START %d\n", i);
+        printf("START %d\n", stk->count);
         stack_push(stk, i);
-        stack_push(stk, i);
+        printf("END1 %d\n", stk->count);
         stack_pop(stk);
-        stack_pop(stk);
-        printf("END %d\n", i);
+        printf("END %d\n", stk->count);
     }
     return NULL;
 }
