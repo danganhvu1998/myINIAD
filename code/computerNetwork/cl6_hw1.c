@@ -7,8 +7,10 @@
 #include<errno.h>
 
 #define BUF_SIZE 800
-#define SERVER_PORTNUM 9000
+#define SERVER_PORTNUM 9001
 #define QUEUE_SIZE 1
+
+char mess[BUF_SIZE] = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\nHello World\r\n";
 
 void error_handler(const char *message){
     fprintf(stderr,"%s",message);
@@ -38,7 +40,6 @@ int main(int argc, char *argv[]){
     &addr_len))<0) goto ERROR;
     // receive message from the client
     char buf[BUF_SIZE];
-    char mess[BUF_SIZE] = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\nHello World\r\n";
     int received_bytes = 0;
     printf("Received message: ");
     while(1){
@@ -49,21 +50,25 @@ int main(int argc, char *argv[]){
         else if (received_bytes==0) break;
         buf[received_bytes] = '\0';
         printf("%s",buf);
-    }
-  //send messages to the client
-    int total_sent_size;
-    int send_length = strlen(mess);
-    for (total_sent_size = 0; total_sent_size<send_length;){
-        int sent_size;
-        if((sent_size = send(client_sock, &mess[total_sent_size],received_bytes - total_sent_size,0))<0){
-            goto ERROR2;
+
+        //send messages to the client
+        int send_length = strlen(mess);
+        int total_sent_size;
+        for (total_sent_size = 0; total_sent_size<send_length;){
+            int sent_size;
+            if((sent_size = send(client_sock, &mess[total_sent_size],send_length - total_sent_size,0))<0){
+                goto ERROR2;
+            }
+            total_sent_size+=sent_size;
         }
-        total_sent_size+=sent_size;
+        close(client_sock);
+        close(serv_sock);
+        break;
     }
     // close the client socket
-    close(client_sock);
+    
     // close the server socket
-    close(serv_sock);
+    
 ERROR2:
     if (client_sock >=0 ) close(client_sock);
 ERROR:
