@@ -1,0 +1,148 @@
+	org(0);
+        LDI(R12,0);
+        LDI(R13,0);
+
+// No. 0x0001
+// Test case: CMP +,+
+        LDI16(R12,0x0001); // Set test no. to R12
+        LDI(R0,1);
+        LDI(R1,2);
+        CMP(R0,R1);
+        BNC24(L_NG);
+        CMP(R1,R0);
+        BC24(L_NG);
+        CMP(R1,R1);
+        BC24(L_NG);
+
+// No. 0x0002
+// Test case: CMP -,-
+        LDI16(R12,0x0002); // Set test no. to R12
+        LDI(R0,-4);
+        LDI(R1,-3);
+        CMP(R0,R1);
+        BNC24(L_NG);
+        CMP(R1,R0);
+        BC24(L_NG);
+        CMP(R1,R1);
+        BC24(L_NG);
+
+// No. 0x0003
+// Test case: CMP +,-
+        LDI16(R12,0x0003); // Set test no. to R12
+        LDI(R0,5);
+        LDI(R1,-6);
+        CMP(R0,R1);
+        BC24(L_NG);
+        CMP(R1,R0);
+        BNC24(L_NG);
+
+// No. 0x0004
+// Test case: BC jump forward
+        LDI16(R12,0x0004); // Set test no. to R12
+        LDI(R0,1);
+        LDI(R1,2);
+        CMP(R0,R1); // Set 1 to cbit
+        BC(L1);
+        BRA24(L_NG);
+    L1 = addr;
+
+// No. 0x0005
+// Test case: BC jump backward
+        LDI16(R12,0x0005); // Set test no. to R12
+        BRA(L2);
+    L3 = addr;
+        BRA(L4);
+    L2 = addr;
+        LDI(R0,1);
+        LDI(R1,2);
+        CMP(R0,R1); // Set 1 to cbit
+        BC(L3);
+        BRA24(L_NG);
+    L4 = addr;
+
+// No. 0x0006
+// Test case: BC not jump
+        LDI16(R12,0x0006); // Set test no. to R12
+        CMP(R0,R0); // Set 0 to cbit
+        BC(L5);
+        BRA(L6);
+    L5 = addr;
+        BRA24(L_NG);
+    L6 = addr;
+    
+// No. 0x0007
+// Test case: BNC jump forward
+        LDI16(R12,0x7f07); // Set test no. to R12
+        CMP(R0,R0); // Set 0 to cbit
+        BNC(L7);
+        BRA24(L_NG);
+    L7 = addr;
+
+// No. 0x0008
+// Test case: BNC jump backward
+        LDI16(R12,0x0008); // Set test no. to R12
+        BRA(L8);
+    L9 = addr;
+        BRA(L10);
+    L8 = addr;
+        CMP(R0,R0); // Set 0 to cbit
+        BNC(L9);
+        BRA24(L_NG);
+    L10 = addr;
+
+// No. 0x0009
+// Test case: BNC not jump
+        LDI16(R12,0x0009); // Set test no. to R12
+        LDI(R0,1);
+        LDI(R1,2);
+        CMP(R0,R1); // Set 1 to cbit
+        BNC(L11);
+        BRA(L12);
+    L11 = addr;
+        BRA24(L_NG);
+    L12 = addr;
+
+// No. 0x000a
+// Test case: BRA jump forward
+        LDI16(R12,0x000a); // Set test no. to R12
+        BRA(L13);
+        BRA24(L_NG);
+    L13 = addr;
+        BRA(L14);
+        NOP();
+        BRA24(L_NG);
+    L14 = addr;
+        BRA(L15);
+        NOP();
+        NOP();
+        BRA24(L_NG);
+    L15 = addr;
+
+// No. 0x000b
+// Test case: BRA jump backward
+        LDI16(R12,0x000b); // Set test no. to R12
+        BRA(L16);
+    L19 = addr;
+        NOP();
+        BRA(L20);
+        BRA24(L_NG);
+    L18 = addr;
+        NOP();
+        BRA(L19);
+        BRA24(L_NG);
+    L17 = addr;
+        BRA(L18);
+        BRA24(L_NG);
+    L16 = addr;
+        BRA(L17);
+        BRA24(L_NG);
+    L20 = addr;
+
+// Test end.
+        BC24(L_OK);
+    L_NG = addr;
+        LDI(R13,-1);
+        BRA(addr);
+    L_OK = addr;
+        LDI(R13,1);
+        BRA(addr);

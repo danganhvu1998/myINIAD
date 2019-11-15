@@ -1,0 +1,13 @@
+// Sample assembler source
+    org(0);
+    LDI(R0,0);  // 00: R0 = 0
+    LDI(R1,10); // 02: R1 = 10
+    LDI(R2,1);  // 04: R2 = 1
+    LDI(R3,0);  // 06: R3 = 0
+L1 = addr;      // Label L1:
+    ADD(R0,R1); // 08: R0 = R0+R1
+    SUB(R1,R2); // 0a: R1 = R1-1
+    CMP(R3,R1); // 0c: if 0 < R1
+    BC(L1);     // 0e: Then branch to L0
+L2 = addr;
+    BRA(addr);  // 10: Endless loop

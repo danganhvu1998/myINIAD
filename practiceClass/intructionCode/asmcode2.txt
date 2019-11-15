@@ -1,0 +1,111 @@
+	org(0);
+        LDI(R12,0);
+        LDI(R13,0);
+
+	LDI16(R12,0x1);
+        LDI(R0,11);
+	ADD3(R1,R0,22); // ADD3
+	LDI(R2,33);
+	BNE(R1,R2,L_NG);
+
+	LDI16(R12,0x2);
+        LDI16(R0,0x00ff);
+	AND3(R1,R0,0x0ff0); // ADD3
+	LDI16(R2,0x00f0);
+	BNE(R1,R2,L_NG);
+
+	LDI16(R12,0x3);
+        LDI(R0,2);
+	LDI(R1,-4);
+	BEQ(R0,R1,L_NG); // BEQ
+
+	LDI16(R12,0x4);
+	LDI(R3,5);
+	BEQZ(R3,L_NG); // BEQZ
+	LDI(R4,0);
+	BEQZ(R4,L1);
+	BRA24(L_NG);
+L1 = addr;
+
+	LDI16(R12,0x5);
+	LDI(R3,0);
+	BGEZ(R3,L2); // BGEZ
+	BRA24(L_NG);
+L2 = addr;
+
+	LDI16(R12,0x6);
+	BGTZ(R3,L_NG); // BGTZ
+	LDI(R3,15);
+	BGTZ(R3,L3); //BGTZ
+	BRA24(L_NG);
+L3 = addr;
+
+	LDI16(R12,0x7);
+	BL(L4); // BL
+	NOP();
+L4 = addr;
+	LDI16(R0,(L4-2));
+	BEQ(R14,R0,L5);
+	BRA24(L_NG);
+L5 = addr;
+
+	LDI16(R12,0x8);
+	BL24(L6); // BL24
+	NOP();
+L6 = addr;
+	LDI16(R0,(L6-2));
+	BEQ(R14,R0,L7);
+	BRA24(L_NG);
+L7 = addr;
+
+	LDI16(R12,0x9);
+	LDI(R3,0);
+	BLEZ(R3,L8); // BLEZ
+	BRA24(L_NG);
+L8 = addr;
+
+	LDI16(R12,0xa);
+	BLTZ(R3,L_NG); // BLTZ
+	LDI(R3,-7);
+	BLTZ(R3,L9); //BLTZ
+	BRA24(L_NG);
+L9 = addr;
+
+	LDI16(R12,0xb);
+	LDI(R0,12);
+	LDI(R1,12);
+	BNE(R0,R1,L_NG); //BNE
+	SUB(R0,R0);
+	BNEZ(R0,L_NG); //BNEZ
+
+	LDI16(R12,0xc);
+        LDI(R0,3);
+	CMPI(R0,5); // CMPI
+	BNC24(L_NG);
+
+	LDI16(R12,0xd);
+        LDI(R0,3);
+	LDI(R1,-1);
+	CMPU(R0,R1); // CMPU
+	BNC24(L_NG);
+
+	LDI16(R12,0xe);
+        LDI(R0,3);
+	CMPUI(R0,0xffff); // CMPUI
+	BNC24(L_NG);
+
+	LDI16(R12,0xf);
+        LDI(R0,72);
+	LDI(R1,36);
+	DIV(R0,R1); // DIV
+	LDI(R2,2);
+	BNE(R0,R2,L_NG);
+
+// Test end.
+        BC24(L_OK);
+    L_NG = addr;
+        LDI(R13,-1);
+        BRA(addr);
+    L_OK = addr;
+        LDI(R13,1);
+        BRA(addr);
