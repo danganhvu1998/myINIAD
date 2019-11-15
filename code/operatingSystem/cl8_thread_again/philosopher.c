@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #define PHILOSOPHERS 5
-#define DAYS 100
+#define DAYS 10000
 
 static const char* names[] = {
     "Enryo", "Socrates", "Platon", "Aristoteles", "Kant"
