@@ -27,5 +27,6 @@ void expression_print_postfix(Node* tree);
 
 Node* expression_parse_prefix(char *str);
 Node* expression_parse_postfix(char *str);
+Node* expression_parse_infix(char *str);
 
 int expression_eval(Node* tree);

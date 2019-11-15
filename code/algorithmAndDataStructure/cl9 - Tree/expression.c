@@ -170,6 +170,21 @@ Node* expression_parse_postfix(char *str) {
     return result;
 }
 
+Node* expression_parse_infix_support(char *str, int start, int end){
+    printf("Debug: ");
+    for(int i=start; i<=end; i++){
+        printf("%c", str[i]);
+    }
+    printf("\n");
+    int currentBrackets = 0;
+    
+}
+
+Node* expression_parse_infix(char *str){
+    int N = strlen(str);
+    expression_parse_infix_support(str, 1, N-2);
+}
+
 void expression_print(Node* tree) {
     if(tree->left != NULL) {
         printf("(");
