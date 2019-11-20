@@ -14,6 +14,8 @@ static const char* names[] = {
 pthread_t philosophers[PHILOSOPHERS];
 pthread_mutex_t fork_mutex[PHILOSOPHERS];
 
+int countTest = 0;
+
 static void eat(int phil, int fork1, int fork2)
 {
     printf("%s: \"Yummy!\"\n", names[phil]);
@@ -23,34 +25,34 @@ void* philosopher_thread(void* arg)
 {
     int phil = (int)(intptr_t)arg;
     unsigned int r = (phil << 16) + time(NULL);
-    int small = phil;
-    int big = (phil+1) % PHILOSOPHERS;
+    int left = phil;
+    int right = (phil+1) % PHILOSOPHERS;
     int i;
-    if(small > big){
-        int tmp;
-        tmp = small;
-        small = big;
-        big = tmp;
-    }
 
-    usleep(rand_r(&r) % 1000);
+    usleep(rand_r(&r) % 100000);
 
     for (i = 0; i < DAYS; i++) {
+        printf("Count Test: %d\n", ++countTest);
         /* Think for a while */
-        usleep(rand_r(&r) % 100);
+        usleep(rand_r(&r) % 10000);
         
         /* Staring to eat */
-        pthread_mutex_lock(&fork_mutex[small]);
+        pthread_mutex_lock(&fork_mutex[left]);
         printf("%s picked up fork on the left\n", names[phil]);
-        pthread_mutex_lock(&fork_mutex[big]);
+        if( pthread_mutex_trylock(&fork_mutex[right])<0 ){
+          pthread_mutex_unlock(&fork_mutex[left]);
+          printf("%s returned fork on the left\n", names[phil]);
+          --i;
+          continue;
+        }
         printf("%s picked up fork on the right\n", names[phil]);
 
-        eat(phil, big, small);
+        eat(phil, left, right);
 
         printf("%s returned fork on the right\n", names[phil]);
-        pthread_mutex_unlock(&fork_mutex[big]);
+        pthread_mutex_unlock(&fork_mutex[right]);
         printf("%s returned fork on the left\n", names[phil]);
-        pthread_mutex_unlock(&fork_mutex[small]);
+        pthread_mutex_unlock(&fork_mutex[left]);
     }
 
     return NULL;
