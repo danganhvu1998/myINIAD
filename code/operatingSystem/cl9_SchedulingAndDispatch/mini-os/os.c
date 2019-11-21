@@ -48,7 +48,19 @@ int add_task(void (*fn)(), char* stack)
 
 TCB* schedule()
 {
-#error implement schedule()
+    // #error implement schedule()
+    // Doing here
+    for(;;){
+        for(int i=0; i<task_count; i++){
+            if(tasks[i].status == NOTSTARTED){
+                return &tasks[i];
+            }
+            if((tasks[i].status == SLEEPING) & (tasks[i].wakeup_time <= current_time_milliseconds())){
+                return &tasks[i];
+            }
+        }
+        usleep(100);
+    }
 }
 
 
