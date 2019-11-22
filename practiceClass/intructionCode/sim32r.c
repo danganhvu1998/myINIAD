@@ -132,6 +132,18 @@ int execinstr() // Execute an instruction
         regfile[rd] ^= regfile[rs];
         iname = "XOR";
         break;
+    case 0x80d0: // XOR3
+        regfile[rd] = regfile[rs]^icode2;
+        iname = "XOR3";
+    case 0xa020: // STHR (STH reg rel)
+        regfile[rd+icode2] = regfile[rs];
+        iname = "STHR";
+    case 0x2020: // STH
+        regfile[rd] = regfile[rs];
+        iname = "STH";
+    case 0x2000: // STB
+        regfile[rd] = regfile[rs];
+        iname = "STH";
     default:
         switch( icode1&0xff00 ) {
         case 0x7c00: // BC
