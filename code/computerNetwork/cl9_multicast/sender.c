@@ -6,10 +6,10 @@
 #include <unistd.h>
 
 #define BUF_SIZE 4096
-const char GROUP_ADDR[]  = "239.255.*****"; // group address
+const char GROUP_ADDR[]  = "239.255.255.255"; // group address
 const char SENDER_IF[]   = "127.0.0.1";
 const unsigned short SERVER_PORTNUM = 9000;
-const char MESSAGE[] = "Hello multicast listeners. 000 \n"; // set your student number
+const char MESSAGE[] = "Hello multicast listeners. 005 \n"; // set your student number
 
 int main( int argc, char *argv[]) {
     int sock;
@@ -23,13 +23,13 @@ int main( int argc, char *argv[]) {
     struct sockaddr_in server_addr;
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = /* */;
+    server_addr.sin_addr.s_addr = inet_addr(GROUP_ADDR);
     server_addr.sin_port = htons(SERVER_PORTNUM);
 
     printf("Message to be sent: %s\n", MESSAGE);
     // send a message to the server
-    int message_size = /**/;
-    if(sendto(/* */) < 0) {
+    int message_size = strlen(MESSAGE);
+    if(sendto(sock, &MESSAGE, message_size, 0, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
         perror("sendto() failed.\n");
         goto ERROR;
     }
