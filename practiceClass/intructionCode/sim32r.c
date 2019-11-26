@@ -75,6 +75,7 @@ int execinstr() // Execute an instruction
     switch( icode1&0xf0f0 ) {
     case 0x00a0: // ADD
         regfile[rd] += regfile[rs];
+        printf("ADD: %d: %d ; %d: %d\n", rd, regfile[rd], rs, regfile[rs]);
         iname = "ADD";
         break;
     case 0x00c0: // AND
@@ -82,6 +83,7 @@ int execinstr() // Execute an instruction
         iname = "AND";
         break;
     case 0x0040: // CMP
+        printf("CMP: %d: %d ; %d: %d\n", rd, regfile[rd], rs, regfile[rs]);
         cbit = ((regfile[rd] < regfile[rs]) ? 1 : 0);
         iname = "CMP";
         break;
@@ -221,7 +223,7 @@ int main(int ac, char **av)
     if( loaddata(av[1]) < 0 )
         return -1;
     if( ac == 2 )
-        n = 10;
+        n = 100;
     else
         n = atoi(av[2]);
 
@@ -233,3 +235,6 @@ int main(int ac, char **av)
     else
         printf("Fail: ERR=%04x\n", regfile[12]);
 }
+
+// Running 100 time execinstr()
+// Not sure what is regfile[13] using for

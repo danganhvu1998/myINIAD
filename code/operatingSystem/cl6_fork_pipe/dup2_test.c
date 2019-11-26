@@ -16,6 +16,7 @@ int main()
         char buf[]="Result from last cmd line 1\nResult from last cmd line 2\nResult from last cmd line 3\n";
         close(pipefd[0]);
         write(pipefd[1], buf, strlen(buf));
+        close(pipefd[1]);
 
         close(pipefd2[1]);
         
@@ -31,6 +32,7 @@ int main()
         close(pipefd[1]);
         close(STDIN_FILENO);
         dup2(pipefd[0], STDIN_FILENO);
+        close(pipefd[0]);
 
         close(pipefd2[0]);
         close(STDOUT_FILENO);
