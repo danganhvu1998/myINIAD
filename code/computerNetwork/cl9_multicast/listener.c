@@ -9,16 +9,16 @@
 #define BUF_SIZE 4096
 const int SERVER_PORTNUM = 9000;
 const int QUEUE_SIZE     = 1;
-const char GROUP_ADDR[]  = "239.255.*****"; // group address
+const char GROUP_ADDR[]  = "239.255.255.255"; // group address
 
 int main( int argc, char *argv[]) {
     int recv_sock;
     // create a socket.
-    if ((recv_sock = socket(PF_INET, /* , */)) < 0) goto ERROR;
+    if ((recv_sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) goto ERROR;
 
     // allow multiple sockets to use the same port number.
-    /* */ yes = 1;
-    if (setsockopt(recv_sock, /*  */) < 0){
+    unsigned int yes = 1;
+    if (setsockopt(recv_sock, SOL_SOCKET, SO_REUSEADDR, (void *) &yes, sizeof(yes)) < 0){
        perror("REUSEADDR failed");
        goto ERROR;
     }
@@ -27,7 +27,7 @@ int main( int argc, char *argv[]) {
     struct sockaddr_in server_addr;
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = /* */; // ANY
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY); // ANY
     server_addr.sin_port = htons(SERVER_PORTNUM);
 
     // bind
@@ -35,11 +35,11 @@ int main( int argc, char *argv[]) {
 
     struct ip_mreq mreq;
     memset(&mreq, 0, sizeof(mreq));
-    mreq.imr_interface.s_addr = /* */; // ANY
-    mreq.imr_multiaddr.s_addr = /* */; // Group address
+    mreq.imr_interface.s_addr = htonl(INADDR_ANY); // ANY
+    mreq.imr_multiaddr.s_addr = inet_addr(GROUP_ADDR); // Group address
 
     // join multicast group
-    if (setsockopt(recv_sock, /* */) < 0) {
+    if (setsockopt(recv_sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, (void *) &mreq, sizeof(mreq)) < 0) {
         goto ERROR;
     }
 

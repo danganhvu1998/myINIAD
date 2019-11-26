@@ -12,17 +12,20 @@
 int main( int argc, char *argv[]) {
     int serv_sock;
     // create a socket.
-    if ((serv_sock = socket(PF_INET, /* UDP(Datagram) */)) < 0) goto ERROR;
+    if ((serv_sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) goto ERROR;
 
     // initialize
     struct sockaddr_in server_addr;
     memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    server_addr.sin_port = htons(SERVER_PORTNUM);
     /* 
         initialize server_addr (s_addr: 0.0.0.0)
     */
 
     // bind
-    if (/* bind */) goto ERROR;
+    if (bind(serv_sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) goto ERROR;
 
     struct sockaddr_in client_addr;
     socklen_t addr_len = sizeof(client_addr);
@@ -32,7 +35,7 @@ int main( int argc, char *argv[]) {
     int received_bytes = 0;
     while(1) {
         // receive messages from the server
-        if (/* receive */){
+        if ((received_bytes = recvfrom(serv_sock, buf, sizeof(buf)-1, 0, (struct sockaddr *)&client_addr, &addr_len)) < 0){
             perror("\nreceive failed\n");
             continue;
         } else if (received_bytes == 0) {
@@ -46,8 +49,9 @@ int main( int argc, char *argv[]) {
 
         // send messages to the client
         int sent_size;
-        if ((/* send */) != received_bytes ) {
+        if ((sent_size = (sendto(serv_sock, &buf, received_bytes, 0, (struct sockaddr *)&client_addr, sizeof(client_addr)))) != received_bytes ) {
             perror("\nsend failed.\n");
+            printf("SIZE = %d\n", sent_size);
             continue;
         }
         printf("\n");

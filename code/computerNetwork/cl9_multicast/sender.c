@@ -14,7 +14,7 @@ const char MESSAGE[] = "Hello multicast listeners. 000 \n"; // set your student 
 int main( int argc, char *argv[]) {
     int sock;
     // create a socket.
-    if ((sock = socket(PF_INET, /* , */)) < 0) {
+    if ((sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
         perror("socket() failed.\n");
         goto ERROR;
     }
