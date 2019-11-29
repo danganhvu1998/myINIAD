@@ -6,12 +6,24 @@
 #include <unistd.h>
 #include <pthread.h>
 
+typedef struct just_a_typical_thusday {
+  int clientfd;
+  struct sockaddr_storage addr;
+} happyFriday;
+
 void* client_thread(void* arg)
 {
     char* html = "<html><head><title>Congratulations!</title></head><body><h1>Working as expected!</h1></body></html>";
     char buf[1024];
-    int clientfd = (int)(intptr_t)arg;
+    happyFriday *happyTogether = arg;
+    int clientfd = happyTogether->clientfd;
+    struct sockaddr_storage addr = happyTogether->addr;
     int len, i, wlen;
+    socklen_t addrlen;
+    addrlen = sizeof(happyTogether->addr);
+    getpeername(clientfd, &addr, &addrlen);
+    //printf("Peer's IP address is: %s\n", inet_ntoa(addr.sin_addr));
+    //printf("Peer's port is: %d\n", (int) ntohs(addr.sin_port));
 
     len = sprintf(buf, "HTTP/1.1 200 OK\r\n"
                   "Content-Type: text/html\r\n"
@@ -85,8 +97,10 @@ int main(int argc, char* argv[])
         if (er < 0) goto error;
 
         clientfd = er;
-
-        pthread_create(&thread, NULL, client_thread, (void*)(intptr_t)clientfd);
+        happyFriday happyWeek;
+        happyWeek.addr = addr;
+        happyWeek.clientfd = clientfd;
+        pthread_create(&thread, NULL, client_thread, (void*)&happyWeek);
         pthread_detach(thread);
     }
 
