@@ -114,11 +114,23 @@ int execinstr() // Execute an instruction
         regfile[rd] |= regfile[rs];
         iname = "OR";
         break;
-    case 0x2040: // ST
+    case 0x2040: // ST 146
         addr = regfile[rs];
         data = regfile[rd];
         put4bytes(addr,data);
         iname = "ST";
+        break;
+    case 0x2060: // STPI
+        addr = regfile[rs]+4;
+        data = regfile[rd];
+        put4bytes(addr,data);
+        iname = "STPI";
+        break;
+    case 0x2070: // STPD
+        addr = regfile[rs]-4;
+        data = regfile[rd];
+        put4bytes(addr,data);
+        iname = "STPD";
         break;
     case 0xa040: // STR
         addr = regfile[rs]+(short)icode2;
@@ -137,15 +149,47 @@ int execinstr() // Execute an instruction
     case 0x80d0: // XOR3
         regfile[rd] = regfile[rs]^icode2;
         iname = "XOR3";
+        break;
     case 0xa020: // STHR (STH reg rel)
-        regfile[rd+icode2] = regfile[rs];
+        addr = regfile[rs]+(short)icode2;
+        data = regfile[rd];
+        put4bytes(addr,data);
         iname = "STHR";
+        break;
     case 0x2020: // STH
-        regfile[rd] = regfile[rs];
+        addr = regfile[rs];
+        data = regfile[rd];
+        put4bytes(addr,data);
         iname = "STH";
+        break;
+    case 0xa000: // STBR (STB reg rel)
+        addr = regfile[rs]+(short)icode2;
+        data = regfile[rd];
+        put4bytes(addr,data);
+        iname = "STBR";
+        break;
     case 0x2000: // STB
-        regfile[rd] = regfile[rs];
-        iname = "STH";
+        addr = regfile[rs];
+        data = regfile[rd];
+        put4bytes(addr,data);
+        iname = "STB";
+        break;
+    case 0x1020: //SRA
+        regfile[rd] == regfile[rd]>>regfile[rs];
+        iname = "SRA";
+        break;
+    case 0x90a0: //SRA3
+        regfile[rd] == regfile[rs]>>(icode2&31);
+        iname = "SRA3";
+        break;
+    case 0x1000: //SRL
+        regfile[rd] == regfile[rd]>>regfile[rs];
+        iname = "SRL";
+        break;
+    case 0x9080: //SRL3
+        regfile[rd] == regfile[rs]>>(icode2&31);
+        iname = "SRL3";
+        break;
     default:
         switch( icode1&0xff00 ) {
         case 0x7c00: // BC
