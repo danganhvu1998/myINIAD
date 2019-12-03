@@ -47,6 +47,10 @@
 #define SUB(d,s)        rr(0x0020,d,s,"SUB")
 #define XOR(d,s)        rr(0x00d0,d,s,"XOR")
 
+// rr - d - s
+// rrd d - s- imm16
+// ri d- imm8
+
 #define org(a)          ( addr = a )
 #define byte(d)         ( ( pass > 0 ) ? ( printf("%04x %02x\n",addr,d), addr += 1 ) : 0 )
 #define half(d)         ( ( pass > 0 ) ? ( printf("%04x %04x\n",addr,d), addr += 2 ) : 0 )
@@ -183,7 +187,7 @@ int main(int ac, char **av)
     
     for( pass = 0; pass < 2; pass++ ) {
         addr = 0;
-        #include "asmcode2.txt"
+        #include "asmcode1.txt"
     }
     return 0;
 }
