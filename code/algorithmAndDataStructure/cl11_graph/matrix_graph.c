@@ -28,7 +28,13 @@ void graph_add_edge(Graph* graph, int from, int to) {
 }
 
 void graph_dfs_inner(Graph* graph, int index, Visitfn f) {
-    
+    graph->visited[index] = 1;
+    f(graph->values[index]);
+    for(int i = 0; i<SIZE; i++){
+        if(graph->matrix[index][i]==1 & graph->visited[i]==0){
+            graph_dfs_inner(graph, i, f);
+        }
+    }
 }
 
 void graph_dfs(Graph* graph, int start, Visitfn f) {
@@ -45,8 +51,22 @@ void graph_bfs(Graph* graph, int start, Visitfn f) {
     }
 
     QUEUE queue = queue_construct();
+    NodeType curr;
 
-    
+    graph->visited[start] = 1;
+    f(graph->values[start]);
+    queue_enqueue(queue, start);
+    while(! queue_empty(queue)) {
+        curr = queue_dequeue(queue);
+
+        for(int i = 0; i<SIZE; i++){
+        if(graph->matrix[curr][i]==1 & graph->visited[i]==0){
+            queue_enqueue(queue, i);
+            graph->visited[i] = 1;
+            f(graph->values[i]);
+        }
+    }
+    }
     
     queue_free(queue);
 }

@@ -8,37 +8,29 @@
 
 void* client_thread(void* arg)
 {
-    char html[1024]; // = "<html><head><title>Congratulations!</title></head><body><h1>Working as expected!</h1></body></html>";
-    char buf[1024];
     int clientfd = (int)(intptr_t)arg;
-    int len, i, wlen;
+    // printf("arg: %d\n", clientfd);
 
     struct sockaddr_storage addr;
     socklen_t addrlen= sizeof(addr);
     if(getpeername(clientfd, (struct sockaddr*)&addr, &addrlen) != 0){
         goto error;
     }
-
     char host[128], serv[128], out[1024];
+    int len, i, wlen;
+
     if(getnameinfo((struct sockaddr*)&addr, addrlen, host, sizeof(host), serv, sizeof(serv), 0) != 0){
         goto error;
     }
-    sprintf(html, "<html><head><title>Congratulations!</title></head><body><h1>Working as expected! Client Info:</h1><p>Address: %s; Port: %s</p></body></html>", host, serv);
+    printf("Address: %s\nPort: %s\n", host, serv);
 
-    len = sprintf(buf, "HTTP/1.1 200 OK\r\n"
-                  "Content-Type: text/html\r\n"
-                  "Content-Length: %d\r\n"
-                  "Connection: close\r\n"
-                  "\r\n"
-                  "%s", (int)strlen(html), html);
-
-    /* Write whole len bytes of HTTP request */
-    for (i = 0; i < len; ) {
-        wlen = write(clientfd, buf + i, len - i);
+    len = sprintf(out, "Your address is %s at port %s\n", host, serv);
+    for (i = 0; i < 1024; ) {
+        wlen = write(clientfd, out + i, len - i);
         if (wlen < 0) goto error;
 
         i += wlen;
-    }    
+    }   
 
     close(clientfd);
     return NULL;
@@ -52,10 +44,10 @@ error:
 int main(int argc, char* argv[])
 {
     struct addrinfo hints, *res = NULL, *r;
-    const char* portname = "8080";
+    const char* portname = "10001";
     int sockfd, er;
 
-    /* Resolve addresses */
+    /* Resolve addresses */./asw
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_INET6; /* AF_INET6(IPv6) or AF_INET(IPv4) */
     hints.ai_socktype = SOCK_STREAM;
@@ -97,6 +89,13 @@ int main(int argc, char* argv[])
         if (er < 0) goto error;
 
         clientfd = er;
+
+        // getpeername(clientfd, (struct sockaddr*)&addr, &addrlen);
+        // char host[1024], serv[1024];
+        // socklen_t hostlen= 1024, servlen= 1024;
+
+        // getnameinfo((struct sockaddr*)&addr, addrlen, host, sizeof(host), NULL, 0, 0);
+        // printf("%s\n", host);
 
         pthread_create(&thread, NULL, client_thread, (void*)(intptr_t)clientfd);
         pthread_detach(thread);
