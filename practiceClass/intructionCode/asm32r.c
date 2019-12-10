@@ -46,10 +46,58 @@
 #define STR(d,s,d16)    rrd(0xa040,d,s,d16,"STR")
 #define SUB(d,s)        rr(0x0020,d,s,"SUB")
 #define XOR(d,s)        rr(0x00d0,d,s,"XOR")
+#define ADD3(d,s,imm16) rrd(0x80a0,d,s,imm16,"ADD3")
 
-// rr - d - s
-// rrd d - s- imm16
-// ri d- imm8
+#define AND3(d,s,imm16) rrd(0x80c0,d,s,imm16,"AND3")
+#define CMPI(s,imm16)   rrd(0x8040,0,s,imm16,"CMPI")
+#define CMPU(d,s)       rr(0x0050,d,s,"CMPU")
+#define CMPUI(s,imm16)  rrd(0x8050,0,s,imm16,"CMPUI")
+#define DIV(d,s)        rrd(0x9000,d,s,0,"DIV")
+
+#define BNE(d,s,label)  beq(0xb010,d,s,label,"BNE")
+#define BEQ(d,s,label)  beq(0xb000,d,s,label,"BEQ")
+#define BEQZ(s,label)   beq(0xb080,0,s,label,"BEQZ")
+#define BGEZ(s,label)   beq(0xb0b0,0,s,label,"BGEZ")
+#define BGTZ(s,label)   beq(0xb0d0,0,s,label,"BGEZ")
+#define BL(label)       bc(0x7e00,label,"BL")
+#define BL24(label)     bc24(0xfe00,label,"BL24")
+#define BLEZ(s,label)   beq(0xb0c0,0,s,label,"BLEZ")
+#define BLTZ(s,label)   beq(0xb0a0,0,s,label,"BLTZ")
+#define BNEZ(s,label)   beq(0xb090,0,s,label,"BNEZ")
+
+#define DIVU(d,s)       rrd(0x9010,d,s,0,"DIVU")
+#define LDPI(d,s)       rr(0x20e0,d,s,"LDPI")
+#define LD24(d,label)   ld24(0xe000,d,label,"LD24")
+#define LDB(d,s)        rr(0x2080,d,s,"LDB")
+#define LDBR(d,s,imm16) rrd(0x2080,d,s,imm16,"LDBR")
+#define LDH(d,s)        rr(0x20a0,d,s,"LDH")
+#define LDHR(d,s,imm16) rrd(0xa0a0,d,s,imm16,"LDHR")
+#define LDUB(d,s)        rr(0x2090,d,s,"LDUB")
+#define LDUBR(d,s,imm16) rrd(0xa090,d,s,imm16,"LDUBR")
+#define LDUH(d,s)        rr(0x20b0,d,s,"LDUH")
+#define LDUHR(d,s,imm16) rrd(0xa0b0,d,s,imm16,"LDUHR")
+#define NEG(d,s)         rr(0x0030,d,s,"NEG")
+#define OR3(d,s,imm16)   rrd(0x80e0,d,s,imm16,"OR3")
+#define REM(d,s)         rrd(0x9020,d,s,0,"REM")
+#define REMU(d,s)        rrd(0x9030,d,s,0,"REMU")
+
+#define SETH(d,imm16)    rrd(0xd0c0,d,0,imm16,"SETH")
+#define SLL(d,s)         rr(0x1040,d,s,"SLL")
+#define SLL3(d,s,imm16)  rrd(0x90c0,d,s,imm16,"SLL3")
+#define SLLI(d,imm5)     ri5(0x5020,d,imm5,"SLLI")
+#define SRA(d,s)         rr(0x1020,d,s,"SRA")
+#define SRA3(d,s,imm16)  rrd(0x90a0,d,s,imm16,"SRA3")
+#define SRAI(d,imm5)     ri5(0x5010,d,imm5,"SRAI")
+#define SRL(d,s)         rr(0x1000,d,s,"SRL")
+#define SRL3(d,s,imm16)  rrd(0x9080,d,s,imm16,"SRL3")
+#define SRLI(d,imm5)     ri5(0x5000,d,imm5,"SRLI")
+#define STPI(d,s)        rr(0x2060,d,s,"STPI")
+#define STPD(d,s)        rr(0x2070,d,s,"STPD")
+#define STB(d,s)         rr(0x2000,d,s,"STB")
+#define STBR(d,s,imm16)  rrd(0x9000,d,s,imm16,"STBR")
+#define STH(d,s)         rr(0x2020,d,s,"STH")
+#define STHR(d,s,imm16)  rrd(0xa020,d,s,imm16,"STHR")
+#define XOR3(d,s,imm16)  rrd(0x80d0,d,s,imm16,"XOR3")
 
 #define org(a)          ( addr = a )
 #define byte(d)         ( ( pass > 0 ) ? ( printf("%04x %02x\n",addr,d), addr += 1 ) : 0 )
@@ -187,7 +235,7 @@ int main(int ac, char **av)
     
     for( pass = 0; pass < 2; pass++ ) {
         addr = 0;
-        #include "asmcode1.txt"
+#include "asmcode3.txt"
     }
     return 0;
 }
