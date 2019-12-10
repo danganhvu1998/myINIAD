@@ -1,0 +1,11 @@
+    org(0);
+    LDI(R0,20);
+    LDI(R1,0);
+    LDI(R2,1);
+L1 = addr;    
+    SUB(R0,R2);
+    ADDI(R1,1);
+    CMPI(R1,20);
+    BC(L1);
+L2 = addr;
+    BRA(addr);
