@@ -3,3 +3,4 @@
 settings.json
 *.pyc
 *.pyo
+*.sqlite3
