@@ -2,9 +2,5 @@
 .vscode/*
 settings.json
 *.pyc
-<<<<<<< HEAD
 *.pyo
 *.sqlite3
-=======
-*.sqlite3
->>>>>>> 26c028247f50a929eb41ebdbd0dcf0b13b719a08
