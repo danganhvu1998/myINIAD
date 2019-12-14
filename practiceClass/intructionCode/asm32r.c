@@ -239,7 +239,11 @@ int main(int ac, char **av)
     
     for( pass = 0; pass < 2; pass++ ) {
         addr = 0;
+<<<<<<< HEAD
 #include "asmcode1.txt"
+=======
+#include "asmcode3.txt"
+>>>>>>> 26c028247f50a929eb41ebdbd0dcf0b13b719a08
     }
     return 0;
 }
