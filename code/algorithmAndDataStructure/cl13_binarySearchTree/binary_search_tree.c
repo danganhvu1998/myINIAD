@@ -112,8 +112,9 @@ int set_delete(SET set, int value) {
 }
 
 int set_member_node(treeset_node* node, int value) {
-    /* */
-    return 0;
+    if(node == NULL) return 0;
+    if(node->value == value) return 1;
+    return ( set_member_node(node->left, value) | set_member_node(node->right, value) );
 }
 
 int set_member(SET set, int value) {
@@ -121,8 +122,12 @@ int set_member(SET set, int value) {
 }
 
 int set_min_node(treeset_node* node) {
-    /* */
-    return 0;
+    int setMin;
+    while(node!=NULL){
+        setMin = node->value;
+        node = node->left;
+    }
+    return setMin;
 }
 
 int set_min(SET set) {
@@ -133,8 +138,12 @@ int set_min(SET set) {
 }
 
 int set_max_node(treeset_node* node) {
-    /* */
-    return 0;
+    int setMax;
+    while(node!=NULL){
+        setMax = node->value;
+        node = node->right;
+    }
+    return setMax;
 }
 
 int set_max(SET set) {
