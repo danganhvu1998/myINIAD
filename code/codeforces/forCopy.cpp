@@ -6,7 +6,7 @@ using namespace std;
 #define lazy_update second
 #define PB push_back 
 
-long long const oo = 1000000007, e5 = 100007, e6 = 1000007;
+int const oo = 1000000007, e5 = 100007, e6 = 1000007;
 
 int main(){
   ios_base::sync_with_stdio(false);
