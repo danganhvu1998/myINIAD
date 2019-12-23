@@ -1,10 +1,148 @@
-# Abbreviation
+Networking 6-12
+==================================
+
+## Abbreviation
+
 + MTU: Maximum Transmission Unit
 + MSS: Maximum Segment Size
   + In most case: MSS = MTU - 40
-  + ![Example][00comnet1]
-+ 
+  + ![Example][01comnet1]
++ CWND: Congestion Windows
+  + 
 
+## Important Point
+
++ TCP Header
+  + ![Example][01comnet2]
+
+-------
+
++ Sequence Number (Seq.#) and Acknowledgement Number (ACK#)
+  + Sequence Number (Seq.#): Byte stream "number" of first byte in segment's data
+  + ACK# = Seq.# + TCP Segment Size
+  + ![Example][01comnet3]
+
+-------
+
++ Each TCP connection is identified by 4-tuple
+  + Source IP Address
+  + Source Port #
+  + Destination IP Address
+  + Destination Port #
+  + ![Example][01comnet4]
+
+-------
+
++ Socket
+  + An abstraction of the mechanism by which an application transmits and receives data
+  + Individual sockets are identified by socket descriptor
+  + ![Example][01comnet5]
+  + ![Example][01comnet6]
+  + ![Example][01comnet7]
+
+-------
+
++ Multiplexing and De-multiplexing
+  + Multiplexing
+    + On the sending side, even if there are many processes transmitting packets, TCP receives all these messages from different sockets distinguished by port number, adds the TCP header and then pass the segments to the network layer
+    + Many to one
+    + ![Example][01comnet8]
+  + De-multiplexing
+    + On the receiving side, after the TCP of the transport layer receives the datagram from the network layer and confirms the port number, the datagram is delivered to each socket and eventually to the connection process
+    + One to many
+    + ![Example][01comnet9]
+
+-------
+
++ TCP connection
+  + ![Example][01comnet10]
+  + ![Example][01comnet11]
+  + Detail in Tuan Note
+
+-------
+
++ Flow Control
+  + Sender tries to not overwhelm receiver
+    + Use Windows Size field in TCP header
+
+-------
+
++ Sliding Windows
+  + Method for the sender sends multple segments based on the current available buffer size of reveiver.
+  + ![Example][01comnet12]
+  + ![Example][01comnet13]
+  
+-------
+
++ Delayed ACK
+  + TCP can reduce ACK transmission frequency with Delayed ACK
+  + The receiver uses a timer to measure the arrival interval of segments
+  + Delayed ACK transmission can be delayed up to 0.5 sec (0.2 in general)
+  + ![Example][01comnet14]
+
+-------
+
++ ACK Retransmission
+  + Tuan Note
+  + ***TCP fast retransmission***
+    + When there are three duplicate ACKs, it can be retransmitted without waiting for the retransmission timeout value by means of fast retransmission
+    + ![Example][01comnet15]
+
+-------
+
++ TCP Checksum
+  + Repeat step 1 and 2 for each 16-bit segments, then finish the process with step 3
+    1. Segments are sequentially added at the end of 16 bits
+    2. When adding numbers, a carryout from the most significant bit needs to be added to the least significant bit
+    3. Flip each bit (all 0’s are set to 1 and 1’s are clear to 0)
+  + ![Example][01comnet16]
+  + -> Not a perfect error detection
+  + -> Data link layer already has more complicated error checking methods
+
+-------
+
++ Congestion Control
+  + Try to not overwhelming the network as a whole ( Defferent from flow control )
+  + Tuan Note
+
+-------
+
++ UDP - Tuan Note
+
+-------
+
++ IP Header Field
+  + ![Example][01comnet18]
+-------
+
++ Routing Table
+  + ![Example][01comnet17]
+
+-------
+
++ Dijkstra's Algorithm
+  + ![Example][01comnet19]
++ Distance Vector
+  + ![Example][01comnet20]
+
+-------
+
+## Wireshark
+
++ Filter IP:
+  + ip.addr
+  + ip.dst
+  + ip.src
++ Filter port
+  + tcp.port eq 62337
++ AND condition
+  + http&&ip.src==192.168.1.4
++ OR condition
+  + http||arp
++ Open Flow Graph
+  + ![Example][01comnet21]
+  + Statistic => Flow Graph
+    + Select TCP Flow
 
 [01comnet1]: ./../image/01comnet1.png
 [01comnet2]: ./../image/01comnet2.png
