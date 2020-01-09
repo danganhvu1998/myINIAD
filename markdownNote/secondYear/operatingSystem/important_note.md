@@ -9,6 +9,7 @@
   + -n: show line number at the begin of all line
 + **head -n:** First n lines
 + **tail -n:** Last n lines
++ **wc -l:** Count line
 + EXAMPLE
   + `curl -s https://www.rfc-editor.org/rfc/rfc6588.txt | grep '^[0-9]\.' | cat | tail -5`
   + `curl -s https://moocs-files.iniad.org/2018/OS/08/philosopher.c | cat -n | grep 'pthread'`
