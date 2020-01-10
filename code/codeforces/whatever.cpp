@@ -16,25 +16,14 @@ int __init__(){
   return 0;
 }
 
-int run(){
-  int N, ans=0, curr=-1000;
-  string str;
-  cin>>N>>str;
-  for0(i, N){
-    if( str[i]=='A' ){
-      curr = 0;
-    } else {
-      ++curr;
-    }
-    ans = max(ans, curr);
-  }
-  cout<<ans<<endl;
-}
-
 int main(){
   ios_base::sync_with_stdio(false); cin.tie(0);__init__();
   freopen("test.txt","r",stdin);
   int T;
-  cin>>T;
-  while(T--) run();
+  string str;
+  cin>>T>>str;
+  if(T==0) cout<<0;
+  else{
+    cout<<T+1;
+  }
 }
