@@ -1,3 +1,4 @@
+// https://codeforces.com/contest/1293/problem/D
 #include <bits/stdc++.h>
 using namespace std;
  
@@ -39,7 +40,7 @@ long long check(long long xIndex, long long yIndex){
 
 int main(){
   ios_base::sync_with_stdio(false); cin.tie(0);__init__();
-  freopen("test.txt","r",stdin);
+  // freopen("test.txt","r",stdin);
   cin>>posX[0]>>posY[0]>>AX>>AY>>BX>>BY;
   cin>>startX>>startY>>T;
   for1(i, 104){
