@@ -107,6 +107,7 @@ Output:
 
 ### NOTE
 Longest distance is between 10 and 4: 10 - 9 - 6 - 2 - 5 - 4
+
 ![Graph](./image/LONGEST.png)
 
 ---
