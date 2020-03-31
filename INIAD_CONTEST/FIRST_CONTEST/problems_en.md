@@ -1,7 +1,11 @@
 # INIAD VERY FIRST CONTEST
 
 ## <b style="color:MediumSpringGreen">STRING - 10 POINTS</b>
-Given a string, your job is just print it. This problems is just for testing purpuse.
+```
+INPUT: STRING.inp
+OUTPUT: STRING.out
+```
+Given a string, your job is just print it. This problem is just for testing purpuse. Please note that you have to read and write to file for all problems. The following code is an example or reading, writing from file with C++.
 ```C++
 freopen("STRING.inp", "r", stdin)
 freopen("STRING.out", "w", stdout)
@@ -20,6 +24,10 @@ welcome to our first contest
 ---
 
 ## <b style="color:MediumSpringGreen">MAXMINLCM - 1500 POINTS</b>
+```
+INPUT: MAXMINLCM.inp
+OUTPUT: MAXMINLCM.out
+```
 Given number X. Find two number A and B that:
 + A < B
 + LCM(A, B) == X ([LCM Wiki Definition](https://en.wikipedia.org/wiki/Least_common_multiple))
