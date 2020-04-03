@@ -50,7 +50,7 @@ welcome to our first contest
 ```
 
 ---
-## <b style="color:MediumSpringGreen">MAGIC STICK - 500 POINTS</b>
+## <b style="color:MediumSpringGreen">MAGIC - 500 POINTS</b>
 
 Time limit per test: 2 second \
 Memory limit per test: 256 megabytes \
@@ -62,8 +62,8 @@ Recently Petya walked in the forest and found a magic stick.
 
 Since Petya really likes numbers, the first thing he learned was spells for changing numbers. So far, he knows only two spells that can be applied to a positive integer:
 
-1. If the chosen number a is even, then the spell will turn it into \frac{3a}{2};
-1. If the chosen number a is greater than one, then the spell will turn it into a−1.
+1. If the chosen number a is even, then the spell will turn it into (3*a)/2;
+2. If the chosen number a is greater than one, then the spell will turn it into a−1.
 
 Note that if the number is even and greater than one, then Petya can choose which spell to apply.
 
@@ -148,7 +148,7 @@ OUTPUT
 ```
 
 ---
-## <b style="color:MediumSpringGreen">Road to home - 1500 POINTS</b>
+## <b style="color:MediumSpringGreen">ROAD - 1500 POINTS</b>
 
 Time limit per test: 4 second \
 Memory limit per test: 256 megabytes \
@@ -190,7 +190,7 @@ E...*.
 ```
 9
 ```
-## <b style="color:MediumSpringGreen">WATER CONTAINER - 1750 POINTS</b>
+## <b style="color:MediumSpringGreen">WATER - 1750 POINTS</b>
 
 Time limit per test: 4 second \
 Memory limit per test: 256 megabytes \
@@ -224,7 +224,7 @@ OUTPUT
 49
 ```
 ---
-## <b style="color:MediumSpringGreen">TREE QUERIES - 2000 POINTS</b>
+## <b style="color:MediumSpringGreen">TREE - 2000 POINTS</b>
 
 Time limit per test: 4 seconds \
 Memory limit per test: 256 megabytes \
@@ -250,7 +250,7 @@ The next m lines describe queries. The i-th line describes the i-th query and st
 
 It is guaranteed that all vertices in a single query are distinct.
 
-It is guaranteed that the sum of ki does not exceed 2⋅10<sup>5</sup> (\sum_{i=1}^{m}ki ≤ 2⋅10<sup>5</sup>). \
+It is guaranteed that the sum of ki does not exceed 2⋅10<sup>5</sup> 
 
 OUTPUT
 
