@@ -50,7 +50,7 @@ welcome to our first contest
 ```
 
 ---
-## <b style="color:MediumSpringGreen">MAGIC - 500 POINTS</b>
+## <b style="color:MediumSpringGreen">MAGICSTICK - 500 POINTS</b>
 
 Time limit per test: 2 second \
 Memory limit per test: 256 megabytes \
@@ -300,6 +300,11 @@ The fourth query is [4,8,2]. The answer is "YES" as you can choose the path to t
 
 The fifth and the sixth queries both have answer "NO" because you cannot choose suitable vertex u.
 ## <b style="color:MediumSpringGreen">LONGEST - 2500 POINTS</b>
+
+Time limit per test: 4 seconds \
+Memory limit per test: 256 megabytes \
+Input: standard input \
+Output: standard output 
 
 Given a tree. Find the longest distance between two vertices of the tree. 
 
