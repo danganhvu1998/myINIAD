@@ -1,6 +1,6 @@
 # INIAD VERY FIRST CONTEST
 
-## <b style="color:MediumSpringGreen">STRING - 10 POINTS</b>
+## <b style="color:MediumSpringGreen">STRING - 1 POINTS</b>
 
 Time limit per test: 1 second \
 Memory limit per test: 256 megabytes \
@@ -50,7 +50,7 @@ welcome to our first contest
 ```
 
 ---
-## <b style="color:MediumSpringGreen">MAGICSTICK - 500 POINTS</b>
+## <b style="color:MediumSpringGreen">MAGICSTICK - 50 POINTS</b>
 
 Time limit per test: 2 second \
 Memory limit per test: 256 megabytes \
@@ -103,7 +103,7 @@ YES
 ```
 
 ---
-## <b style="color:MediumSpringGreen">MINLCM - 1000 POINTS</b>
+## <b style="color:MediumSpringGreen">MINLCM - 100 POINTS</b>
 
 Time limit per test: 2 second \
 Memory limit per test: 256 megabytes \
@@ -148,7 +148,7 @@ OUTPUT
 ```
 
 ---
-## <b style="color:MediumSpringGreen">ROAD - 1500 POINTS</b>
+## <b style="color:MediumSpringGreen">ROAD - 150 POINTS</b>
 
 Time limit per test: 4 second \
 Memory limit per test: 256 megabytes \
@@ -190,7 +190,7 @@ E...*.
 ```
 9
 ```
-## <b style="color:MediumSpringGreen">WATER - 1750 POINTS</b>
+## <b style="color:MediumSpringGreen">WATER - 175 POINTS</b>
 
 Time limit per test: 4 second \
 Memory limit per test: 256 megabytes \
@@ -207,7 +207,7 @@ Given  _n_  non-negative integers  _a1_,  _a2_, ...,  _an_ , where each represen
 The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
 
 INPUT
-+ Line 1: integer n (2 <= n <= 10<sup>7</sup>)
++ Line 1: integer n (2 <= n <= 10<sup>6</sup>)
 + Line 2: n intergers.
 
 OUTPUT
@@ -224,7 +224,7 @@ OUTPUT
 49
 ```
 ---
-## <b style="color:MediumSpringGreen">TREE - 2000 POINTS</b>
+## <b style="color:MediumSpringGreen">TREE - 200 POINTS</b>
 
 Time limit per test: 4 seconds \
 Memory limit per test: 256 megabytes \
@@ -299,7 +299,7 @@ The third query is [2,1,5]. The answer is "YES" as you can choose the path to th
 The fourth query is [4,8,2]. The answer is "YES" as you can choose the path to the  vertex u=9 so vertices 2 and 4 both have distance 1 to the vertex 1 which belongs to this path and the vertex 8 has distance 1 to the vertex 7 which belongs to this path.
 
 The fifth and the sixth queries both have answer "NO" because you cannot choose suitable vertex u.
-## <b style="color:MediumSpringGreen">LONGEST - 2500 POINTS</b>
+## <b style="color:MediumSpringGreen">LONGEST - 250 POINTS</b>
 
 Time limit per test: 4 seconds \
 Memory limit per test: 256 megabytes \
