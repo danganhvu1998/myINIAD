@@ -1,62 +1,54 @@
 #include <bits/stdc++.h>
 using namespace std;
- 
-#define II pair<long long, long long>
-#define III pair<II, long long>
+
+#define II pair<int, int>
+#define III pair<II, int>
 #define X first.first
 #define Y first.second
 #define Z second
 #define all(a) (a).begin(), (a).end()
-#define for0(i, n) for (long long i = 0; i < n; i++)
-#define for1(i, n) for (long long i = 1; i <= n; i++)
+#define for0(i, n) for (int i = 0; i < n; i++)
+#define for1(i, n) for (int i = 1; i <= n; i++)
 
-long long const oo = 1000000007, e5 = 100007, e6 = 1000007, maxNum = 20000000000000000;
+int const oo = 1000000007, e5 = 100007, e6 = 1000007;
+int N;
+vector<int> edges[2*e5];
+int childCount[2*e5];
+int hightOf[2*e5];
+vector<int> happiness;
 
-long long posX[105];
-long long posY[105];
-long long AX,BX,AY,BY;
-long long startX, startY, T;
-long long ans=0;
-
-long long __init__(){
+int __init__(){
+  for0(i, e5){
+    childCount[i] = 0;
+    hightOf[i]=0;
+  }
   return 0;
 }
 
-long long dis( long long aX, long long aY, long long bX, long long bY ){
-  return abs( aX-bX )+abs( aY-bY );
-}
-
-long long check(long long xIndex, long long yIndex){
-  long long time;
-  time = dis(posX[xIndex], posY[xIndex], posX[yIndex], posY[yIndex]); //abs( posX[yIndex] - posX[xIndex] ) + abs( posY[yIndex] - posY[xIndex] );
-  time += min( dis(posX[xIndex], posY[xIndex], startX, startY), dis(posX[yIndex], posY[yIndex], startX, startY) );
-  if( time<=T ){
-    // cout<<xIndex<<" "<<yIndex<<endl;
-    ans = max(ans, (abs(xIndex-yIndex)+1));
+int DFS(int node, int hight){
+  if( hightOf[node]>0 ) return 0;
+  int childCount = 0;
+  hightOf[node] = hight;
+  for0(i, edges[node].size()){
+    childCount += DFS( edges[node][i], hight+1 );
   }
-
 }
 
 int main(){
-  ios_base::sync_with_stdio(false); cin.tie(0);__init__();
-  freopen("test.txt","r",stdin);
-  cin>>posX[0]>>posY[0]>>AX>>AY>>BX>>BY;
-  cin>>startX>>startY>>T;
-  for1(i, 104){
-    if( posX[i-1]>=maxNum or posY[i-1]>=maxNum ){
-      posX[i] = maxNum;
-      posY[i] = maxNum;
-      continue;
-    }
-    posX[i] = posX[i-1]*AX+BX;
-    posY[i] = posY[i-1]*AY+BY;
-    // cout<<i<<" "<<posX[i]<<" "<<posY[i]<<endl;
+  ios_base::sync_with_stdio(false);cin.tie(0);__init__();
+  freopen("test.txt", "r", stdin);
+  int a, b, ans=0;
+  cin>>N>>K;
+  for(int i=1; i<N; i++){
+    cin>>a>>b;
+    edges[a].push_back(b);
+    edges[b].push_back(a);
   }
-  for0(i, 100){
-    for0(j, 100){
-      check(i, j);
-    }
+  DFS(1, 0);
+  for1(i, N){
+    happiness.push_back( hightOf[i]-childCount[i] );
   }
+  sort( all(happiness) );
+  for0(i, K) ans+=happiness[i];
   cout<<ans;
-  
 }

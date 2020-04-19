@@ -16,6 +16,15 @@ int __init__(){
   return 0;
 }
 
+void print01(int val, int showNums = 20){
+  char answer[showNums];
+  for0(i, showNums){
+    answer[ showNums-1-i ] = val%2+'0';
+    val/=2;
+  }
+  cout<<answer;
+}
+
 int main(){
   ios_base::sync_with_stdio(false); cin.tie(0);__init__();
   freopen("test.txt","r",stdin);
