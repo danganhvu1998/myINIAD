@@ -7,3 +7,4 @@ settings.json
 *.pyc
 *.pyo
 *.sqlite3
+.ipynb_checkpoints/*
