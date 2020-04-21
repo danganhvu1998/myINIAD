@@ -31,6 +31,7 @@
             1. ![Error][00comnet8]
          3. Indirect transfer: When 2 devices are in different network -> transfer via router
             1. ![Error][00comnet9]
+            2. **Note**: Source does not need to know destination's MAC address. It just need to know MAC address of its network router, them forward packet to router. Then that router keep forwarding in the same way using its own ARP table to another router, then another router, and finally destination.
       4. ARP - Address Resolution Protocol
          1. Protocol to discover link layer address(like MAC address) by internet layer address (like IPv4 or IPv6)
          2. From IP address -> MAC address
