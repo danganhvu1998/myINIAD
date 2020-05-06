@@ -49,4 +49,193 @@
     + [GCD.ML](../../../code/ocaml/gcd.ml)
     + [IsPrime.ML](../../../code/ocaml/isPrime.ml)
     + [DERIV.ML](../../../code/ocaml/deriv.ml)
+  
+## Tail Recursion and Lists
 
++ Problems: the following codehave time complexity is O(N) which is Okay. But space complexity is also O(N), which is not good
+  + ```ocaml
+      let rec factorial n =
+        if n <= 0 then 1
+        else n * factorial (n-1);;
+    ```
+    + ![Error][00ocaml1]
+  + => Solution: using tail recursion: sending computed result with the function
+    + ```ocaml
+        let factorialSpaceO1 n =
+          let rec factorial_iter result n =
+            if n <= 0 then result
+            else 
+              let newResult = n * result in
+              factorial_iter newResult (n-1) 
+          in factorial_iter 1 n;;
+
+      ```
+    + ![Error][00ocaml2]
+  + [FACTORIAL.ML](../../../code/ocaml/factorial.ml)
+  + [POWER_SPACE_O1.ML](../../../code/ocaml/powerSpaceO1.ml)
++ Pattern Matching
+  + Like switch in C but better
+  + syntax: `match expression with`
+    + ```ocaml
+        let rec fib n =
+          match n with
+            0 | 1 -> 1 (*0 or 1 then 1*)
+            | x -> fib(x-1) + fib(x-2);;(*else ...*)
+      ```
+  + Patterns could be:
+    + Constant pattern
+    + Variable pattern
+    + OR pattern
+    + Constructor patterns (list, tuples)
+    + Wild card pattern (the hell is this?)
+      + `(_)` will match anything
+      + ```ocaml
+          let is_vowel c =
+            match c with
+              'a' | 'e' | 'i' | 'o' | 'u' -> true
+              | _ -> false;;
+        ```
+    + Alias pattern
+      + ```ocaml
+          #match (1, (2, 3)) with (x, (y, z as a)) -> a;; (*int * int = (2, 3)*)
+        ```
+  + Guard clause: `when`
+    + ```ocaml
+        let is_square r = 
+          match r with 
+            (w, h) when w=h -> true
+            | _ -> false
+      ```
+  + Note
+    + ![Error][00ocaml3]
+    + ![Error][00ocaml4]
+  + More example: [MATCH_TEST.ML](../../../code/ocaml/matchTest.ml)
++ Lists
+  + Basics of Ocaml list:
+    + linked list like list
+    + have to have the same type
+    + Empty list: `[]`
+    + ```ocaml
+        # [];;
+        - : 'a list = []
+        # 1::(2::(3::[]));;
+        - : int list = [1; 2; 3]
+        # 1::2::3::[];;
+        - : int list = [1; 2; 3]
+        # 0::[1;2;3];;
+        - : int list = [0; 1; 2; 3] 
+      ```
+    + By using `::` in pattern matching, list can be divided into the first element and the res
+      + ```ocaml
+          let rec sum nums =
+            match nums with
+              num::theRest -> num + (sum theRest)
+              | [] -> 0;;
+        ```
+  + `@` operation to connect 2 list
+    + ```ocaml
+        # [1;2]@[3;4;5];;
+        - : int list = [1; 2; 3; 4; 5]
+      ```
+  + List built in function: http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html
+  + List with patten matching:
+    + ```ocaml
+      let randList n =
+        match n with
+          [x; y; 0] -> 1
+          | [x; 0; z] -> x*z
+          | [x; y; z] -> x+y+z
+          | [x; y; z; t] -> (x+y+z)*t
+          | _ -> 0;;
+      randList [1;2;3];;
+      randList [0;2;3];;
+      randList [1;0;3];;
+      randList [1;2;0];;
+      randList [1;2;0;100];; 
+      (*
+        val randList : int list -> int = <fun>
+        - : int = 6
+        - : int = 5
+        - : int = 3
+        - : int = 1
+        - : int = 300
+      *)
+
+    ```
++  Type Polymorphism and Useful Higher-Order Functions
+   +  [Need to read again :(](https://moocs.iniad.org/courses/2020/CS112/02/04)
+   +  Type Polymorphism: By only using func and operation that can perform over all type?
+   +  [Example](../../../code/ocaml/listFilter.ml)
+
+
+
+[00ocaml1]: ./../image/00ocaml1.png
+[00ocaml2]: ./../image/00ocaml2.png
+[00ocaml3]: ./../image/00ocaml3.png
+[00ocaml4]: ./../image/00ocaml4.png
+[00ocaml5]: ./../image/00ocaml5.png
+[00ocaml6]: ./../image/00ocaml6.png
+[00ocaml7]: ./../image/00ocaml7.png
+[00ocaml8]: ./../image/00ocaml8.png
+[00ocaml9]: ./../image/00ocaml9.png
+[00ocaml10]: ./../image/00ocaml10.png
+[00ocaml11]: ./../image/00ocaml11.png
+[00ocaml12]: ./../image/00ocaml12.png
+[00ocaml13]: ./../image/00ocaml13.png
+[00ocaml14]: ./../image/00ocaml14.png
+[00ocaml15]: ./../image/00ocaml15.png
+[00ocaml16]: ./../image/00ocaml16.png
+[00ocaml17]: ./../image/00ocaml17.png
+[00ocaml18]: ./../image/00ocaml18.png
+[00ocaml19]: ./../image/00ocaml19.png
+[00ocaml20]: ./../image/00ocaml20.png
+[00ocaml21]: ./../image/00ocaml21.png
+[00ocaml22]: ./../image/00ocaml22.png
+[00ocaml23]: ./../image/00ocaml23.png
+[00ocaml24]: ./../image/00ocaml24.png
+[00ocaml25]: ./../image/00ocaml25.png
+[00ocaml26]: ./../image/00ocaml26.png
+[00ocaml27]: ./../image/00ocaml27.png
+[00ocaml28]: ./../image/00ocaml28.png
+[00ocaml29]: ./../image/00ocaml29.png
+[00ocaml30]: ./../image/00ocaml30.png
+[00ocaml31]: ./../image/00ocaml31.png
+[00ocaml32]: ./../image/00ocaml32.png
+[00ocaml33]: ./../image/00ocaml33.png
+[00ocaml34]: ./../image/00ocaml34.png
+[00ocaml35]: ./../image/00ocaml35.png
+[00ocaml36]: ./../image/00ocaml36.png
+[00ocaml37]: ./../image/00ocaml37.png
+[00ocaml38]: ./../image/00ocaml38.png
+[00ocaml39]: ./../image/00ocaml39.png
+[00ocaml40]: ./../image/00ocaml40.png
+[00ocaml41]: ./../image/00ocaml41.png
+[00ocaml42]: ./../image/00ocaml42.png
+[00ocaml43]: ./../image/00ocaml43.png
+[00ocaml44]: ./../image/00ocaml44.png
+[00ocaml45]: ./../image/00ocaml45.png
+[00ocaml46]: ./../image/00ocaml46.png
+[00ocaml47]: ./../image/00ocaml47.png
+[00ocaml48]: ./../image/00ocaml48.png
+[00ocaml49]: ./../image/00ocaml49.png
+[00ocaml50]: ./../image/00ocaml50.png
+[00ocaml51]: ./../image/00ocaml51.png
+[00ocaml52]: ./../image/00ocaml52.png
+[00ocaml53]: ./../image/00ocaml53.png
+[00ocaml54]: ./../image/00ocaml54.png
+[00ocaml55]: ./../image/00ocaml55.png
+[00ocaml56]: ./../image/00ocaml56.png
+[00ocaml57]: ./../image/00ocaml57.png
+[00ocaml58]: ./../image/00ocaml58.png
+[00ocaml59]: ./../image/00ocaml59.png
+[00ocaml60]: ./../image/00ocaml60.png
+[00ocaml61]: ./../image/00ocaml61.png
+[00ocaml62]: ./../image/00ocaml62.png
+[00ocaml63]: ./../image/00ocaml63.png
+[00ocaml64]: ./../image/00ocaml64.png
+[00ocaml65]: ./../image/00ocaml65.png
+[00ocaml66]: ./../image/00ocaml66.png
+[00ocaml67]: ./../image/00ocaml67.png
+[00ocaml68]: ./../image/00ocaml68.png
+[00ocaml69]: ./../image/00ocaml69.png
+[00ocaml70]: ./../image/00ocaml70.png

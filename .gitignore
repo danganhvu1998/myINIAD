@@ -8,3 +8,4 @@ settings.json
 *.pyo
 *.sqlite3
 .ipynb_checkpoints/*
+*/T-Car/tcar_sim/*

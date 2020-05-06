@@ -8,6 +8,9 @@
 + BTS: Base Transceive Station 
 + ARP: Address Resolution Protocol
 + Link layer address: MAC address
++ SDN: Software Definied Networking
++ NFV: Network Functions Virtualization
++ ONF: Open Networking Foundation
 
 ## 01-1: Basic structures and mechanisms of networks
 
@@ -47,6 +50,9 @@
             2. Each time, search the routing table for the destination network that matchs then forward
             3. ![Error][00comnet11]
 
+## SDN (basic concept, contrast with conventional technologies)
+
+1. 
 
 
 
