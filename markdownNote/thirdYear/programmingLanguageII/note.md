@@ -1,5 +1,13 @@
 # Programming Language
 
+## Ocaml Doc Link
++ http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html
++ http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html
+
+## Some note
++ Stuck? want to fucking give up in this? check this [shit](../../../code/ocaml/combination.ml)
++ `a'`, `b'`, ... refer to any type of data
+
 ## OCaml and Functional Programming
 
 1. OCaml
@@ -167,6 +175,29 @@
    +  Type Polymorphism: By only using func and operation that can perform over all type?
    +  [Example](../../../code/ocaml/listFilter.ml)
 
+## Data Structure Representation using User Defined Types
+
++ Records and Variants
+  + define our own type: `type type_name = type_definition`
+    + type is kind of struct in C
+    + ```ocaml
+        type 'a binaryTree =
+          Node of a' * a' binaryTree  * a' binaryTree
+          | Leaf;;
+      ```
+  + Variant Type : Type that have multiple types in it
+    + Note: label has to start with capital letter
+    + ```ocaml
+        type 'a binaryTree =
+          Node of a' * a' binaryTree  * a' binaryTree
+          | Leaf;;
+      ```
+    + Pattern matching:
+      + ![Error][00ocaml5]
+  + Type Option
+    + ![Error][00ocaml6]
++ Data Structure
+  + [BINARY_TREE.ml](../../../code/ocaml/binarySearchTree.ml)
 
 
 [00ocaml1]: ./../image/00ocaml1.png

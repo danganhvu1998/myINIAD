@@ -5,12 +5,14 @@
 + CN: Core network
 + RAN: Radio Access Network
 + UE: User Equipment
-+ BTS: Base Transceive Station 
++ BTS: Base Transceiver Station
 + ARP: Address Resolution Protocol
 + Link layer address: MAC address
-+ SDN: Software Definied Networking
++ SDN: Software Defined Networking
 + NFV: Network Functions Virtualization
 + ONF: Open Networking Foundation
++ SDN: Software defined network
++ NFV: Network Functions Virtualization 
 
 ## 01-1: Basic structures and mechanisms of networks
 
@@ -45,9 +47,9 @@
          4. ![Error][00comnet10]
       5. Routing
          1. Hop-by-hop routing by using routing table
-            1. Host and router keep thier routing table
+            1. Host and router keep their routing table
                1. Destination network and Next hop info
-            2. Each time, search the routing table for the destination network that matchs then forward
+            2. Each time, search the routing table for the destination network that matches then forward
             3. ![Error][00comnet11]
 
 ## SDN (basic concept, contrast with conventional technologies)

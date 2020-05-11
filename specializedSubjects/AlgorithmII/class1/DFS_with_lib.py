@@ -1,8 +1,11 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 
-G = nx.read_edgelist('test.txt', nodetype=int)
+def isHasEulerCircle(graph):
+    nodes = graph.nodes()
+    for node in nodes:
+        # print(node, graph.degree[node])
+        if int(graph.degree[node]%2==1) : return False
+    return True
 
-nx.draw_networkx(G)
-plt.show()
-print(G.nodes())
+G = nx.read_edgelist('./test.edgelist', nodetype=int)
+print( isHasEulerCircle(G) )
