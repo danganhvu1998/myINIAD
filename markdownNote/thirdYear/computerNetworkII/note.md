@@ -54,7 +54,9 @@
 
 ## SDN (basic concept, contrast with conventional technologies)
 
-1. 
++ RIP: Using bellman-ford algorithm. It do not need to send its information to all router in the network but only adjacent one. 
++ OSPF: Using dijkstra. All routers need to send its information to all others routers and calculate routing table on its own. 
++ BGP: Each time router received information, it add its own AS number then forward it. So all routes can know which is the way will be used, not just which router it should forward to.
 
 
 

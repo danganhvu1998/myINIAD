@@ -33,16 +33,21 @@ let min_bst aBTree =
   in findMin 100000 aBTree;;
 min_bst aLittleBTree;;
 
-let append_bst addVal aBtree = 
+let append_bst addVal aBTree = 
   let newNode = Node(addVal, Leaf, Leaf) in
   let rec findPlace tree =
     match tree with
       Node(nodeVal, lt, rt) -> 
         if (nodeVal>addVal) 
-          then findPlace lt
-          else findPlace rt
-      | Leaf -> let tree = newNode
+          then 
+            let lt = (findPlace lt)
+            in Node(nodeVal, lt, rt)
+          else 
+            let rt = (findPlace rt)
+            in Node(nodeVal, lt, rt)
+      | Leaf -> newNode
   in findPlace aBTree;;
 
-append_bts 10 aLittleBTree;;
+let appended_bst = append_bst 10 aLittleBTree;;
+min_bst appended_bst;;
 (* #use "binarySearchTree.ml";; *)

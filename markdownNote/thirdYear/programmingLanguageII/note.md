@@ -1,10 +1,14 @@
 # Programming Language
 
 ## Ocaml Doc Link
+
 + http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html
 + http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html
++ https://caml.inria.fr/pub/docs/manual-ocaml/libref/Array.html
++ https://caml.inria.fr/pub/docs/manual-ocaml/libref/Hashtbl.html
 
 ## Some note
+
 + Stuck? want to fucking give up in this? check this [shit](../../../code/ocaml/combination.ml)
 + `a'`, `b'`, ... refer to any type of data
 
@@ -15,11 +19,12 @@
            1. AND => `&&`
            2. OR => `||`
            3. NOT => `not`
-           4. Connet string => `^`
+           4. Connect string => `^`
            5. Different => `<>`
            6. Compare => `=`  (**NOT** `==`)
            7. Using`+ - * /` for int. `+. -. *. /.` for float
            8. Example
+
                ```ocaml
                  # 1 + 2 ;; (*3*)
                  # 2 * 3 ;; (*6*)
@@ -37,16 +42,19 @@
                  #use "file_name.ml" ;; (*Run script in file*)
                  # (3+5, 5.0, 4.0**5.0) ;; (*- : int * float * float = (8, 5., 1024.)*)
                ```
+
       2. Tuples: is a combination of several values to be used as a single value
          1. For taking out tuples of 2 values, fst and snd con be used
          2. Example
+
              ```ocaml
                # (3+5, 5.0, 4.0**5.0);;(*int * float * float = (8, 5., 1024.)*)
                # 3, true, "INIAD", 'a';;(*int * bool * string * char = (3, true, "INIAD", 'a')*)
                # fst(3, 5) ;; (*3*)
                # snd(3, 5) ;; (*5*)
              ```
-2. Variables, Functions, Condition
+
++ Variables, Functions, Condition
   + Local variables: `let var=value in expression ;;`
   + Function: `let func-name arg1 arg2 ... = body-expression ;;`
     + Recursive Function: `let rec func-name arg1 arg2 ... = body-expression ;;`
@@ -61,35 +69,43 @@
 ## Tail Recursion and Lists
 
 + Problems: the following codehave time complexity is O(N) which is Okay. But space complexity is also O(N), which is not good
-  + ```ocaml
+  + Code:
+  
+    ```ocaml
       let rec factorial n =
         if n <= 0 then 1
         else n * factorial (n-1);;
     ```
+
     + ![Error][00ocaml1]
   + => Solution: using tail recursion: sending computed result with the function
-    + ```ocaml
+    + Code
+
+      ```ocaml
         let factorialSpaceO1 n =
           let rec factorial_iter result n =
             if n <= 0 then result
-            else 
+            else
               let newResult = n * result in
-              factorial_iter newResult (n-1) 
+              factorial_iter newResult (n-1)
           in factorial_iter 1 n;;
-
       ```
-    + ![Error][00ocaml2]
+
+      + ![Error][00ocaml2]
   + [FACTORIAL.ML](../../../code/ocaml/factorial.ml)
   + [POWER_SPACE_O1.ML](../../../code/ocaml/powerSpaceO1.ml)
 + Pattern Matching
   + Like switch in C but better
   + syntax: `match expression with`
-    + ```ocaml
+    + Code
+
+      ```ocaml
         let rec fib n =
           match n with
             0 | 1 -> 1 (*0 or 1 then 1*)
             | x -> fib(x-1) + fib(x-2);;(*else ...*)
       ```
+
   + Patterns could be:
     + Constant pattern
     + Variable pattern
@@ -97,23 +113,32 @@
     + Constructor patterns (list, tuples)
     + Wild card pattern (the hell is this?)
       + `(_)` will match anything
-      + ```ocaml
+      + Code
+
+        ```ocaml
           let is_vowel c =
             match c with
               'a' | 'e' | 'i' | 'o' | 'u' -> true
               | _ -> false;;
         ```
+
     + Alias pattern
-      + ```ocaml
+      + Code
+
+        ```ocaml
           #match (1, (2, 3)) with (x, (y, z as a)) -> a;; (*int * int = (2, 3)*)
         ```
+
   + Guard clause: `when`
-    + ```ocaml
-        let is_square r = 
-          match r with 
+    + Code
+
+      ```ocaml
+        let is_square r =
+          match r with
             (w, h) when w=h -> true
             | _ -> false
       ```
+
   + Note
     + ![Error][00ocaml3]
     + ![Error][00ocaml4]
@@ -123,7 +148,9 @@
     + linked list like list
     + have to have the same type
     + Empty list: `[]`
-    + ```ocaml
+    + Code
+
+      ```ocaml
         # [];;
         - : 'a list = []
         # 1::(2::(3::[]));;
@@ -131,67 +158,82 @@
         # 1::2::3::[];;
         - : int list = [1; 2; 3]
         # 0::[1;2;3];;
-        - : int list = [0; 1; 2; 3] 
+        - : int list = [0; 1; 2; 3]
       ```
+
     + By using `::` in pattern matching, list can be divided into the first element and the res
-      + ```ocaml
+      + Code
+
+        ```ocaml
           let rec sum nums =
             match nums with
               num::theRest -> num + (sum theRest)
               | [] -> 0;;
         ```
+
   + `@` operation to connect 2 list
-    + ```ocaml
+    + Code
+
+      ```ocaml
         # [1;2]@[3;4;5];;
         - : int list = [1; 2; 3; 4; 5]
       ```
-  + List built in function: http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html
-  + List with patten matching:
-    + ```ocaml
-      let randList n =
-        match n with
-          [x; y; 0] -> 1
-          | [x; 0; z] -> x*z
-          | [x; y; z] -> x+y+z
-          | [x; y; z; t] -> (x+y+z)*t
-          | _ -> 0;;
-      randList [1;2;3];;
-      randList [0;2;3];;
-      randList [1;0;3];;
-      randList [1;2;0];;
-      randList [1;2;0;100];; 
-      (*
-        val randList : int list -> int = <fun>
-        - : int = 6
-        - : int = 5
-        - : int = 3
-        - : int = 1
-        - : int = 300
-      *)
 
-    ```
-+  Type Polymorphism and Useful Higher-Order Functions
-   +  [Need to read again :(](https://moocs.iniad.org/courses/2020/CS112/02/04)
-   +  Type Polymorphism: By only using func and operation that can perform over all type?
-   +  [Example](../../../code/ocaml/listFilter.ml)
+  + List built in function: [Link](http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html)
+  + List with patten matching:
+    + Code
+
+      ```ocaml
+        let randList n =
+          match n with
+            [x; y; 0] -> 1
+            | [x; 0; z] -> x*z
+            | [x; y; z] -> x+y+z
+            | [x; y; z; t] -> (x+y+z)*t
+            | _ -> 0;;
+        randList [1;2;3];;
+        randList [0;2;3];;
+        randList [1;0;3];;
+        randList [1;2;0];;
+        randList [1;2;0;100];;
+        (*
+          val randList : int list -> int = <fun>
+          - : int = 6
+          - : int = 5
+          - : int = 3
+          - : int = 1
+          - : int = 300
+        *)
+      ```
+
++ Type Polymorphism and Useful Higher-Order Functions
+  + [Need to read again :(](https://moocs.iniad.org/courses/2020/CS112/02/04)
+  + Type Polymorphism: By only using func and operation that can perform over all type?
+  + [Example](../../../code/ocaml/listFilter.ml)
 
 ## Data Structure Representation using User Defined Types
 
 + Records and Variants
   + define our own type: `type type_name = type_definition`
     + type is kind of struct in C
-    + ```ocaml
+    + Code
+
+      ```ocaml
         type 'a binaryTree =
           Node of a' * a' binaryTree  * a' binaryTree
           | Leaf;;
       ```
+
   + Variant Type : Type that have multiple types in it
     + Note: label has to start with capital letter
-    + ```ocaml
+    + Code:
+
+      ```ocaml
         type 'a binaryTree =
           Node of a' * a' binaryTree  * a' binaryTree
           | Leaf;;
       ```
+
     + Pattern matching:
       + ![Error][00ocaml5]
   + Type Option
@@ -199,6 +241,191 @@
 + Data Structure
   + [BINARY_TREE.ml](../../../code/ocaml/binarySearchTree.ml)
 
+## Side Effects, and Building up Programs
+
++ Inputs/Outputs and Building up Programs
+  + New way to compile and run:
+    + Compile and run: `ocaml filename -o a.out || ./a.out`
+    + Run directly: `ocaml filename`
+    + Only display print function:
+      + ![Error][00ocaml7]
+  + Unit type: ()
+    + Equivalent to C void
+      + ![Error][00ocaml8]
+  + Compound Expressions
+    + We can list up expressions separately by semicolons:
+      + `exp1; exp2; exp3`
+
+        ```ocaml
+        let greet() =
+          print_string "Name: ";
+          let name = read_line() in
+            print_endline("Good morning, " ^name);
+          print_endline("Hello, " ^name);
+          print_endline("Good night, " ^name);
+          name;;
+
+        print_string("Great day, " ^ greet());;
+        (*
+            Name: INIAD
+            Good morning, INIAD
+            Hello, INIAD
+            Good night, INIAD
+            Great day, INIAD
+        *)
+        ```
+
+    + Example print first 3 lines: [HEAD.ml](../../../code/ocaml/head.ml)
+  + Note: Printf and Scanf
+
+    ```ocaml
+      # Printf.printf "%d %08x %b %s\n" 12 345 false "Hello";;
+      12 00000159 false Hello
+      - : unit = ()
+      # Scanf.sscanf "123 456 789" "%d %s %f" (fun x y z -> (x,y,z));;
+      - : int * string * float = (123, "456", 789.)
+    ```
+
++ Representation of States using Mutable Types
+  + Variables in Ocaml are actually constant.
+    + Example
+
+      ```ocaml
+          # let rate = 100;;
+          val rate : int = 100
+          # let dollar_to_yen d = d * rate;;
+          val dollar_to_yen : int -> int = <fun>
+          # dollar_to_yen 100;;
+          - : int = 10000
+          # let rate = 105;;
+          val rate : int = 105
+          # dollar_to_yen 100;; (*rate in here is still 100*)
+          - : int = 10000
+      ```
+
+  + Ocaml actually support some kind of variable:
+    + Reference
+      + Equivalent to var in C
+        + [COUNT.ml](../../../code/ocaml/count.ml)
+        + Example
+
+          ```ocaml
+            # let a = ref 0;;
+            val a : int ref = {contents = 0}
+            # !a;;
+            - : int = 0
+            # a;;
+            - : int ref = {contents = 0}
+            # a := 3;;  
+            - : unit = ()
+            # !a;;
+            - : int = 3
+            # a;;
+            - : int ref = {contents = 3}
+            # a := !a+1;;
+            - : unit = ()
+            # !a;;
+            - : int = 4
+          ```
+
+      + Note: Ocaml also equipped with `for/while`
+        + [FOR_AND_WHILE.ml](../../../code/ocaml/forAndWhile.ml)
+    + Mutable fields
+      + By adding `mutable` specification in record field, it will become a mutable field
+        + Example
+
+          ```ocaml
+            # type student = {name: string; mutable id: int};;
+            type student = { name : string; mutable id : int; }
+            # let a_san = {name = "AA"; id=100};;  
+            val a_san : student = {name = "AA"; id = 100}
+            # a_san.id <- 200;;
+            - : unit = ()
+            # a_san;;
+            - : student = {name = "AA"; id = 200}
+            # a_san.name <- "BB";;
+            Error: The record field name is not mutable
+          ```
+
+      + Note: reference is actually a mutable record:
+
+        ```ocaml
+          type 'a ref = {mutable contents: 'a};;
+          let ref x = {contents = x};;
+          (*define ! and := is possible*)
+        ```
+
+    + **ASSIGNMENTS AND POLYMORPHISM**
+      + ![Error][00ocaml9]
+        + Reason is that we have assigned homomorphic value ito a polymorphic reference.
+      + ![Error][00ocaml10]
+        + Add `r1;;`, type will be decided by ocaml
+      + More: [Slide_13_to_15](https://moocs.iniad.org/courses/2020/CS112/04/02#)
+    + Objects - Next class
+
++ Using Imperative Data Structures (Array + Hash Table)
+  + Array
+    + Create Array: `[|expr1;expr2;expr3;...|]`
+      + Use function: [Array_Function](https://caml.inria.fr/pub/docs/manual-ocaml/libref/Array.html)
+        + Array.init
+        + Array.make
+        + Array.make_matrix
+        + Example
+
+          ```ocaml
+            # let a = [|1;2;3|];;
+            val a : int array = [|1; 2; 3|]
+            # Array.make 5 15;;
+            - : int array = [|15; 15; 15; 15; 15|]
+            # Array.init 5(fun i -> i*5);;
+            - : int array = [|0; 5; 10; 15; 20|]
+            # Array.make_matrix 2 3 5;;
+            - : int array array = [|[|5; 5; 5|]; [|5; 5; 5|]|]
+          ```
+
+    + Operation on Array
+      + Example:
+
+        ```ocaml
+          # let a = [|1;2;3|];;
+          val a : int array = [|1; 2; 3|]
+          # a.(0);; 
+          - : int = 1
+          # a.(1) <- 4;;
+          - : unit = ()
+          # a;;
+          - : int array = [|1; 4; 3|]
+        ```
+
+  + Hash Table
+    + [Hash_Table_Function](https://caml.inria.fr/pub/docs/manual-ocaml/libref/Hashtbl.html)
+    + ![Error][00ocaml11]
+
++ Exception Handling and Comparison Operators
+  + Handling Exceptions
+    + ![Error][00ocaml12]
+    + ![Error][00ocaml13]
+    + ![Error][00ocaml14]
+  + Comparison operator
+    + Example using reference:
+
+      ```ocaml
+        # let a = ref 1;;
+        val a : int ref = {contents = 1}
+        # let b = ref 2;;
+        val b : int ref = {contents = 2}
+        # let c = a;;
+        val c : int ref = {contents = 1}
+        # a := !a + 1;;  
+        - : unit = ()
+        # b = c;;
+        - : bool = true
+        # b == c;;
+        - : bool = false
+      ```
+  
+  + Note: be aware when using mutable variable. Compare if pointers are the same, or their contents only.
+  + ![Error][00ocaml15]
 
 [00ocaml1]: ./../image/00ocaml1.png
 [00ocaml2]: ./../image/00ocaml2.png

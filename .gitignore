@@ -9,3 +9,7 @@ settings.json
 *.sqlite3
 .ipynb_checkpoints/*
 */T-Car/tcar_sim/*
+*.out
+*.cmi
+*.cmx
+*.o
