@@ -238,6 +238,8 @@
       + ![Error][00ocaml5]
   + Type Option
     + ![Error][00ocaml6]
+    + [ATD_CHECK.ml](../../../code/ocaml/atdcheck.ml)
+      + Note: It allow to `None`, `Some(true)` and `Some(false)`. Normally, there is no way a function can return `true`, `false` and `None`
 + Data Structure
   + [BINARY_TREE.ml](../../../code/ocaml/binarySearchTree.ml)
 
@@ -406,6 +408,7 @@
     + ![Error][00ocaml12]
     + ![Error][00ocaml13]
     + ![Error][00ocaml14]
+    + [CAL.ML](../../../code/ocaml/cal.ml)
   + Comparison operator
     + Example using reference:
 
