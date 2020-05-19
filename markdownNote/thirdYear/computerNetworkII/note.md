@@ -13,10 +13,13 @@
 + ONF: Open Networking Foundation
 + SDN: Software defined network
 + NFV: Network Functions Virtualization 
++ AS: Autonomous System: An autonomous system (AS) is a collection of connected Internet Protocol (IP) routing prefixes under the control of one or more network operators on behalf of a single administrative entity or domain that presents a common, clearly defined routing policy to the internet
++ EGP: Routing protocol between AS
++ IGP: Routing protocol inside AS
 
-## 01-1: Basic structures and mechanisms of networks
+## Basic structures and mechanisms of networks
 
-1. Structures of infomation communication network
+1. Structures of information communication network
    1. Fixed telephone network
       1. ![Error][00comnet1]
    2. Mobile communication network
@@ -52,11 +55,54 @@
             2. Each time, search the routing table for the destination network that matches then forward
             3. ![Error][00comnet11]
 
-## SDN (basic concept, contrast with conventional technologies)
+## SDN: Software defined network
 
-+ RIP: Using bellman-ford algorithm. It do not need to send its information to all router in the network but only adjacent one. 
-+ OSPF: Using dijkstra. All routers need to send its information to all others routers and calculate routing table on its own. 
-+ BGP: Each time router received information, it add its own AS number then forward it. So all routes can know which is the way will be used, not just which router it should forward to.
++ Without SDN: Software defined network
+  + Lack of network overall optimization. But easy to implement
+  + packet will be sent according to `routing table` inside each router only. Each router could use it own way to get information about the network then using some algorithms
+    + RIP: Using bellman-ford algorithm. It do not need to send its information to all router in the network but only adjacent one. 
+      + Belong to IGP ( Routing protocol inside AS ) 
+      + Represent the distance to the destination by 1->16
+        + metric: number of hops
+        + 16 means infinity. Unreachable
+      + If in 180 seconds with no message, it assumed tha the link to that router has gone
+      + Advantage: Easy to implement
+      + Disadvantage: Route information traffic every 30s. Route convergence is slow. Metric up to 16 only
+      + [Demonstration Slide 28->29](https://moocs.iniad.org/courses/2020/CS114/02-1/02)
+    + OSPF: Using dijkstra. All routers need to send its information to all others routers and calculate routing table on its own. 
+      + Belong to IGP ( Routing protocol inside AS )
+      + [Demonstration Slide 33->37](https://moocs.iniad.org/courses/2020/CS114/02-1/02)
+    + BGP: Each time router received information, it add its own AS number then forward it. So all routes can know which is the way will be used, not just which router it should forward to.
+      + Belong to EGP ( Routing protocol between AS )
+      + [Demonstration Slide 39](https://moocs.iniad.org/courses/2020/CS114/02-1/02)
+  
+## OpenFlow: 
+
++ Wiki Definition: OpenFlow is a communications protocol that gives access to the [forwarding plane](https://en.wikipedia.org/wiki/Forwarding_plane) of a network switch or router over the network.
++ OpenFlow add the `OpenFlow Controller` into the network, allow program to control network switches or routers over the network, increase overall performance.
++ OpenFlow's merits
+  + Easy to automatize, and cooperate between systems
+  + Easy to conduct centralized control over the network traffic, make overall optimization be possible
+  + Can implement new function to OpenFlow easily (Since it is software)
++ Some points to pay attention when developing OpenFlow
+  + Pay attention to scalability when the number os switches increase
+  + Too many information then flow table might collapse
+  + In a closed environment (WAN, data center), traffic is normally known in advance. Depend on that, we can design OpenFlow algorithms to have maximum benefit(minimum number of packets go up to `OpenFlow Controller`)
++ **Important: What can be done with OpenFlow**
+  + All ability of OpenFlow can be done with the following functions:
+    + Forward packets
+    + Check flow rate
+    + Rewrite packet
+    + Branch
+    + For example of using OpenFlow function:
+      + Using `forward` with `check flow rate`:
+        + With `forward`, OpenFlow devices are able to function like a normal switch. The switch looks at the destination MAC address the forward packets to the corresponding port.
+        + With `check flow rate`, OpenFlow switches are able to collect information about the traffic (how many packets, how many bytes, average flow rate, etc)
+      + Using `rewrite` with `forward packets`: OpenFlow device are able to function like a normal router.
+      + Using `rewrite`, `forward packets` and `Check flow rate`, OpenFlow devices can functions like a [load balancer: distributing a set of tasks over a set of resources (computing units), with the aim of making their overall processing more efficient](https://en.wikipedia.org/wiki/Load_balancing_(computing))
+        + Multiple routes from source to destination are established, increase overall speed, especially large data such as CallOfDuty_Installer. ![Error][00comnet13]
+      + `Forward packets` with `Branch`, Broadcasting become possible.
+  + 
 
 
 
