@@ -470,6 +470,12 @@
     + It is not possible to restrict the names to take in
     + ![Error][00ocaml16] 
 
+## Separate Compilation and OMake
+
++ tag: ml, mli, cmo
++ ![Error][00ocaml22] 
++ ![Error][00ocaml23] 
+
 ## functor
 
 + What is `functor`: A function that receives module as argument, create and return copy of that module
