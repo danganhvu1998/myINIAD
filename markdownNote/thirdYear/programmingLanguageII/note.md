@@ -523,6 +523,27 @@
       (* #use "testFunctor.ml";; *)
     ```
 
+## Object-Oriented Programming with Ocaml
+
+### Object Definition and Access
+
++ New object can be created with `object ... end`
+  + For declare variable, use `val`
+  + For declare function, use `method`
++ For Accessing `object#method`
++ ![Error][00ocaml18] 
+
+### Class Definition for reusing Object
+
++ Reuseable object code, use class
++ ![Error][00ocaml19] 
+
+### Polymorphic Class and Class Parameter
++ ![Error][00ocaml20] 
+
+### Class inheritance
++ ![Error][00ocaml21] 
+
 [00ocaml1]: ./../image/00ocaml1.png
 [00ocaml2]: ./../image/00ocaml2.png
 [00ocaml3]: ./../image/00ocaml3.png
