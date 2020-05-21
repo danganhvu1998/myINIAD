@@ -102,6 +102,7 @@
       + Using `rewrite`, `forward packets` and `Check flow rate`, OpenFlow devices can functions like a [load balancer: distributing a set of tasks over a set of resources (computing units), with the aim of making their overall processing more efficient](https://en.wikipedia.org/wiki/Load_balancing_(computing))
         + Multiple routes from source to destination are established, increase overall speed, especially large data such as CallOfDuty_Installer. ![Error][00comnet13]
       + `Forward packets` with `Branch`, Broadcasting become possible.
++ **Important: Mechanism of OpenFlow**
   + 
 
 

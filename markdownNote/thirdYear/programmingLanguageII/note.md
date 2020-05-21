@@ -401,6 +401,7 @@
 
   + Hash Table
     + [Hash_Table_Function](https://caml.inria.fr/pub/docs/manual-ocaml/libref/Hashtbl.html)
+    + Example: [BANK.ML](../../../code/ocaml/bank.ml)
     + ![Error][00ocaml11]
 
 + Exception Handling and Comparison Operators
@@ -429,6 +430,98 @@
   
   + Note: be aware when using mutable variable. Compare if pointers are the same, or their contents only.
   + ![Error][00ocaml15]
+
+# Large-Scale Programming and Modules/Functors
+
+## Modules
+
++ Module in OCaml: `Module = Structure + Signature`
+  + `Structure`: Provides namespace
+  + `Signature`: Provides interface for others to call
+    + Can omit `signature` using `sig ... end`
+  + ![Error][00ocaml17] 
+  + Code Example: [BANK2.ML](../../../code/ocaml/bank2.ml)
++ Note: Separate definition of structure and signature is possible -> More useful for apply common signature to multiple modules
+  + Example
+
+    ```Ocaml
+      module Bank:
+        sig
+          (*Signature*)
+        end =
+        struct
+          (*Struct*)
+        end
+
+      (* ALSO FOLLOWING IS POSSIBLE *)
+      module type BACK_TYPE = 
+        sig
+          (*Signature*)
+        end
+
+      module Bank : BANK_TYPE
+        struct
+          (*Struct*)
+        end
+    ```
++ Opening a module
+  + `open ModuleName`
+    + Corresponds to `from ModuleName import *`  in Python
+    + It is not possible to restrict the names to take in
+    + ![Error][00ocaml16] 
+
+## functor
+
++ What is `functor`: A function that receives module as argument, create and return copy of that module
+  + Hard to understand example, but clever: [MULTISET.ML](../../../code/ocaml/multiSet.ml)
+  + Easy to understand example: [TEST_FUNCTOR.ML](../../../code/ocaml/testFunctor.ml)
+
+    ```Ocaml
+      type comparison = Less | Equal | Greater
+
+      (* Create Module Signature *)
+      module type ORDERED_TYPE = 
+        sig
+          val cmp : 'a -> 'a -> comparison
+        end;;
+
+      (* Create Module *)
+      module AscendingInt : ORDERED_TYPE =
+        struct
+          let cmp x y = 
+            if x = y then Equal
+            else if x < y then Less
+            else Greater 
+        end;;
+
+      module DescendingInt : ORDERED_TYPE =
+        struct
+          let cmp x y = 
+            if x = y then Equal
+            else if x > y then Less
+            else Greater 
+        end;;
+
+      (* Create New Module Extent Of OrderedString *)
+      module type ORDERED_TYPE_EXTENTED = 
+        functor (Elt: ORDERED_TYPE) ->
+        sig
+          val compare: 'a -> 'a -> comparison
+        end
+
+      module OrderedIntExtented : ORDERED_TYPE_EXTENTED =
+        functor (Elt: ORDERED_TYPE) ->
+        struct
+          let compare fst snd = Elt.cmp fst snd;;
+        end
+
+      module Ascending = OrderedIntExtented(AscendingInt);;
+      module Descending = OrderedIntExtented(DescendingInt);;
+      Ascending.compare 1 3;; (* - : comparison = Less *)
+      Descending.compare 1 3;; (*- : comparison = Greater*)
+
+      (* #use "testFunctor.ml";; *)
+    ```
 
 [00ocaml1]: ./../image/00ocaml1.png
 [00ocaml2]: ./../image/00ocaml2.png
