@@ -23,7 +23,7 @@ module DescendingInt : ORDERED_TYPE =
       else Greater 
   end;;
 
-(* Create New Module Extent Of OrderedString *)
+(* Create New Module Extent Of ORDERED_TYPE *)
 module type ORDERED_TYPE_EXTENTED = 
   functor (Elt: ORDERED_TYPE) ->
   sig
