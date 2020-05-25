@@ -16,6 +16,8 @@
 + AS: Autonomous System: An autonomous system (AS) is a collection of connected Internet Protocol (IP) routing prefixes under the control of one or more network operators on behalf of a single administrative entity or domain that presents a common, clearly defined routing policy to the internet
 + EGP: Routing protocol between AS
 + IGP: Routing protocol inside AS
++ TLS: Transport Layer Security
++ QoS: Quality of Service
 
 ## Basic structures and mechanisms of networks
 
@@ -88,22 +90,67 @@
   + Pay attention to scalability when the number os switches increase
   + Too many information then flow table might collapse
   + In a closed environment (WAN, data center), traffic is normally known in advance. Depend on that, we can design OpenFlow algorithms to have maximum benefit(minimum number of packets go up to `OpenFlow Controller`)
-+ **Important: What can be done with OpenFlow**
-  + All ability of OpenFlow can be done with the following functions:
-    + Forward packets
-    + Check flow rate
-    + Rewrite packet
-    + Branch
-    + For example of using OpenFlow function:
-      + Using `forward` with `check flow rate`:
-        + With `forward`, OpenFlow devices are able to function like a normal switch. The switch looks at the destination MAC address the forward packets to the corresponding port.
-        + With `check flow rate`, OpenFlow switches are able to collect information about the traffic (how many packets, how many bytes, average flow rate, etc)
-      + Using `rewrite` with `forward packets`: OpenFlow device are able to function like a normal router.
-      + Using `rewrite`, `forward packets` and `Check flow rate`, OpenFlow devices can functions like a [load balancer: distributing a set of tasks over a set of resources (computing units), with the aim of making their overall processing more efficient](https://en.wikipedia.org/wiki/Load_balancing_(computing))
-        + Multiple routes from source to destination are established, increase overall speed, especially large data such as CallOfDuty_Installer. ![Error][00comnet13]
-      + `Forward packets` with `Branch`, Broadcasting become possible.
-+ **Important: Mechanism of OpenFlow**
-  + 
+
+### **Important: What can be done with OpenFlow**
+
++ All ability of OpenFlow can be done with the following functions:
+  + Forward packets
+  + Check flow rate
+  + Rewrite packet
+  + Branch
+  + For example of using OpenFlow function:
+    + Using `forward` with `check flow rate`:
+      + With `forward`, OpenFlow devices are able to function like a normal switch. The switch looks at the destination MAC address the forward packets to the corresponding port.
+      + With `check flow rate`, OpenFlow switches are able to collect information about the traffic (how many packets, how many bytes, average flow rate, etc)
+    + Using `rewrite` with `forward packets`: OpenFlow device are able to function like a normal router.
+    + Using `rewrite`, `forward packets` and `Check flow rate`, OpenFlow devices can functions like a [load balancer: distributing a set of tasks over a set of resources (computing units), with the aim of making their overall processing more efficient](https://en.wikipedia.org/wiki/Load_balancing_(computing))
+      + Multiple routes from source to destination are established, increase overall speed, especially large data such as CallOfDuty_Installer. ![Error][00comnet13]
+    + `Forward packets` with `Branch`, Broadcasting become possible.
+
+### **Important: Mechanism of OpenFlow**
+
++ Mainly defines as 2 of the following protocol
+  + Communication protocol between `controller` and `switch (switch, router, load balancer)`
+  + Switch behavior ( configured on `flow table` )
+  
+#### Exchange between switch(Open Flow devices) and controller
+
++ Switch and controller will using a secure channel connection
+  + TCP connection
+  + Or TLS (Transport Layer Security)
++ Exchange Packet Types:
+  + `Packet In`: When switch detects communication not yet registered in `flow table`, `switch` send `packet in` to `controller` to inform about the packet ![Error][00comnet14]
+  + `Flow Mod`: Controller send instruction to `switch` about how to update `flow table` 
+    + There are 2 kinds of `life time` can be include into `flow mod`
+      + `Idle timeout`: After a certain amount of time unreferencing, `flow entry` from `flow table` will be deleted
+      + `Hard timeout`: After a certain amount of time, `flow entry` from `flow table` will be deleted, whether ir bit referenced
+      + If `timeout` is set to be 0, it will never be removed, unless explicitly .
+  + `Packet Out`: After `flow mod`, controller send `packet out` to `switch`, the packet caused `Packet in` now is able to be sent to correct destination. ![Error][00comnet15]
+    + Detail: The controller has the ability to inject packets into the data plane of a particular switch. it does this with the PacketOut message, which can either carry a raw packet to inject into the switch, or indicate a local buffer on the switch containing a raw packet to release. Packets injected into the data plane of a switch using this method are not treated the same as packets that arrive on standard ports. The packet jumps to the action set application stage in the standard packet processing pipeline. If the action set indicates table processing is necessary then the input port id is used as the arrival port of the raw packet.
+  + `Flow Removed`: When `switch` removes a `flow entry`, it inform `controller` by sending `flow removed` message
+  + More exchange packet: [Slide 25 + 26](https://moocs.iniad.org/courses/2020/CS114/02-2/02#)
+
+#### `Flow Entry` 
+
++ Matching rule: Condition that determine which `action` occurs when `OpenFlow` `switch` receives a packet
+  + `Exact match`
+  + `Wildcard Match`
+  + Example: 192.168.1.0/24 matches IP address within range of 192.168.1.0/24
+  + ![Error][00comnet16]
+  + ***Small Note That I Have No Idea Why The Fuck It's Here***: `VLAN`
+    + Wiki: A virtual LAN (VLAN) is any broadcast domain that is partitioned and isolated in a computer network at the data link layer
+    + ![Error][00comnet17]
++ `Action`
+  + `Forward`: Contain some of following fields:![Error][00comnet19]
+  + `Modify-Field`: ![Error][00comnet20]
+    + ![Error][00comnet21]
+      + **Note**: Source does not need to know destination's MAC address. It just need to know MAC address of its network router, them forward packet to router. Then that router keep forwarding in the same way to another router, then another router, and finally destination. (Class 1)
+    + ![Error][00comnet22]
+  + `Drop`
+  + `Enqueue`: Input into the queue of the switch specified for each port. For `QoS control(Quality of Service Control)`:
+    + `QoS`: To perform control/priority control according to type of packet.  ![Error][00comnet18]
+      + Ex: priority Queue: Voice packets are sensitive to delay and lost, so it could be set with higher priority
+      + Ex: FIFO
 
 
 
