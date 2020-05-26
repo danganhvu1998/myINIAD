@@ -1,6 +1,6 @@
 Computer Network 2
 
-# Important Keyword
+# 1. Important Keyword
 
 + CN: Core network
 + RAN: Radio Access Network
@@ -26,7 +26,7 @@ Computer Network 2
 + NFV MANO: Management and Orchestration
 + NSD: Network Service Descriptor
 
-# Basic structures and mechanisms of networks
+# 2. Basic structures and mechanisms of networks
 
 1. Structures of information communication network
    1. Fixed telephone network
@@ -64,7 +64,7 @@ Computer Network 2
             2. Each time, search the routing table for the destination network that matches then forward
             3. ![Error][00comnet11]
 
-# SDN: Software defined network
+# 3. SDN: Software defined network
 
 + Without SDN: Software defined network
   + Lack of network overall optimization. But easy to implement
@@ -85,7 +85,7 @@ Computer Network 2
       + Belong to EGP ( Routing protocol between AS )
       + [Demonstration Slide 39](https://moocs.iniad.org/courses/2020/CS114/02-1/02)
   
-# OpenFlow: 
+# 4. OpenFlow: 
 
 + Wiki Definition: OpenFlow is a communications protocol that gives access to the [forwarding plane](https://en.wikipedia.org/wiki/Forwarding_plane) of a network switch or router over the network.
 + OpenFlow add the `OpenFlow Controller` into the network, allow program to control network switches or routers over the network, increase overall performance.
@@ -98,7 +98,7 @@ Computer Network 2
   + Too many information then flow table might collapse
   + In a closed environment (WAN, data center), traffic is normally known in advance. Depend on that, we can design OpenFlow algorithms to have maximum benefit(minimum number of packets go up to `OpenFlow Controller`)
 
-## **Important: What can be done with OpenFlow**
+## 4.1. **Important: What can be done with OpenFlow**
 
 + All ability of OpenFlow can be done with the following functions:
   + Forward packets
@@ -114,13 +114,13 @@ Computer Network 2
       + Multiple routes from source to destination are established, increase overall speed, especially large data such as CallOfDuty_Installer. ![Error][00comnet13]
     + `Forward packets` with `Branch`, Broadcasting become possible.
 
-## **Important: Mechanism of OpenFlow**
+## 4.2. **Important: Mechanism of OpenFlow**
 
 + Mainly defines as 2 of the following protocol
   + Communication protocol between `controller` and `switch (switch, router, load balancer)`
   + Switch behavior ( configured on `flow table` )
   
-### Exchange between switch(Open Flow devices) and controller
+### 4.2.1. Exchange between switch(Open Flow devices) and controller
 
 + Switch and controller will using a secure channel connection
   + TCP connection
@@ -137,7 +137,7 @@ Computer Network 2
   + `Flow Removed`: When `switch` removes a `flow entry`, it inform `controller` by sending `flow removed` message
   + More exchange packet: [Slide 25 + 26](https://moocs.iniad.org/courses/2020/CS114/02-2/02#)
 
-### `Flow Entry` 
+### 4.2.2. `Flow Entry` 
 
 + Matching rule: Condition that determine which `action` occurs when `OpenFlow` `switch` receives a packet
   + `Exact match`
@@ -159,9 +159,9 @@ Computer Network 2
       + Ex: priority Queue: Voice packets are sensitive to delay and lost, so it could be set with higher priority
       + Ex: FIFO
 
-# OpenFlow Application, NFV
+# 5. OpenFlow Application, NFV
 
-## OpenFlow Application
+## 5.1. OpenFlow Application
 
 + Three Issue `OpenFlow Application` has to solve
   + How to grasp available bandwidth on each link ![Error][00comnet24]
@@ -170,7 +170,7 @@ Computer Network 2
   + => Using traffic Engineering Server (TE Server) to control network to increase efficiency 
     + ![Error][00comnet26]
 
-## NFV: Network Functions Virtualization
+## 5.2. NFV: Network Functions Virtualization
 
 + Separating software and hardware:
   + Before NFV ![Error][00comnet27]
@@ -188,9 +188,9 @@ Computer Network 2
     + Reduce `hardware` design
     + Simplify management process
 
-## Firewall: [Slide 50 - 58](https://moocs.iniad.org/courses/2020/CS114/02-3/02)
+## 5.3. Firewall: [Slide 50 - 58](https://moocs.iniad.org/courses/2020/CS114/02-3/02)
 
-## NAT: Network Address Translation
+## 5.4. NAT: Network Address Translation
 
 + To deal with IPv4 address exhaustion problem ![Error][00comnet29]
 + Example Of Nat  Pseudo Code
