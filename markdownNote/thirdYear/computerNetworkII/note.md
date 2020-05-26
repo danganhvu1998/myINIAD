@@ -1,6 +1,6 @@
-# Computer Network 2
+Computer Network 2
 
-## Important Keyword
+# Important Keyword
 
 + CN: Core network
 + RAN: Radio Access Network
@@ -18,8 +18,15 @@
 + IGP: Routing protocol inside AS
 + TLS: Transport Layer Security
 + QoS: Quality of Service
++ VNF: Virtualized Network Function
++ VNFM: VNF Manager
++ VIML: Virtualized Infrastructure Manager
++ BGP: Border Gateway Protocol
++ NFVI: Network Functions Virtualization Infrastructure
++ NFV MANO: Management and Orchestration
++ NSD: Network Service Descriptor
 
-## Basic structures and mechanisms of networks
+# Basic structures and mechanisms of networks
 
 1. Structures of information communication network
    1. Fixed telephone network
@@ -57,7 +64,7 @@
             2. Each time, search the routing table for the destination network that matches then forward
             3. ![Error][00comnet11]
 
-## SDN: Software defined network
+# SDN: Software defined network
 
 + Without SDN: Software defined network
   + Lack of network overall optimization. But easy to implement
@@ -78,7 +85,7 @@
       + Belong to EGP ( Routing protocol between AS )
       + [Demonstration Slide 39](https://moocs.iniad.org/courses/2020/CS114/02-1/02)
   
-## OpenFlow: 
+# OpenFlow: 
 
 + Wiki Definition: OpenFlow is a communications protocol that gives access to the [forwarding plane](https://en.wikipedia.org/wiki/Forwarding_plane) of a network switch or router over the network.
 + OpenFlow add the `OpenFlow Controller` into the network, allow program to control network switches or routers over the network, increase overall performance.
@@ -91,7 +98,7 @@
   + Too many information then flow table might collapse
   + In a closed environment (WAN, data center), traffic is normally known in advance. Depend on that, we can design OpenFlow algorithms to have maximum benefit(minimum number of packets go up to `OpenFlow Controller`)
 
-### **Important: What can be done with OpenFlow**
+## **Important: What can be done with OpenFlow**
 
 + All ability of OpenFlow can be done with the following functions:
   + Forward packets
@@ -107,13 +114,13 @@
       + Multiple routes from source to destination are established, increase overall speed, especially large data such as CallOfDuty_Installer. ![Error][00comnet13]
     + `Forward packets` with `Branch`, Broadcasting become possible.
 
-### **Important: Mechanism of OpenFlow**
+## **Important: Mechanism of OpenFlow**
 
 + Mainly defines as 2 of the following protocol
   + Communication protocol between `controller` and `switch (switch, router, load balancer)`
   + Switch behavior ( configured on `flow table` )
   
-#### Exchange between switch(Open Flow devices) and controller
+### Exchange between switch(Open Flow devices) and controller
 
 + Switch and controller will using a secure channel connection
   + TCP connection
@@ -130,7 +137,7 @@
   + `Flow Removed`: When `switch` removes a `flow entry`, it inform `controller` by sending `flow removed` message
   + More exchange packet: [Slide 25 + 26](https://moocs.iniad.org/courses/2020/CS114/02-2/02#)
 
-#### `Flow Entry` 
+### `Flow Entry` 
 
 + Matching rule: Condition that determine which `action` occurs when `OpenFlow` `switch` receives a packet
   + `Exact match`
@@ -152,6 +159,63 @@
       + Ex: priority Queue: Voice packets are sensitive to delay and lost, so it could be set with higher priority
       + Ex: FIFO
 
+# OpenFlow Application, NFV
+
+## OpenFlow Application
+
++ Three Issue `OpenFlow Application` has to solve
+  + How to grasp available bandwidth on each link ![Error][00comnet24]
+  + How to share available bandwidth ![Error][00comnet23]
+  + How to distribute packet to multiple routes ![Error][00comnet25]
+  + => Using traffic Engineering Server (TE Server) to control network to increase efficiency 
+    + ![Error][00comnet26]
+
+## NFV: Network Functions Virtualization
+
++ Separating software and hardware:
+  + Before NFV ![Error][00comnet27]
+    + Network equipped with a combination of `hardware` and `software`. Different `software` would normally run on different `hardware`
+  + After NFV ![Error][00comnet28]
+    + Separating `hardware` and `network function software`
+      + A hypervisor (or virtual machine monitor, VMM) is computer software, firmware or hardware that creates and runs virtual machines
+      + VNF: Virtualized Network Function: software implementations of network functions that can be deployed on a network functions virtualization infrastructure (NFVI)
++ NFV's merit
+  + Reduce facility cost
+  + Improve flexibility
+    + Improve efficiency of hardware resource by using a commons resource pool
+    + Possible to automatically increase/decrease resource for a VNF (scale-out/scale-in)
+    + Auto healing: If one server fails, auto create VNF instance on another server
+    + Reduce `hardware` design
+    + Simplify management process
+
+## Firewall: [Slide 50 - 58](https://moocs.iniad.org/courses/2020/CS114/02-3/02)
+
+## NAT: Network Address Translation
+
++ To deal with IPv4 address exhaustion problem ![Error][00comnet29]
++ Example Of Nat  Pseudo Code
+
+  ```python
+    availableGlobalAddress = [172.16.1.1 -> 172.16.1.254]
+    privateIpToGlobalIpDict = {}
+    for each packet arrives:
+      privateAddress = src address of packet
+      if privateIpToGlobalIpDict[privateAddress] != NULL and privateIpToGlobalIpDict[privateAddress].endTime > now() :
+          globalAddress = privateIpToGlobalIpDict[privateAddress].globalAddress
+      else 
+          globalAddress = One of availableGlobalAddress that not under using
+          privateIpToGlobalIpDict[privateAddress].globalAddress = globalAddress
+          availableGlobalAddress.pop(globalAddress)
+      privateIpToGlobalIpDict[privateAddress].endTime = now() + T_inactivate
+      send packet with srcIp = globalAddress
+
+    for each T_inactivate:
+      for each privateIp in privateIpToGlobalIpDict:
+          if privateIp.endTime < now():
+              privateIpToGlobalIpDict[privateIp] = NULL
+              availableGlobalAddress.push(privateIp.globalAddress)
+
+  ```
 
 
 [00comnet1]: ./../image/00comnet1.png
