@@ -11,5 +11,7 @@ settings.json
 */T-Car/tcar_sim/*
 *.out
 *.cmi
+*.cmo
 *.cmx
 *.o
+

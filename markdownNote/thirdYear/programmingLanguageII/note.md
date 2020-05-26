@@ -459,7 +459,7 @@
           (*Signature*)
         end
 
-      module Bank : BANK_TYPE
+      module Bank : BANK_TYPE =
         struct
           (*Struct*)
         end
