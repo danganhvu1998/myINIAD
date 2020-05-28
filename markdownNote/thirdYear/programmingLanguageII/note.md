@@ -1,18 +1,16 @@
-# Programming Language
-
-## Ocaml Doc Link
+# 1. Ocaml Doc Link
 
 + http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html
 + http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html
 + https://caml.inria.fr/pub/docs/manual-ocaml/libref/Array.html
 + https://caml.inria.fr/pub/docs/manual-ocaml/libref/Hashtbl.html
 
-## Some note
+# 2. Some note
 
 + Stuck? want to fucking give up in this? check this [shit](../../../code/ocaml/combination.ml)
 + `a'`, `b'`, ... refer to any type of data
 
-## OCaml and Functional Programming
+# 3. OCaml and Functional Programming
 
 1. OCaml
       1. Syntax
@@ -66,7 +64,7 @@
     + [IsPrime.ML](../../../code/ocaml/isPrime.ml)
     + [DERIV.ML](../../../code/ocaml/deriv.ml)
   
-## Tail Recursion and Lists
+# 4. Tail Recursion and Lists
 
 + Problems: the following codehave time complexity is O(N) which is Okay. But space complexity is also O(N), which is not good
   + Code:
@@ -211,7 +209,7 @@
   + Type Polymorphism: By only using func and operation that can perform over all type?
   + [Example](../../../code/ocaml/listFilter.ml)
 
-## Data Structure Representation using User Defined Types
+# 5. Data Structure Representation using User Defined Types
 
 + Records and Variants
   + define our own type: `type type_name = type_definition`
@@ -243,7 +241,7 @@
 + Data Structure
   + [BINARY_TREE.ml](../../../code/ocaml/binarySearchTree.ml)
 
-## Side Effects, and Building up Programs
+# 6. Side Effects, and Building up Programs
 
 + Inputs/Outputs and Building up Programs
   + New way to compile and run:
@@ -431,9 +429,9 @@
   + Note: be aware when using mutable variable. Compare if pointers are the same, or their contents only.
   + ![Error][00ocaml15]
 
-# Large-Scale Programming and Modules/Functors
+# 7. Large-Scale Programming and Modules/Functors
 
-## Modules
+## 7.1. Modules
 
 + Module in OCaml: `Module = Structure + Signature`
   + `Structure`: Provides namespace
@@ -470,13 +468,13 @@
     + It is not possible to restrict the names to take in
     + ![Error][00ocaml16] 
 
-## Separate Compilation and OMake
+## 7.2. Separate Compilation and OMake
 
 + tag: ml, mli, cmo
 + ![Error][00ocaml22] 
 + ![Error][00ocaml23] 
 
-## functor
+## 7.3. functor
 
 + What is `functor`: A function that receives module as argument, create and return copy of that module
   + Hard to understand example, but clever: [MULTISET.ML](../../../code/ocaml/multiSet.ml)
@@ -529,9 +527,9 @@
       (* #use "testFunctor.ml";; *)
     ```
 
-## Object-Oriented Programming with Ocaml
+## 7.4. Object-Oriented Programming with Ocaml
 
-### Object Definition and Access
+### 7.4.1. Object Definition and Access
 
 + New object can be created with `object ... end`
   + For declare variable, use `val`
@@ -539,16 +537,39 @@
 + For Accessing `object#method`
 + ![Error][00ocaml18] 
 
-### Class Definition for reusing Object
+### 7.4.2. Class Definition for reusing Object
 
 + Reuseable object code, use class
 + ![Error][00ocaml19] 
 
-### Polymorphic Class and Class Parameter
+### 7.4.3. Polymorphic Class and Class Parameter
 + ![Error][00ocaml20] 
 
-### Class inheritance
+### 7.4.4. Class inheritance
 + ![Error][00ocaml21] 
+
+# 8. Parsing and Representation of Variables
+
++ Check [MACRO_PYTHON](../../../code/ocaml/micropython/main.ml)
+
+  ```ocaml
+    let main argc argv =
+    let env = ValueEnv.create () in
+    if argc = 2 then
+      Load.load_file argv.(1)
+      |> Load.convert_block
+      |> Lexing.from_string
+      |> Parser.prog Lexer.token
+      |> Eval.eval_stmt_list env
+    else prerr_endline "Usage: micropython <filename>"
+
+    let _ = main (Array.length Sys.argv) Sys.argv
+  ```
++ Running Sequence 
+  +  [SYNTAX](../../../code/ocaml/micropython/syntax.ml)
+  +  [LEXER](../../../code/ocaml/micropython/lexer.mll)
+  +  [PARSER](../../../code/ocaml/micropython/parser.mly)
+  +  [EVAL](../../../code/ocaml/micropython/eval.ml)
 
 [00ocaml1]: ./../image/00ocaml1.png
 [00ocaml2]: ./../image/00ocaml2.png
