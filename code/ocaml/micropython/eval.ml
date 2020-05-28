@@ -1,5 +1,11 @@
 open Syntax
 
+let stringMulOp _str _num =
+  let rec stringMul currStr str num =
+    if num = 0 then currStr
+    else stringMul (currStr^str) str (num-1)
+  in stringMul "" _str _num 
+
 let rec eval_expr env expr =
   match expr with
     ConstExpr(v) -> v
@@ -23,6 +29,14 @@ let rec eval_expr env expr =
         end
       | EqOp -> BoolValue(v1 = v2)
       | NeqOp -> BoolValue(v1 <> v2)
+      | MulOp ->
+        begin
+          match v1, v2 with
+          | IntValue(i1), IntValue(i2) -> IntValue(i1 * i2)
+          | IntValue(i1), StrValue(i2) -> StrValue(stringMulOp i2 i1)
+          | StrValue(i1), IntValue(i2) -> StrValue(stringMulOp i1 i2)
+          | _ -> failwith "type error"
+        end
     end
 
 and eval_stmt env stmt =

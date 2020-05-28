@@ -9,6 +9,7 @@ type token =
   | PLUS
   | NOTEQUAL
   | NEWLINE
+  | MUL
   | MINUS
   | LPAREN
   | INT of (int)

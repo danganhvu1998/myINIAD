@@ -45,6 +45,8 @@ rule token = parse
     { MINUS }
   | '='
     { ASSIGN }
+  | '*'
+    { MUL }
   | ':'
     { COLON }
   | "=="

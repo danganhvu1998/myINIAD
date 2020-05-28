@@ -8,12 +8,13 @@ open Syntax
 %token <int> INT
 %token LPAREN RPAREN
 %token ASSIGN COLON
-%token PLUS MINUS EQUAL NOTEQUAL
+%token MUL PLUS MINUS EQUAL NOTEQUAL
 %token NEWLINE INDENT DEDENT
 %token EOF
 
 %nonassoc EQUAL NOTEQUAL
 %left PLUS MINUS
+%left MUL
 
 %start prog
 %type  <Syntax.pyprog> prog
@@ -37,7 +38,9 @@ stmt: IDENT ASSIGN expr newline { AssignStmt($1, $3) }
 
 else_term: ELSE COLON NEWLINE INDENT list(stmt) DEDENT { $5 }
 
-expr: expr PLUS expr
+expr: expr MUL expr
+        { BinopExpr(MulOp, $1, $3) }
+    | expr PLUS expr
         { BinopExpr(AddOp, $1, $3) }
     | expr MINUS expr
         { BinopExpr(SubOp, $1, $3) }

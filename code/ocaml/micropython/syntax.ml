@@ -12,6 +12,7 @@ and pybinop =
   | SubOp
   | EqOp
   | NeqOp
+  | MulOp
 
 and pyexpr =
     ConstExpr of pyvalue
