@@ -217,6 +217,32 @@ Computer Network 2
 
   ```
 
+# 6. Traffic design
+
+## 6.1. Kendall's Notation: Presenting a queue model
+
++ ![Error][00comnet30]
+  + M/M/1 : 1 line out, with infinity(oo-1=oo) capacity queue
+  + M/M/c/c: c lite out, with 0 (c-c) capacity queue
+
+## 6.2. Some calculation
+
+### 6.2.1. Definition
+
++ λ : lambda : arrival rate (average packet per time)
++ μ : mu : service rate (average packet per time)
++ 1/μ : service time (average per packet)
++ p = λ/μ : utilization
++ c : queue capacity
+
+### 6.2.2. M/M/1
+
++ Mean number of packet in system: L = p/(1-p)
++ Mean delay time: T = (1/μ)/(1-p)
+
+### 6.2.3. M/M/c/c
+
++ Loss rate: B = ( (p^c)/c! ) / ( Sum\[i=0->c\](p^i/i!) )
 
 [00comnet1]: ./../image/00comnet1.png
 [00comnet2]: ./../image/00comnet2.png
