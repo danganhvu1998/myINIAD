@@ -4,10 +4,10 @@ from queue import PriorityQueue
 
 
 def Prims(G):
-    buff = nx.number_of_nodes(G)+5;
+    buff = nx.number_of_nodes(G)+5
     source = 1
     X = [0] * buff
-    X[ source ] = 1;
+    X[ source ] = 1
     Ans = [source]
     currConsideringEdges = PriorityQueue()
     currSum = 0

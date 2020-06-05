@@ -6,9 +6,9 @@ def fib(n) :
         return 1
     return fib(n-1) + fib(n-2)
 
-i = 0
-while i != 31:
-    print("fib", i, "=", fib(i))
-    i = i + 1
+n = 0
+while n != 31:
+    print("fib", n, "=", fib(n))
+    n = n + 1
 
 print("finished")

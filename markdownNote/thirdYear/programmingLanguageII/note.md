@@ -571,6 +571,54 @@
   +  [PARSER](../../../code/ocaml/micropython/parser.mly)
   +  [EVAL](../../../code/ocaml/micropython/eval.ml)
 
+# Function Closure and Environment Model
+
++ Check [MINI_PYTHON](../../../code/ocaml/minipython/main.ml)
++ To implement scope, using stack env. In detail:
+
+  ```ocaml
+    (* variable environment *)
+    type ('a, 'b) t = ('a, 'b) Hashtbl.t list
+
+    let create () = [Hashtbl.create 256]
+
+    let assign env ident v =
+      match env with
+        top::_ -> Hashtbl.replace top ident v
+      | [] -> failwith "empty environment"
+
+    let rec get env ident =
+      match env with
+        top::rest ->
+        begin
+          try Hashtbl.find top ident
+          with Not_found -> get rest ident
+        end
+      | [] -> raise Not_found
+
+    let extend env =
+      (Hashtbl.create 256)::env
+  ```
+
++ After we solve the problems with scope, the res is just define syntax
+
+  ```ocaml
+    and pyexpr =
+      ConstExpr of pyvalue
+    | IdentExpr of pyident
+    | BinopExpr of pybinop * pyexpr * pyexpr
+    | FunctionCallExpr of pyident * pyexpr list
+
+    and pystmt =
+        AssignStmt of pyident * pyexpr
+      | IfStmt of pyexpr * pystmt list * pystmt list
+      | WhileStmt of pyexpr * pystmt list
+      | ExprStmt of pyexpr
+      | DefStmt of pyident * pyident list * pystmt list
+      | ReturnStmt of pyexpr
+  ```
+
+
 [00ocaml1]: ./../image/00ocaml1.png
 [00ocaml2]: ./../image/00ocaml2.png
 [00ocaml3]: ./../image/00ocaml3.png
