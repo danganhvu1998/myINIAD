@@ -28,8 +28,8 @@ let rec eval_expr env expr =
     let argvals = List.map (eval_expr env) argexprs in
     let funval = ValueEnv.get env name in
     match funval with
-      FunctionValue(argnames, body) ->
-      let extenv = ValueEnv.extend env in
+      FunctionValue(argnames, body, localVal) ->
+      let extenv = ValueEnv.extend localVal in
       List.iter2 (ValueEnv.assign extenv) argnames argvals;
       begin
         try
@@ -57,7 +57,7 @@ and eval_stmt env stmt =
   | ExprStmt(expr) ->
     let _ = eval_expr env expr in ()
   | DefStmt(name, args, body) ->
-    let v = FunctionValue(args, body) in
+    let v = FunctionValue(args, body, env) in
     ValueEnv.assign env name v
   | ReturnStmt(expr) ->
     let v = eval_expr env expr in
