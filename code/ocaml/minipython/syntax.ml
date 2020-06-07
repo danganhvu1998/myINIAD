@@ -6,7 +6,7 @@ type pyvalue =
     BoolValue of bool
   | IntValue of int
   | StrValue of string
-  | FunctionValue of pyident list * pystmt list
+  | FunctionValue of pyident list * pystmt list * (pyident, pyvalue) ValueEnv.t
   | BuiltinFunValue of (pyvalue list -> pyvalue)
   | NoneValue
 
@@ -41,7 +41,7 @@ let bool_of_pyvalue v =
     BoolValue(b) -> b
   | IntValue(i) -> i = 0
   | StrValue(s) -> (String.length s) = 0
-  | FunctionValue(_, _) | BuiltinFunValue(_) -> true
+  | FunctionValue(_, _, _) | BuiltinFunValue(_) -> true
   | NoneValue -> false
 
 let string_of_pyvalue v =
@@ -49,5 +49,5 @@ let string_of_pyvalue v =
     BoolValue(b) -> string_of_bool b
   | IntValue(i) -> string_of_int i
   | StrValue(s) -> s
-  | FunctionValue(_, _) | BuiltinFunValue(_) -> "<function>"
+  | FunctionValue(_, _, _) | BuiltinFunValue(_) -> "<function>"
   | NoneValue -> "None"
