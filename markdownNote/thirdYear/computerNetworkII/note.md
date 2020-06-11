@@ -244,6 +244,15 @@ Computer Network 2
 
 + Loss rate: B = ( (p^c)/c! ) / ( Sum\[i=0->c\](p^i/i!) )
 
+# Optimization problem
+
+## Some formulations
+
++ ![Error][00comnet31]
+  + E: Edges list
+  + Q: Nodes list
++ ![Error][00comnet32]
+
 [00comnet1]: ./../image/00comnet1.png
 [00comnet2]: ./../image/00comnet2.png
 [00comnet3]: ./../image/00comnet3.png

@@ -1,0 +1,17 @@
+lexer.ml
+parser.ml
+parser.mli
+parser.conflicts
+cflatc1
+cflatc1.opt
+cflatc1.run
+a.out
+b.out
+*.omc
+*.cmo
+*.cmi
+*.cmx
+*.o
+.omakedb
+.omakedb.lock
+*~

@@ -1,54 +1,139 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <tk/tkernel.h>
+#include <tm/tmonitor.h>
 
-#define II pair<int, int>
-#define III pair<II, int>
-#define X first.first
-#define Y first.second
-#define Z second
-#define all(a) (a).begin(), (a).end()
-#define for0(i, n) for (int i = 0; i < n; i++)
-#define for1(i, n) for (int i = 1; i <= n; i++)
+ID lock;
 
-int const oo = 1000000007, e5 = 100007, e6 = 1000007;
-int N;
-vector<int> edges[2*e5];
-int childCount[2*e5];
-int hightOf[2*e5];
-vector<int> happiness;
-
-int __init__(){
-  for0(i, e5){
-    childCount[i] = 0;
-    hightOf[i]=0;
-  }
-  return 0;
+void task01(INT stacd, void *exinf) {
+   while(1) {
+     tk_loc_mtx(lock, TMO_FEVR);
+     tm_printf("Task 01 is running\n");
+     tk_slp_tsk(1);
+     tk_unl_mtx(lock);
+   }
+   tk_exd_tsk();
 }
 
-int DFS(int node, int hight){
-  if( hightOf[node]>0 ) return 0;
-  int childCount = 0;
-  hightOf[node] = hight;
-  for0(i, edges[node].size()){
-    childCount += DFS( edges[node][i], hight+1 );
-  }
+void task02(INT stacd, void *exinf) {
+   while(1) {
+     tk_loc_mtx(lock, TMO_FEVR);
+     tm_printf("Task 02 is running\n");
+     tk_slp_tsk(1);
+     tk_unl_mtx(lock);
+   }
+   tk_exd_tsk();
 }
 
-int main(){
-  ios_base::sync_with_stdio(false);cin.tie(0);__init__();
-  freopen("test.txt", "r", stdin);
-  int a, b, ans=0;
-  cin>>N>>K;
-  for(int i=1; i<N; i++){
-    cin>>a>>b;
-    edges[a].push_back(b);
-    edges[b].push_back(a);
-  }
-  DFS(1, 0);
-  for1(i, N){
-    happiness.push_back( hightOf[i]-childCount[i] );
-  }
-  sort( all(happiness) );
-  for0(i, K) ans+=happiness[i];
-  cout<<ans;
+void task03(INT stacd, void *exinf) {
+   while(1) {
+     tk_loc_mtx(lock, TMO_FEVR);
+     tm_printf("Task 03 is running\n");
+     tk_slp_tsk(1);
+     tk_unl_mtx(lock);
+   }
+   tk_ext_tsk();
+}
+
+ID create_task(INT itskpri, void (*ftask)(INT, void *)) {
+   T_CTSK ctsk;
+   ID tskid;
+   ctsk.tskatr = TA_HLNG | TA_RNG3;
+   ctsk.task = ftask;
+   ctsk.itskpri = itskpri;
+   ctsk.stksz = 1024;
+   tskid = tk_cre_tsk(&ctsk);
+   tk_sta_tsk(tskid, 0);
+   return tskid;
+}
+
+EXPORT INT usermain( void ) {
+   T_CMTX cmtx;
+   cmtx.mtxatr = TA_TFIFO | TA_INHERIT;
+   cmtx.ceilpri = 0;
+   lock = tk_cre_mtx(&cmtx);
+   ID task01Id = create_task(10, task01);
+   ID task02Id = create_task(10, task02);
+   ID task03Id = create_task(10, task03);
+   tk_slp_tsk(TMO_FEVR);
+   return 0;
+}
+
+//
+
+
+#include <tk/tkernel.h>
+#include <tm/tmonitor.h>
+
+ID lock;
+ID task01Id;
+ID task02Id;
+ID task03Id;
+
+void task01(INT stacd, void *exinf) {
+   while(1) {
+      tk_loc_mtx(lock, TMO_FEVR);
+      int i;
+      T_RTSK rtsk;
+      tk_ref_tsk(task01Id, &rtsk);
+      tm_printf("Task 01 priority (after lock acquired): %d\n", rtsk.tskpri);
+      tm_printf("Task 01 is running\n");
+      tk_ref_tsk(task01Id, &rtsk);
+      tm_printf("Task 01 priority (before lock released): %d\n", rtsk.tskpri);
+      tk_unl_mtx(lock);
+   }
+   tk_exd_tsk();
+}
+
+void task02(INT stacd, void *exinf) {
+   while(1) {
+      tk_loc_mtx(lock, TMO_FEVR);
+      int i;
+      T_RTSK rtsk;
+      tk_ref_tsk(task01Id, &rtsk);
+      tm_printf("Task 02 priority (after lock acquired): %d\n", rtsk.tskpri);
+      tm_printf("Task 02 is running\n");
+      tk_ref_tsk(task02Id, &rtsk);
+      tm_printf("Task 02 priority (before lock released): %d\n", rtsk.tskpri);
+      tk_unl_mtx(lock);
+   }
+   tk_exd_tsk();
+}
+
+void task03(INT stacd, void *exinf) {
+   while(1) {
+      tk_loc_mtx(lock, TMO_FEVR);
+      int i;
+      T_RTSK rtsk;
+      tk_ref_tsk(task03Id, &rtsk);
+      tm_printf("Task 02 priority (after lock acquired): %d\n", rtsk.tskpri);
+      tm_printf("Task 03 is running\n");
+      tk_ref_tsk(task01Id, &rtsk);
+      tm_printf("Task 03 priority (before lock released): %d\n", rtsk.tskpri);
+      tk_unl_mtx(lock);
+   }
+   tk_exd_tsk();
+}
+
+ID create_task(INT itskpri, void (*ftask)(INT, void *)) {
+   T_CTSK ctsk;
+   ID tskid;
+   ctsk.tskatr = TA_HLNG | TA_RNG3;
+   ctsk.task = ftask;
+   ctsk.itskpri = itskpri;
+   ctsk.stksz = 1024;
+   tskid = tk_cre_tsk(&ctsk);
+   tk_sta_tsk(tskid, 0);
+   tk_ref_tsk(tskid, 0);
+   return tskid;
+}
+
+EXPORT INT usermain( void ) {
+   T_CMTX cmtx;
+   cmtx.mtxatr = TA_TFIFO | TA_CEILING;
+   cmtx.ceilpri = 8;
+   lock = tk_cre_mtx(&cmtx);
+   ID task01Id = create_task(10, task01);
+   ID task02Id = create_task(10, task02);
+   ID task03Id = create_task(10, task03);
+   tk_slp_tsk(TMO_FEVR);
+   return 0;
 }
