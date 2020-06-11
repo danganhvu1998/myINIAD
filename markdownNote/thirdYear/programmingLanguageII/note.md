@@ -571,7 +571,7 @@
   +  [PARSER](../../../code/ocaml/micropython/parser.mly)
   +  [EVAL](../../../code/ocaml/micropython/eval.ml)
 
-# Function Closure and Environment Model
+# 9. Function Closure and Environment Model
 
 + Check [MINI_PYTHON](../../../code/ocaml/minipython/main.ml)
 + To implement scope, using stack env. In detail:
@@ -618,6 +618,47 @@
       | ReturnStmt of pyexpr
   ```
 
+# 10. Lexical Analysis and Finite Automata
+
+## 10.1. How Compilers Work
+
++ Each step is relatively simple, but as a whole, they could make a compiler
+  + ![Error][00ocaml24]
++ Lexing and Parsing
+  + ![Error][00ocaml25]
+
+## 10.2. Deterministic Finite Automata (DFA)
+
++ DFA: A virtual state machine that starts from some initial state, and continues state transition on every input given 
+  + https://en.wikipedia.org/wiki/Nondeterministic_finite_automaton#Formal_definition
+  + ![Error][00ocaml27]
+  + Formally, DFA M is defined as a 5-tuple:
+    + ![Error][00ocaml26]
+
+## 10.3. Regular Expressions and Finite Automata
+
++ Hard to convert regular expressions(eg: `11(01)*110`) to DFA directly. Can use the following as a middleware
+  + `non-determinism` (NFA)
+    + ![Error][00ocaml28]
+  + `ε-transition`
+    + ![Error][00ocaml29]
+
+
+### 10.3.1. Convert Regex -> ε-NFA
+  
+  + ![Error][00ocaml30]
+
+### 10.3.2. Convert ε-NFA -> DFA
+
++ To convert, we need 2 steps:
+  + Removal of `ε-transition`
+    + ![Error][00ocaml31]
+  + Convert NFA -> DFA (called `determinization`)
+    + ![Error][00ocaml32]
+
+## 10.4. Lexical Analysis with ocamllex
+
++ https://moocs.iniad.org/courses/2020/CS112/09/04
 
 [00ocaml1]: ./../image/00ocaml1.png
 [00ocaml2]: ./../image/00ocaml2.png
