@@ -14,4 +14,4 @@ settings.json
 *.cmo
 *.cmx
 *.o
-
+**/data/*
