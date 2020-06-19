@@ -660,6 +660,59 @@
 
 + https://moocs.iniad.org/courses/2020/CS112/09/04
 
+# Mechanisms of Parsing
+
+##  Overview of LR Parsing
+
+### How can we perform parsing
+
++ `Parsing` can be performed by deriving syntax tree in reverse the list of tokens(leafs) towards start symbol (root)
+  + ![Error][00ocaml33]
+
+### Algorithm for parsing
+
++ LL(k) parsing (k=0, 1, 2, ...)
++ LR(k) parsing (k=0, 1, 2, ...)
+  + Reads token from the **LEFT**, and derivers in reverse from the **RIGHTMOST** position on read so far
+    + ![Error][00ocaml34]
+  + LR parsing is made up of 2 operations: `shift/reduce`
+    + `SHIFT`: Fetch a new token from program
+    + `Reduce`: Derives the rightmost part of list of symbols already read accordingly to the rules defined by `BNF/EBNF`
+      + ```ocaml
+          E ::= E + E
+              | E * E
+              | ( E )
+              | INT
+              | VAR
+
+        ```
+
+    + ![Error][00ocaml35]
+    + ![Error][00ocaml36]
+
+### Implement LR parsing using automaton (concept)
+
++ Parsing can be implemented using automata
+  + ![Error][00ocaml37]
+  + [parser.mly](../../../code/ocaml/cflat/parser.mly)
+    + `menhir --dump parser.mly`
+      + [PARSER.AUTOMATON](../../../code/ocaml/cflat/parser.automaton)
+
+## Syntactic Ambiguity and Conflicts
+
++ ![Error][00ocaml38]
++ In general, there are two types of conflict
+  + Reduce/Reduce conflict
+    + ![Error][00ocaml39]
+  + Shift/Reduce conflict
+    + ![Error][00ocaml40]
+  + How to solve:
+    + Follow defined rule
+    + `Shift` is prefer if multiple choice
+    + Detail: [Slide 6->9](https://moocs.iniad.org/courses/2020/CS112/10/02)
+
+
+
 [00ocaml1]: ./../image/00ocaml1.png
 [00ocaml2]: ./../image/00ocaml2.png
 [00ocaml3]: ./../image/00ocaml3.png

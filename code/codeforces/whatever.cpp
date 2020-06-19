@@ -1,139 +1,224 @@
-#include <tk/tkernel.h>
-#include <tm/tmonitor.h>
+#include <bits/stdc++.h>
 
-ID lock;
+using namespace std;
 
-void task01(INT stacd, void *exinf) {
-   while(1) {
-     tk_loc_mtx(lock, TMO_FEVR);
-     tm_printf("Task 01 is running\n");
-     tk_slp_tsk(1);
-     tk_unl_mtx(lock);
+string ltrim(const string &);
+string rtrim(const string &);
+vector<string> split(const string &);
+
+/*
+ * Complete the 'optimalPush' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts following parameters:
+ *  1. INTEGER a
+ *  2. INTEGER b
+ *  3. INTEGER c
+ *  4. INTEGER d
+ *  5. INTEGER e
+ *  6. INTEGER f
+ *  7. INTEGER g
+ *  8. INTEGER h
+ *  9. INTEGER i
+ */
+
+void printStatus(vector<int> status){
+   for(int i=0; i<status.size(); i++) {
+      cout<<status[i]<<' ';
    }
-   tk_exd_tsk();
+   cout<<endl;
 }
 
-void task02(INT stacd, void *exinf) {
-   while(1) {
-     tk_loc_mtx(lock, TMO_FEVR);
-     tm_printf("Task 02 is running\n");
-     tk_slp_tsk(1);
-     tk_unl_mtx(lock);
+vector<int> intToAns(int intStatus){
+   vector<int>  res; res.clear();
+   for(int i=0; i<9; i++) {
+      int timePush = intStatus%4;
+      intStatus/=4;
+      int valPush = i+1;
+      for(int j=0; j<timePush; j++) res.push_back(valPush);
    }
-   tk_exd_tsk();
+   // cout<<intStatus<<' ';
+   // printStatus(res);
+   return res;
 }
 
-void task03(INT stacd, void *exinf) {
-   while(1) {
-     tk_loc_mtx(lock, TMO_FEVR);
-     tm_printf("Task 03 is running\n");
-     tk_slp_tsk(1);
-     tk_unl_mtx(lock);
+
+vector<int>  nextStatus(vector<int> status, int button){
+   // cout<<"###########################\n"<<button<<endl;
+   // printStatus( status );
+   vector<int> changePos;
+   if( button==1 ){
+      status[0]++;
+      status[1]++;
+      status[3]++;
+      status[4]++;
+   } else if( button==2 ){
+      status[0]++;
+      status[1]++;
+      status[2]++;
+   } else if( button==3 ){
+      status[1]++;
+      status[2]++;
+      status[4]++;
+      status[5]++;
+   } else if( button==4 ){
+      status[0]++;
+      status[3]++;
+      status[6]++;
+   } else if( button==5 ){
+      status[1]++;
+      status[3]++;
+      status[4]++;
+      status[5]++;
+      status[7]++;
+   } else if( button==6 ){
+      status[2]++;
+      status[5]++;
+      status[8]++;
+   } else if( button==7 ){
+      status[3]++;
+      status[4]++;
+      status[6]++;
+      status[7]++;
+   } else if( button==8 ){
+      status[6]++;
+      status[7]++;
+      status[8]++;
+   } else if( button==9 ){
+      status[4]++;
+      status[5]++;
+      status[7]++;
+      status[8]++;
    }
-   tk_ext_tsk();
-}
-
-ID create_task(INT itskpri, void (*ftask)(INT, void *)) {
-   T_CTSK ctsk;
-   ID tskid;
-   ctsk.tskatr = TA_HLNG | TA_RNG3;
-   ctsk.task = ftask;
-   ctsk.itskpri = itskpri;
-   ctsk.stksz = 1024;
-   tskid = tk_cre_tsk(&ctsk);
-   tk_sta_tsk(tskid, 0);
-   return tskid;
-}
-
-EXPORT INT usermain( void ) {
-   T_CMTX cmtx;
-   cmtx.mtxatr = TA_TFIFO | TA_INHERIT;
-   cmtx.ceilpri = 0;
-   lock = tk_cre_mtx(&cmtx);
-   ID task01Id = create_task(10, task01);
-   ID task02Id = create_task(10, task02);
-   ID task03Id = create_task(10, task03);
-   tk_slp_tsk(TMO_FEVR);
-   return 0;
-}
-
-//
-
-
-#include <tk/tkernel.h>
-#include <tm/tmonitor.h>
-
-ID lock;
-ID task01Id;
-ID task02Id;
-ID task03Id;
-
-void task01(INT stacd, void *exinf) {
-   while(1) {
-      tk_loc_mtx(lock, TMO_FEVR);
-      int i;
-      T_RTSK rtsk;
-      tk_ref_tsk(task01Id, &rtsk);
-      tm_printf("Task 01 priority (after lock acquired): %d\n", rtsk.tskpri);
-      tm_printf("Task 01 is running\n");
-      tk_ref_tsk(task01Id, &rtsk);
-      tm_printf("Task 01 priority (before lock released): %d\n", rtsk.tskpri);
-      tk_unl_mtx(lock);
+   for(int i=0; i<9; i++){
+      status[i] = status[i]%4;
    }
-   tk_exd_tsk();
+   // printStatus( status );
+   return status;
 }
 
-void task02(INT stacd, void *exinf) {
-   while(1) {
-      tk_loc_mtx(lock, TMO_FEVR);
-      int i;
-      T_RTSK rtsk;
-      tk_ref_tsk(task01Id, &rtsk);
-      tm_printf("Task 02 priority (after lock acquired): %d\n", rtsk.tskpri);
-      tm_printf("Task 02 is running\n");
-      tk_ref_tsk(task02Id, &rtsk);
-      tm_printf("Task 02 priority (before lock released): %d\n", rtsk.tskpri);
-      tk_unl_mtx(lock);
+bool checkAns(vector<int> status, int testAns){
+   vector<int> vectorAnsTest = intToAns(testAns);
+   // cout<<"SIZE"<<' '<<testAns<<' '<<vectorAnsTest.size()<<endl;
+   for(int i=0; i<vectorAnsTest.size(); i++){
+      status = nextStatus( status, vectorAnsTest[i] );
    }
-   tk_exd_tsk();
+   for(int i=0; i<9; i++) if( status[i]!=0 ) return false;
+   return true;
 }
 
-void task03(INT stacd, void *exinf) {
-   while(1) {
-      tk_loc_mtx(lock, TMO_FEVR);
-      int i;
-      T_RTSK rtsk;
-      tk_ref_tsk(task03Id, &rtsk);
-      tm_printf("Task 02 priority (after lock acquired): %d\n", rtsk.tskpri);
-      tm_printf("Task 03 is running\n");
-      tk_ref_tsk(task01Id, &rtsk);
-      tm_printf("Task 03 priority (before lock released): %d\n", rtsk.tskpri);
-      tk_unl_mtx(lock);
+vector<int> optimalPush(int a, int b, int c, int d, int e, int f, int g, int h, int i) {
+   vector<int> status; status.clear();
+   status.push_back(a);
+   status.push_back(b);
+   status.push_back(c);
+   status.push_back(d);
+   status.push_back(e);
+   status.push_back(f);
+   status.push_back(g);
+   status.push_back(h);
+   status.push_back(i);
+   for(int i=0; i<9; i++) status[i]/=3;
+   for(int i=0; i<=262144; i++){
+   //for(int i=0; i<=100; i++){
+      if( checkAns( status, i ) ){
+         printStatus( intToAns(i) );
+         return intToAns(i);
+      }
    }
-   tk_exd_tsk();
+   return intToAns(0);
 }
 
-ID create_task(INT itskpri, void (*ftask)(INT, void *)) {
-   T_CTSK ctsk;
-   ID tskid;
-   ctsk.tskatr = TA_HLNG | TA_RNG3;
-   ctsk.task = ftask;
-   ctsk.itskpri = itskpri;
-   ctsk.stksz = 1024;
-   tskid = tk_cre_tsk(&ctsk);
-   tk_sta_tsk(tskid, 0);
-   tk_ref_tsk(tskid, 0);
-   return tskid;
+int main()
+{  
+    freopen("test.txt","r",stdin);
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    string first_multiple_input_temp;
+    getline(cin, first_multiple_input_temp);
+
+    vector<string> first_multiple_input = split(rtrim(first_multiple_input_temp));
+
+    int a = stoi(first_multiple_input[0]);
+
+    int b = stoi(first_multiple_input[1]);
+
+    int c = stoi(first_multiple_input[2]);
+
+    string second_multiple_input_temp;
+    getline(cin, second_multiple_input_temp);
+
+    vector<string> second_multiple_input = split(rtrim(second_multiple_input_temp));
+
+    int d = stoi(second_multiple_input[0]);
+
+    int e = stoi(second_multiple_input[1]);
+
+    int f = stoi(second_multiple_input[2]);
+
+    string third_multiple_input_temp;
+    getline(cin, third_multiple_input_temp);
+
+    vector<string> third_multiple_input = split(rtrim(third_multiple_input_temp));
+
+    int g = stoi(third_multiple_input[0]);
+
+    int h = stoi(third_multiple_input[1]);
+
+    int i = stoi(third_multiple_input[2]);
+
+    vector<int> answer = optimalPush(a, b, c, d, e, f, g, h, i);
+
+    for (int i = 0; i < answer.size(); i++) {
+        fout << answer[i];
+
+        if (i != answer.size() - 1) {
+            fout << " ";
+        }
+    }
+
+    fout << "\n";
+
+    fout.close();
+
+    return 0;
 }
 
-EXPORT INT usermain( void ) {
-   T_CMTX cmtx;
-   cmtx.mtxatr = TA_TFIFO | TA_CEILING;
-   cmtx.ceilpri = 8;
-   lock = tk_cre_mtx(&cmtx);
-   ID task01Id = create_task(10, task01);
-   ID task02Id = create_task(10, task02);
-   ID task03Id = create_task(10, task03);
-   tk_slp_tsk(TMO_FEVR);
-   return 0;
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+
+    return s;
+}
+
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+
+    return s;
+}
+
+vector<string> split(const string &str) {
+    vector<string> tokens;
+
+    string::size_type start = 0;
+    string::size_type end = 0;
+
+    while ((end = str.find(" ", start)) != string::npos) {
+        tokens.push_back(str.substr(start, end - start));
+
+        start = end + 1;
+    }
+
+    tokens.push_back(str.substr(start));
+
+    return tokens;
 }
