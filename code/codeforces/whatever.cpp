@@ -11,61 +11,93 @@ using namespace std;
 #define for1(i, n) for (int i = 1; i <= n; i++)
 
 int const oo = 1000000007, e5 = 100007, e6 = 1000007;
+int N, M;
+int foods[2*e5], friendStatus[2*e5], foodsNeed[2*e5];
+bool friendsDone[2*e5], foodsDone[2*e5];
+int DIE = 0;
+II friends[2*e5];
+vector<int> foodFriends [2*e5];
+vector<int> res;
+queue<int> oneFoodLeftFriends;
+queue<int> foodSafe;
 
-int N;
-string str1, str2;
-vector<bool> diff;
-
-int __init__(){
-  return 0;
+void outOfFood(int foodId){
+  for0(i, foodFriends[foodId].size()){
+    int dangerFriendId = foodFriends[foodId][i];
+    if( friendsDone[ dangerFriendId ] == 1 ) continue;
+    oneFoodLeftFriends.push( dangerFriendId );
+  }
 }
 
-void print01(int val, int showNums = 20){
-  char answer[showNums];
-  for0(i, showNums){
-    answer[ showNums-1-i ] = val%2+'0';
-    val/=2;
+void eat( int foodId ){
+  if( foods[ foodId ]==0 ) return;
+  --foods[ foodId ];
+  if( foods[ foodId ]==0 ){
+    outOfFood( foodId );
   }
-  cout<<answer;
+}
+
+bool nextFriend(int friendId){
+  if( friendsDone[friendId]==1 ) return 1;
+  friendsDone[friendId]=1;
+  res.push_back( friendId );
+  II aFriend = friends[ friendId ];
+  cout<<friendId<<' '<<foods[ aFriend.first ]<< ' '<<foods[ aFriend.second ]<<endl; 
+  if( foods[ aFriend.first ] == 0 && foods[ aFriend.second ] == 0) return 0; // DIE
+  eat( aFriend.first );
+  eat( aFriend.second );
+  return 1;
+}
+
+void isNextFriendOkay(int friendId){
+  if( !nextFriend(friendId) ) DIE = 1;
+  // cout<<friendId<<' '<<DIE<<endl;
 }
 
 int main(){
-  ios_base::sync_with_stdio(false); cin.tie(0);__init__();
+  ios_base::sync_with_stdio(false); cin.tie(0);
   // freopen("test.txt","r",stdin);
-  cin>>N;
-  cin>>str1>>str2;
-  N = str1.length();
-  int total1 = 0;
-  int longestSame = 0;
-  int curr=0;
-  for0(i, N){
-    if( str1[i]!=str2[i] ) {
-      int pushVal = str1[i]-'0';
-      diff.push_back( pushVal );
-      if( pushVal==1 ) ++total1;
-      // cout<<pushVal;
+  cin>>N>>M;
+  for1(i, N) cin>>foods[i];
+  for1(i, M) {
+    friendStatus[i]=2;
+    cin>>friends[i].first>>friends[i].second;
+    ++foodsNeed[ friends[i].first ];  
+    ++foodsNeed[ friends[i].second ];  
+    foodFriends[ friends[i].first ].push_back(i);
+    foodFriends[ friends[i].second ].push_back(i);
+  }
+  for(int i=1; i<=N; i++){
+    if( foodsNeed[i] <= foods[i] ){
+      foodSafe.push(i);
+      foodsDone[i] = 1;
     }
   }
-  if( diff.size()==0 ) {
-    cout<<0;
-    return 0;
+  while( !foodSafe.empty() ){
+    int nextFoodId = foodSafe.front(); foodSafe.pop();
+    for0( i, foodFriends[ nextFoodId ].size() ){
+      int saveFriendId = foodFriends[ nextFoodId ][i];
+      if( friendsDone[saveFriendId] ) continue;
+      friendsDone[saveFriendId] = 1;
+      res.push_back( saveFriendId );
+      II saveFriend = friends[ saveFriendId ];
+      int anotherFoodId = saveFriend.first + saveFriend.second - nextFoodId;
+      // cout<< nextFoodId<<' '<<saveFriendId<<' '<<anotherFoodId<<endl;
+      --foodsNeed[ anotherFoodId ]; // dont eat another food
+      // cout<<"CHANGE: "<<foodsNeed[ anotherFoodId ]<<' '<<foods[i]<<endl;
+      if( foodsNeed[ anotherFoodId ] <= foods[anotherFoodId] && foodsDone[anotherFoodId]==0){
+        foodsDone[anotherFoodId]=1;
+        foodSafe.push( anotherFoodId );
+      }
+    }
   }
 
-    if( diff.size()==0 ) {
-    cout<<0;
-    return 0;
+  if( res.size() ==M ){
+    cout<<"ALIVE\n";
+    for(int i=res.size()-1; i>=0; i--){
+      cout<<res[i]<<' ';
+    }
+  } else {
+    cout<<"DEAD\n";
   }
-  // cout<<endl;
-  if( diff.size()%2==1 || total1!= diff.size()/2 ){
-    cout<<-1;
-    return 0;
-  }
-  int total0 =0, total11=0;
-  for(int i=0; i<diff.size(); i++){
-     if( diff[i] ) ++total11;
-     else ++total0;
-     longestSame = max( longestSame, abs(total0-total11) );
-  }
-  cout<<longestSame;
-  
 }

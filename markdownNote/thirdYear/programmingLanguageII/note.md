@@ -660,16 +660,16 @@
 
 + https://moocs.iniad.org/courses/2020/CS112/09/04
 
-# Mechanisms of Parsing
+# 11. Mechanisms of Parsing
 
-##  Overview of LR Parsing
+##  11.1. Overview of LR Parsing
 
-### How can we perform parsing
+### 11.1.1. How can we perform parsing
 
 + `Parsing` can be performed by deriving syntax tree in reverse the list of tokens(leafs) towards start symbol (root)
   + ![Error][00ocaml33]
 
-### Algorithm for parsing
+### 11.1.2. Algorithm for parsing
 
 + LL(k) parsing (k=0, 1, 2, ...)
 + LR(k) parsing (k=0, 1, 2, ...)
@@ -690,7 +690,7 @@
     + ![Error][00ocaml35]
     + ![Error][00ocaml36]
 
-### Implement LR parsing using automaton (concept)
+### 11.1.3. Implement LR parsing using automaton (concept)
 
 + Parsing can be implemented using automata
   + ![Error][00ocaml37]
@@ -698,7 +698,7 @@
     + `menhir --dump parser.mly`
       + [PARSER.AUTOMATON](../../../code/ocaml/cflat/parser.automaton)
 
-## Syntactic Ambiguity and Conflicts
+## 11.2. Syntactic Ambiguity and Conflicts
 
 + ![Error][00ocaml38]
 + In general, there are two types of conflict
@@ -711,6 +711,54 @@
     + `Shift` is prefer if multiple choice
     + Detail: [Slide 6->9](https://moocs.iniad.org/courses/2020/CS112/10/02)
 
+# 12. Semantic Analysis and Intermediate Representation
+
+## 12.1. Semantic Analysis and Type Checking
+
+### 12.1.1. What is `Semantic Analysis`
+
++ Although programs may look the same, their behavior are different according to variables' types
+  + `c = a+b` with `a`, `b` are `int`
+  + `c = a+b` with `a`, `b` are `string`
++ Semantic Analysis: Process required for compilers to understand the meaning of programs 
+  + [Error][00ocaml41]
+
+### 12.1.2. Execution of `Type Checking`
+
++ We can do it recursively. [TypeCheck](../../../code/ocaml/typechk1.ml)
+
+  ```ocaml
+    let rec type_expr = function
+        Add(e1, e2) ->
+        begin
+          match type_expr e1, type_expr e2 with
+            IntType, IntType -> IntType
+          | StrType, StrType -> StrType
+          | FloatType, FloatType -> FloatType
+          | FloatType, IntType | IntType, FloatType -> FloatType
+          | _ -> failwith "type error"
+        end
+      | Mul(e1, e2) ->
+        begin
+          match type_expr e1, type_expr e2 with
+            IntType, IntType -> IntType
+          | IntType, StrType | StrType, IntType -> StrType
+          | FloatType, FloatType -> FloatType
+          | FloatType, IntType | IntType, FloatType -> FloatType
+          | _ -> failwith "type error"
+        end
+      | Value(IntVal(_)) -> IntType
+      | Value(StrVal(_)) -> StrType
+      | Value(FloatVal(_)) -> FloatType
+  ```
+
+### 12.1.3. Type-checking expressions include variables.
+
++ We can manage variable type using the same method to manage variable data.
+
+## 12.2. Semantic Analysis in C_flat: [here](https://moocs.iniad.org/courses/2020/CS112/11/02)
+
+## 12.3. Intermediate Representation and K-Normal Form
 
 
 [00ocaml1]: ./../image/00ocaml1.png
