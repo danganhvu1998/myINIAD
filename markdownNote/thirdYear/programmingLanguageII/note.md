@@ -721,7 +721,7 @@
   + `c = a+b` with `a`, `b` are `int`
   + `c = a+b` with `a`, `b` are `string`
 + Semantic Analysis: Process required for compilers to understand the meaning of programs 
-  + [Error][00ocaml41]
+  + ![Error][00ocaml41]
 
 ### 12.1.2. Execution of `Type Checking`
 
