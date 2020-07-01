@@ -16,6 +16,9 @@
 
 ## C
 
+grep '"token":"(\S+)","expiresIn":"300"}'
+
+
 + `int main(int argc, char* argv[])`
   + argc: number of parameters
   + argv[]: Parameters

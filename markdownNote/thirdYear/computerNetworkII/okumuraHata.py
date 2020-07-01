@@ -14,3 +14,6 @@ lossSmallCity = 69.55 + 26.16 * log10(f) - 13.82 * log10(hb) + (44.9-6.55*log10(
 lossLargeCity = 69.55 + 26.16 * log10(f) - 13.82 * log10(hb) + (44.9-6.55*log10(hb))*log10(d) - largeCity_ahm
 print("SMALL CITY LOSS:", lossSmallCity)
 print("LARGE CITY LOSS:", lossLargeCity)
+
+a = [1,2,3,4];
+a.sort() 
