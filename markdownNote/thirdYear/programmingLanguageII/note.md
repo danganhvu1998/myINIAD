@@ -9,6 +9,7 @@
 
 + Stuck? want to fucking give up in this? check this [shit](../../../code/ocaml/combination.ml)
 + `a'`, `b'`, ... refer to any type of data
++ Match Master: [match](../../../code/ocaml/atdcheck11.ml)
 
 # 3. OCaml and Functional Programming
 
@@ -759,6 +760,36 @@
 ## 12.2. Semantic Analysis in C_flat: [here](https://moocs.iniad.org/courses/2020/CS112/11/02)
 
 ## 12.3. Intermediate Representation and K-Normal Form
+
+# Static Single Assignment (SSA) Form
+
++ Basically, we have to convert `K-normal form` into `SSA form` before register variable in to `register`
+  + ![Error][00ocaml42]![Error][00ocaml43]
+
+## Register Allocation
+
++ Assuming that we have infinite number of register, we can just easily convert `K-normal form` to `machine code` directly.
+  + ![Error][00ocaml44]
++ But, normally, we can have just 16 of `register`, and only 13 of them can use freely. That why we need convert `K-normal form` to `SSA form` as a step stone to `machine code`
+  + ![Error][00ocaml45] 
++ Register allocation corresponds to `coloring problem`
+  + For example we have only 4 register
+    + ![Error][00ocaml46] 
+
+## Static Single Assignment (SSA) Form
+
++ Static Single Assignment (SSA) Form: Form of program where each variable can **have at most one assignment**. This, preventing updating of variable contents
+  + ![Error][00ocaml47]
++ SSA optimizations are way easier
+  + ![Error][00ocaml48]
+
+### Some programs are not convert_able to SSA ( and way to fix)
+
+![Error][00ocaml49]
++ We define a virtual function Φ (phi function) that selects either one of arguments, according which path did it take to reach the join point in `control flow graph` [LINK](https://en.wikipedia.org/wiki/Static_single_assignment_form)
+  + ![Error][00ocaml50]
++ The procedures of SSA conversion:
+  + ![Error][00ocaml51]
 
 
 [00ocaml1]: ./../image/00ocaml1.png
