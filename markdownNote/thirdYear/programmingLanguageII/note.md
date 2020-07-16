@@ -791,7 +791,147 @@
 + The procedures of SSA conversion:
   + ![Error][00ocaml51]
 
+# Calling Convention and Register Allocation
 
+## Review from operating system
+  
++ 16 general purpose registers
+  + r0 -> r7, alias names are given according to their special usages
+    + ro = rax: accumulator
+    + r1 = rcx: counter
+    + r2 = rdx: data
+    + r3 = rbx: base
+    + r4 = rsp: stack pointer
+    + r5 = rbp: base pointer
+    + r6 = rsi: source index
+    + r7 = rdi: destination index
+  + We can add suffixes to access partial bits
+    + d: double word: lower 32 bits
+    + w: word: lower 16 bits
+    + b: byte: lower 8 bits
+    + Example
+      + r0d = eax: Lower 32 bits of register r0
+      + ![Example](./../../secondYear/image/00osys01.png)
+      + ![Example](./../../secondYear/image/00osys02.png)
+
+---------
+
++ Function Call and Calling Convention
+  + Function Call Example
+
+    + ```c
+        int fact(int n){
+          if( n <= 1 ){
+            return 1;
+          }
+          return n * fact(n-1);
+        }
+      ```
+
+    + ![Example](./../../secondYear/image/00osys04.png)
+      + n = %edi
+      + If n <= 1
+        + %eax = 1
+      + Else
+        + %edi = n - 1 ( %eax = n; %edi = %edx - 1 )
+        + Call fact so that %eax = fact(n-1)
+        + %eax *= n
+      + Return %eax
+  + Calling Convention: A rule of how arguments and return values are passed
+    + Rules for passing integer/pointer arguments
+      + First Argument: %rdi
+      + Second Argument: %rsi
+      + Third: %rdx
+      + Fourth: %rcx
+      + Fifth: %r8
+      + Sixth: %r9
+    + Rule for returning integer/pointer value: Use %rax
+  + ***Stack Frame***
+    + Have %rbp(base pointer) and %rsp(stack pointer)
+      + ![Example](./../../secondYear/image/00osys05.png)
+    + Stack Frame Operations
+      + ![Example](./../../secondYear/image/00osys06.png)
+      + ![Example](./../../secondYear/image/00osys07.png)
+      + Explain:
+        + First `pushq %rbp` to save **caller frame** base point
+        + Then `movq %rsp, %rbp` to move %rbp to **new frame** base point
+        + Then `subq $16, %rsp` to allocate 16 bytes for local variables
+          + => All local variables will be store within %rbp and %rps, including caller frame's base pointer
+
+## Basics of Register Allocation
+
++ Register allocation correspond to `coloring problem`
+  + ![Error][00ocaml46]
+  + ![Error][00ocaml45]
+  + We can describe it as a graph problems: Painting adjacent vertices with different colors, using at most k-colors
+    + ![Error][00ocaml52]
++ Although this is a NP problems, we can use easily solve it in a not optimal way by using greedy
+  + ![Error][00ocaml53]
++ In case we do not have enough register, we can use `register spilling`
+  + `register spilling` has 2 actions
+    + Save `variable content` in `register` to memory (stack) as backup
+    + Restore `variable content` to `register`
+    + ![Error][00ocaml54]
+    + ![Error][00ocaml55]
+  + Example of `register spilling`
+    + ![Error][00ocaml56]
+    + ![Error][00ocaml57]
+
+## Constraints Related to Register Allocation ( 2-operand instructions)
+
++ Register coalescing for 2-operand instructions: Try to coalesce registers of the first source operand and destination operand to be the same
+  + `x = a - b`: Try to allocate the same registers for x and a
+  + `y = z * w`: Try to allocate the same registers for y and w
+  + `p = q`: Try to allocate the same registers for p and q
+  + `x=a-b; print(x); print(a;`: Cannot coalesce variables whose liveness periods overlap
++ Calling conventions and coalescing arguments/return value
+  + ![Error][00ocaml58]
++ Conventions regarding about register usage
+  + `Caller-save registers` (all registers used for arguments/return values + %r10~11)
+    + Allowed to be modified inside functions 
+    + When function caller uses these registers, it is needed to save the register contents into memory before function call, and later restore them after the function call
+  + `Callee-save register (%rbx, %rbp, %rsp, %r12-15)`
+    + ***Not*** allow to be modified inside function
+    + If want to modify them inside functions, the register contents need to be saved into memory and later restore back to register, before returning from function
++ Calling convention and register backup
+  + When a function is called, register value are needed to be backed up. There are 2 methods for that
+    + `Caller-save`: Backup register before function call, and restore it when needed
+    + `Callee-save`: Register is backed-up/restore inside the function call.
+  + When to use each:
+    + If a variable stays alive after function call, use `callee-save`
+    + Otherwise, try to use `caller-save` as much as possible
+    + ![Error][00ocaml59]
+
+# Machine Code Generation and Advanced Topics
+
+## Machine Code Generation
+
++ Step 7L Code generation & Assemble ![Error][00ocaml24]
+  + Convert function
+    + ![Error][00ocaml60]
+    + ![Error][00ocaml61]
+  + Convert instruction
+    + Divided into case, whether by register are coalesced or not![Error][00ocaml62]
+  + Convert `if` statement
+    + ![Error][00ocaml63]
+  + Convert `while` statement
+    + ![Error][00ocaml64]
+
+## Putting Compiler Elements Together [LINK MOOCS](https://moocs.iniad.org/courses/2020/CS112/14/02)
+
+## Optimization in Compilers
+
++ Ino oder to make compilers smarter, we can insert optimizations in conversion steps
+  + ![Error][00ocaml65]
++ More: [Moocs LINK](https://moocs.iniad.org/courses/2020/CS112/14/03)
+
+## Automatic Memory Management with Garbage Collection
+
++ Heap and Stack [INFO](https://stackoverflow.com/questions/79923/what-and-where-are-the-stack-and-heap)
++ In Python, values need to be allocated in heap memory, not on stack (slower, but able to access anywhere). And that lead to the problems when should we free them.
++ In detail [MOOCS LINK](https://moocs.iniad.org/courses/2020/CS112/14/04)
+
+[00osys01]: ./../../secondYear/image/00osys01.png
 [00ocaml1]: ./../image/00ocaml1.png
 [00ocaml2]: ./../image/00ocaml2.png
 [00ocaml3]: ./../image/00ocaml3.png

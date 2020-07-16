@@ -57,14 +57,14 @@
         + %eax *= n
       + Return %eax
   + Calling Convention: A rule of how arguments and return values are passed
-    + Rules for passing interger/pointer arguments
+    + Rules for passing integer/pointer arguments
       + First Argument: %rdi
       + Second Argument: %rsi
       + Third: %rdx
       + Fourth: %rcx
       + Fifth: %r8
       + Sixth: %r9
-    + Rule for returning interger/pointer value: Use %rax
+    + Rule for returning integer/pointer value: Use %rax
   + ***Stack Frame***
     + Have %rbp(base pointer) and %rsp(stack pointer)
       + ![Example][00osys05]
@@ -74,7 +74,7 @@
       + Explain:
         + First `pushq %rbp` to save **caller frame** base point
         + Then `movq %rsp, %rbp` to move %rbp to **new frame** base point
-        + Then `subq $16, %rsp` to allocate 16 bytes for local veriables
+        + Then `subq $16, %rsp` to allocate 16 bytes for local variables
           + => All local variables will be store within %rbp and %rps, including caller frame's base pointer
 
 ---------
@@ -147,19 +147,19 @@
 
 ---------
 
-+ Scheduling and Dispatch (**Need better detail about all schduling algorithms**)
++ Scheduling and Dispatch (**Need better detail about all scheduling algorithms**)
   + Scheduling Algorithms
     + Non-preemptive multitasking
-      + Currenly Not Using
+      + Currently Not Using
       + Only switch to another thread when current running thead paused by itself
     + Preemptive multitasking
-      + Currenly Using
-      + Threads are swich regardless of status
+      + Currently Using
+      + Threads are switch regardless of status
   + Criteria for evaluating scheduling
     + Maximum CPU usage rate
     + Maximum throughout (processes as much process as possible)
-    + Minumum turnaround time
-    + Minumum wating time
+    + Minimum turnaround time
+    + Minimum waiting time
     + Minimum response time (Important for interactive system and real-time system)
   + Scheduling Algorithm
     + Traditional

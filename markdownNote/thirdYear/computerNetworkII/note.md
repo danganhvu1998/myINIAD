@@ -25,7 +25,48 @@ Computer Network 2
 + NFVI: Network Functions Virtualization Infrastructure
 + NFV MANO: Management and Orchestration
 + NSD: Network Service Descriptor
-
++ Wireless communication keyword
+  + CN: Core network: Handles overall connection processing and data routing
+  + RAN: Radio Access Network
+  + UE: User Equipment
+  + BTS: Base Transceiver Station
+  + Modulation: [WIKI](https://en.wikipedia.org/wiki/Modulation)
+    + The action of placing information data on `carrier wave` (by changing amplitude, frequency, and phase)
+      + PSK: Phase shift keying
+      + ASK: Amplitude shift keying
+      + FSK: Frequency shift keying
+    + ![Error][00comnet33]
+  + Modulated Wave: wave that carry information
+  + Demodulation: analog signal convert back to frame(signal data)
+  + Carrier wave: the radio wave before having information in it
+  + Error Control
+    + FEC: Forward Error Correction
+    + ARQ: Automatic Repeat reQuest
+  + MIMO: Multiple Input Multiple Output
+  + FDMA: Frequency Division Multiple Access
+  + TDMA: Time Division Multiple Access
+  + CDMA: Code Division Multiple Access
+  + FDD: Frequency Division Duplex
+  + TDD: Time Division Duplex
+  + VoLTE: Voice communication by LTE
+  + EPC: Evolved Packet Core ( 4G's Core Network )
+  + GMSC: Gatewy MSC
+  + HLR (3G): Home Location Register
+  + HSS (4G): Home Subscriber Server
+  + SGSN: Servicing GPRS Support Node
+  + GGSN: Gateway GPRS Support Node
+  + MME: mobility Management Entity
+  + S-GW: Serving Gateway
+  + P-GW: Packet Data Network Gateway
+  + NodeB: Base station in 3G
+  + eNodeB: Base station in 4G
+  + RNC: Radio Network Controller
+    + [Wiki](https://en.wikipedia.org/wiki/Radio_Network_Controller)
+    + Control connection between UE and BTS
+  + MSC: Mobile switching centre
+    + [Wiki](https://en.wikipedia.org/wiki/Mobile_switching_centre_server)
+    + Connects and switches calls in the same way as regular telephone switches
+  
 # 2. Basic structures and mechanisms of networks
 
 1. Structures of information communication network
@@ -253,6 +294,8 @@ Computer Network 2
   + Q: Nodes list
 + ![Error][00comnet32]
 
+# mobile phone, radio wave propagation 
+
 [00comnet1]: ./../image/00comnet1.png
 [00comnet2]: ./../image/00comnet2.png
 [00comnet3]: ./../image/00comnet3.png
@@ -285,7 +328,7 @@ Computer Network 2
 [00comnet30]: ./../image/00comnet30.png
 [00comnet31]: ./../image/00comnet31.png
 [00comnet32]: ./../image/00comnet32.png
-[00comnet33]: ./../image/00comnet33.png
+[00comnet33]: ./../image/00comnet33.gif
 [00comnet34]: ./../image/00comnet34.png
 [00comnet35]: ./../image/00comnet35.png
 [00comnet36]: ./../image/00comnet36.png
