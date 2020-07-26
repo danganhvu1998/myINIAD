@@ -26,7 +26,7 @@ Computer Network 2
 + NFV MANO: Management and Orchestration
 + NSD: Network Service Descriptor
 + Wireless communication keyword
-  + CN: Core network: Handles overall connection processing and data routing
+  + CN: Core network: Handles overall connection processing and data routing. Core network is connected to fixed telephone network and The Internet.
   + RAN: Radio Access Network
   + UE: User Equipment
   + BTS: Base Transceiver Station
@@ -295,6 +295,237 @@ Computer Network 2
 + ![Error][00comnet32]
 
 # mobile phone, radio wave propagation 
+
+## Network Structure
+
+
++ It always contain of most important parts:
+  + `CORE NETWORK`: Handles overall connection processing and data routing. Core network is connected to fixed telephone network and The Internet.
+  + `RADIO ACCESS NETWORK`: Connect user(terminal/UE) to core network.
++ 3G
+  + ![Error][00comnet34]
++ 4G (and connection with 3G)
+  + ![Error][00comnet35]
+
+## Mechanism of mobile (Send/Receive  Voice/Message)
+
++ [MOCK Slice 19-25](https://moocs.iniad.org/courses/2020/CS114/04-1/02)
++ A long voice ( a message is sent in the same way)
+  + -> divide into many short intervals(e.g 10ms)
+  + -> convert into a unit of information ready to transmit (we call it `frame`)
+  + -> convert into `analog signal` by wireless module (this action is `modulation`. See more in IMPORTANT KEYWORD)
+  + -> send this `analog signal` to nearest `base station` via antenna
+  + -> At `base station`, `analog signal` convert back to `frame` (`demodulation`)
+  + -> send this `frame` to receiver nearest `base station` by mobile phone network
+  + -> convert to `analog signal` -> send to receiver -> convert to `frame` -> convert to voice
+
+## How to locate user
+
++ Each user has one `home memory` save nearest `base station` and `switch` to the user. User can always know where is nearest `base station` using broadcast information from nearest BE, then register new BE each changing time
+  + ![Error][00comnet36]
++ Phone call from A to B
+  + ![Error][00comnet38]
+  + ![Error][00comnet37]
+
+## Paging Area: [MOCK Slice 33](https://moocs.iniad.org/courses/2020/CS114/04-1/02)
+
+## Radio Wave Propagation 
+
++ Mostly about loss calculation. [Okumura Hata Loss Calculation](./okumuraHata.py)
+
+# Mobile phone radio access technology
+
+## Channel used in radio access
+
++ In order to communicate effectively using limited radio frequency brand, channel in the radio link can be roughly divided into 2 types:
+  + `Control channel`
+    + Has `common control channel` shared by many users
+    + Has `broadcast channel` for broadcasting control information
+    + Has `call channel` for exchange individual control information with each user after setting an `dedicated communication channel`
+    + ![Error][00comnet39]
+  + `Communication channel`
+    + Has `dedicated communication channel` for *each* user
+    + Has `common communication channel` to broadcast user data(info?) to multiple users
+    + ![Error][00comnet40]
+
+## Wireless modulation-demodulation technology
+
+### Keyword
+
++ Carrier wave: the radio wave before having information in it
++ Modulation: [WIKI](https://en.wikipedia.org/wiki/Modulation)
+  + The action of placing information data on `carrier wave` (by changing amplitude, frequency, and phase)
+    + PSK: Phase shift keying
+    + ASK: Amplitude shift keying
+    + FSK: Frequency shift keying
+  + ![Error][00comnet33]
++ Modulated Wave: wave that carry information
++ Demodulation: analog signal convert back to frame(signal data)
+
+### Analog Modulation
+
++ There are 3 dimensions of `modulation`:
+  + Amplitude
+  + Frequency
+  + Phase
++ There are 3 basic `modulation schemes`
+  + PSK: Phase Shift Keying: change the Phase of the `carrier wave`
+    + ![Error][00comnet41]
+  + ASK: Amplitude Shift Keying: change the Amplitude of the `carrier wave`
+  + FSK: Frequency Shift Keying: change the Frequency of the `carrier wave`
++ Possible to transmit more data with `Multilevel Modulation Scheme`
+  + Example with `PSK`
+    + ![Error][00comnet42]
+    + ![Error][00comnet43]
+  + Example with `PSK` + `ASK` -> `QAM`: Quadrature Amplitude Modulation
+    + ![Error][00comnet44]
+  + [More Info At Moocs 16-19](https://moocs.iniad.org/courses/2020/CS114/04-2/02)
+
+## Transmission Error Control
+
++ There are 2 kinds of errors
+  + `Burst Error`: Errors that occur in a concentrated time
+  + `Random Error`: Errors that occurs independently with each other
+  + ![Error][00comnet45]
+
+### Error Control Methods
+
++ FEC: Forward Error Correction: Correct error by using an error correction code ( feedback not require)
+  + ![Error][00comnet46]
+    + P is `error correction code`
+    + `P = A xor B xor C xor D`
+    + If B is incorrect, we can calculate `B = P xor A xor C xor D`
++ ARQ: Automatic Repeat reQuest: If the receiver receive an incorrect packet, request to resend ( feedback require )
++ [More Info in Moocs 20-29](https://moocs.iniad.org/courses/2020/CS114/04-2/02)
+
+## Diversity Technology
+
++ The technology to improve level of receiving radio waves
++ Space Diversity]
+  + ![Error][00comnet47]
++ Time Diversity
+  + ![Error][00comnet48]
+
+## High Efficiency Wireless Transmission technology: `MIMO`
+
++ [Wiki](https://en.wikipedia.org/wiki/MIMO)
++ In general, use more Transmitter and Receiver to increase transmitting rate
+  + ![Error][00comnet49]
+  + In detail, wtf is that? 
+  + [MOOCS 34-39](https://moocs.iniad.org/courses/2020/CS114/04-2/02)
+
+## Mobile Phone System Technology
+
+### Multiple Access Method
+
++ ![Error][00comnet50]
++ FDMA: Frequency Division Multiple Access
++ TDMA: Time Division Multiple Access
++ CDMA: Code Division Multiple Access
++ OFDMA: Orthogonal FDMA
+  + Normal FDMA: ![Error][00comnet51]
+  + Orthogonal FDMA: ![Error][00comnet52]
+    + -> Can connect with more UE
+
+### Cellular SystemOrthogonal FDMA
+
++ When using FDMA, if same frequency is used by 2 adjacent cells, interference might occurs. So we will place cell so that no adjacent cell have the same frequency.
+  + ![Error][00comnet53]
+
+### FDD(Frequency Division Duplex) and TDD (Time Division Duplex)
+
++ Uplink: Link from UE to BTS
++ Downlink: Link from BTS to UE
++ FDD: Uplink and Downlink use different frequencies.
+  + ![Error][00comnet54]
++ TDD: Uplink and Downlink use the same frequencies
+  + ![Error][00comnet55]
+
+# Mobile communication network, LTE radio access technology
+
+## Mobile communication network
+
++ 1G: ![Error][00comnet56]
++ 2G + 3G: ![Error][00comnet57]
+  + Telephone Service in 3G: connects to the fixed telephone network using switches (`Circuit Switch Domain`)
+  + Internet Service in 3G: Using `Packet Switching Domain`
++ 4G: ![Error][00comnet58]
+  + Telephone Service in 3G: Using VoLTE using packet processing device of EPC(`Evolved Packet Core`). In case VoLTE is not implemented (receiver), switch from LTE to 3G
+    + VoLTE: ![Error][00comnet59]
+  + Internet service in 4G: Using `EPC` as well
+    + `EPC` has the mechanism to flexibly controls service quality (delay time, packet loss rate)
++ 3G and 4G together: ![Error][00comnet60]
++ [Moocs 20-25](https://moocs.iniad.org/courses/2020/CS114/04-3/02)
+  + RNC: Radio Network Controller
+  + MSC: Mobile Services Switching Center
+  + GMSC: Gateway MSC
+  + HLR (3G): Home Location Register
+  + HSS (4G): Home Subscriber Server
+  + SGSN: Servicing GPRS Support Node
+  + GSNL: Gateway GPRS Support Node
+  + MME: Mobility Management Entity
+  + S-GW: Serving Gateway
+  + P-GW: Packet Data Network Gateway
++ 3G Location registration
+  + ![Error][00comnet61]
+
+## LTE Radio Access Technology
+
+### LTE Overall features
+
++ Flexible system bandwidth
++ OFDMA for downlink
++ SC-FDMA for uplink (out of scope)
+
+### LTE Overall Technology
+
++ LTE FDD Frame Structure
+  + ![Error][00comnet62]
++ LTE TDD Frame Structure
+  + ![Error][00comnet63]
++ OFDMA Signal Generation (dont understand, so whatever)
+  + ![Error][00comnet64]
+  + [Moocs 37-38](https://moocs.iniad.org/courses/2020/CS114/04-3/02)
++ Downlink physical resource
+  + Each user will be given a list of slot
+    + Each slot consist of 7 OFDM symbols
+      + One OFDM symbol = one-time modulation
+  + ![Error][00comnet65]
+  + ![Error][00comnet66]
+
+## Radio Interface (How UE connect to 4G system)
+
++ Step 1: Searching for cell
+  + UE using SCH (`Synchronization Channel`) to identify cell after open
+  + SCH has a first Synchronization Channel (P-SCH: Primary SCH) and second Synchronization Channel (S-SCH: Secondary SCH) (no idea for what reason)
+  + Receive broadcast information from the base station transmitted on the down link
+    + ![Error][00comnet67]
++ Step 2: Receive System Information
+  + System infor such as system bandwidth, number of antennas, etc are transmitted vie BCH (broadcast channel)
+  + UE has to access PBCH (physical broadcast channel) before acquire system bandwidth information. To solve this, 6RBs in the middle of the band regardless of the bandwidth are used for PBCH.
+    + ![Error][00comnet69]
++ Step 3: Receive Access Control by `Random Access Control`: [Moocs 47-49](https://moocs.iniad.org/courses/2020/CS114/04-3/02)
++ Scheduling (Downlink and Uplink) [Moocs 50-52](https://moocs.iniad.org/courses/2020/CS114/04-3/02)
++ Inter-cell Interference Coordination [Moocs 53-55](https://moocs.iniad.org/courses/2020/CS114/04-3/02)
+
+# 5G
+
+## Technologies for realizing 5G
+
+### Radio Access Technologies
+
+#### Multiplexing of signals with different sub-carrier spacing
+
+#### Massive MIMO, Beam Forming
+
+#### NOMA (Non-orthogonal Multiple Access)
+
+### 5G Core
+
+#### NFV, SDN
+
+#### Edge Computing
+
 
 [00comnet1]: ./../image/00comnet1.png
 [00comnet2]: ./../image/00comnet2.png
