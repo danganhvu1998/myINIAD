@@ -110,7 +110,7 @@
     + Variable pattern
     + OR pattern
     + Constructor patterns (list, tuples)
-    + Wild card pattern (the hell is this?)
+    + Wild card pattern
       + `(_)` will match anything
       + Code
 
@@ -390,7 +390,7 @@
         ```ocaml
           # let a = [|1;2;3|];;
           val a : int array = [|1; 2; 3|]
-          # a.(0);; 
+          # a.(0);;
           - : int = 1
           # a.(1) <- 4;;
           - : unit = ()
@@ -438,7 +438,7 @@
   + `Structure`: Provides namespace
   + `Signature`: Provides interface for others to call
     + Can omit `signature` using `sig ... end`
-  + ![Error][00ocaml17] 
+  + ![Error][00ocaml17]
   + Code Example: [BANK2.ML](../../../code/ocaml/bank2.ml)
 + Note: Separate definition of structure and signature is possible -> More useful for apply common signature to multiple modules
   + Example
