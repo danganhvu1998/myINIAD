@@ -2,6 +2,11 @@ import networkx as nx
 from queue import PriorityQueue
 
 
+def sum_between(x, y):
+    res = 0;
+    for runInt in range(x, y+1):
+        res = res + runInt
+    return res
 
 def Prims(G):
     buff = nx.number_of_nodes(G)+5
