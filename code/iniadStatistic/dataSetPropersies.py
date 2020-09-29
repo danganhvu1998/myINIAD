@@ -8,10 +8,13 @@ def listMedian(listNum):
     else:
         return listNum[int(N/2)]
 
-listNum = [8,9,10,11,12,13,14,15,16,17]
+#listNum = [13, 5, 9, 1, 17, 9]
+listNum = [7, 9, 10, 8, 9, 12]
+#listNum = [14, 8, 27, 16, 10]
 listNum.sort()
 listNumber = np.array(listNum)
 print("Mean:", listNumber.mean())
+print("Sum:", listNumber.sum())
 print("Standard Deviation:", listNumber.std())
 print("Variance:", listNumber.std()*listNumber.std())
 print("Median:", listMedian(listNum))

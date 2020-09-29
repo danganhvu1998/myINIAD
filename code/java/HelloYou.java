@@ -1,6 +1,10 @@
+import java.util.Scanner;
+import java.io.*;
+
 public class HelloYou {
     public static void main(String[] args) {
-        String message = "Hello Vu";
-        System.out.println(message);
+        Scanner myScanner = new Scanner(System.in);
+        System.out.println("Input a number:");
+        myScanner.nextLine()
     }
 }
