@@ -103,6 +103,147 @@ Different system is managed by different type of software
 ![Error][00comsys17]
 ![Error][00comsys16]
 
+# OpenMP (Shared Memory Model)
+
++ OpenMP is a technology that turns a serial program into a parallel one
++ Compare these following code
+  + No parallel. Output is always the same
+
+    ```C++
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <omp.h>
+
+    int main()
+    {
+      int number_of_threads, this_thread, iteration;
+
+      number_of_threads = omp_get_max_threads();
+      fprintf(stderr, "%2d threads\n", number_of_threads);
+
+      for(iteration = 0; iteration < number_of_threads; iteration++){
+        this_thread = omp_get_thread_num();
+        fprintf(stderr, "Iteration %2d, thread %2d: Hello, world!\n", iteration, this_thread);	
+      }
+    }
+    /*
+    Output alway is (thread is always 0)
+    8 threads
+    Iteration  0, thread  0: Hello, world!
+    Iteration  1, thread  0: Hello, world!
+    Iteration  2, thread  0: Hello, world!
+    Iteration  3, thread  0: Hello, world!
+    Iteration  4, thread  0: Hello, world!
+    Iteration  5, thread  0: Hello, world!
+    Iteration  6, thread  0: Hello, world!
+    Iteration  7, thread  0: Hello, world!
+    */
+    ```
+  + Have parallel. Output is change over time
+
+    ```C++
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <omp.h>
+
+    int main()
+    {
+      int number_of_threads, this_thread, iteration;
+
+      number_of_threads = omp_get_max_threads();
+      fprintf(stderr, "%2d threads\n", number_of_threads);
+
+      # pragma omp parallel for
+      for(iteration = 0; iteration < number_of_threads; iteration++){
+        this_thread = omp_get_thread_num();
+        fprintf(stderr, "Iteration %2d, thread %2d: Hello, world!\n", iteration, this_thread);	
+      }
+    }
+    /*
+    8 threads
+    Iteration  0, thread  0: Hello, world!
+    Iteration  2, thread  2: Hello, world!
+    Iteration  6, thread  2: Hello, world!
+    Iteration  4, thread  0: Hello, world!
+    Iteration  1, thread  1: Hello, world!
+    Iteration  7, thread  7: Hello, world!
+    Iteration  5, thread  5: Hello, world!
+    Iteration  3, thread  3: Hello, world!
+
+    Multiple thread are used, Iteration is not ordered */
+    ```
+## Chunks
+
++ Have parallel. Output is change over time but thread `i` always goes with iterations = `[5*i, 5*i+1, 5*i+2, 5*i+3, 5*i+4]`
+
+  ```C++
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <omp.h>
+
+  int main()
+  {
+    int number_of_threads, this_thread, iteration;
+
+    number_of_threads = omp_get_max_threads();
+    fprintf(stderr, "%2d threads\n", number_of_threads);
+
+    # pragma omp parallel for
+    for(iteration = 0; iteration < number_of_threads*5; iteration++){
+      this_thread = omp_get_thread_num();
+      fprintf(stderr, "Iteration %2d, thread %2d: Hello, world!\n", iteration, this_thread);	
+    }
+  }
+
+  /*
+  8 threads
+  Iteration  0, thread  0: Hello, world!
+  Iteration  1, thread  0: Hello, world!
+  Iteration  2, thread  0: Hello, world!
+  Iteration 20, thread  6: Hello, world!
+  Iteration 21, thread  4: Hello, world!
+  Iteration 10, thread  2: Hello, world!
+  Iteration 15, thread  3: Hello, world!
+  Iteration 16, thread  3: Hello, world!
+  Iteration 17, thread  3: Hello, world!
+  Iteration 18, thread  3: Hello, world!
+  Iteration 19, thread  3: Hello, world!
+  Iteration 25, thread  5: Hello, world!
+  Iteration 26, thread  5: Hello, world!
+  Iteration 27, thread  5: Hello, world!
+  Iteration 28, thread  5: Hello, world!
+  Iteration 29, thread  5: Hello, world!
+  Iteration  3, thread  0: Hello, world!
+  Iteration  4, thread  0: Hello, world!
+  Iteration 22, thread  4: Hello, world!
+  Iteration 23, thread  4: Hello, world!
+  Iteration 24, thread  4: Hello, world!
+  Iteration 11, thread  2: Hello, world!
+  Iteration 12, thread  2: Hello, world!
+  Iteration 13, thread  2: Hello, world!
+  Iteration 14, thread  2: Hello, world!
+  Iteration  5, thread  3: Hello, world!
+  Iteration  6, thread  1: Hello, world!
+  Iteration  7, thread  1: Hello, world!
+  Iteration  8, thread  1: Hello, world!
+  Iteration  9, thread  1: Hello, world!
+  Iteration 30, thread  3: Hello, world!
+  Iteration 31, thread  6: Hello, world!
+  Iteration 32, thread  6: Hello, world!
+  Iteration 33, thread  6: Hello, world!
+  Iteration 34, thread  6: Hello, world!
+  Iteration 35, thread  7: Hello, world!
+  Iteration 36, thread  7: Hello, world!
+  Iteration 37, thread  7: Hello, world!
+  Iteration 38, thread  7: Hello, world!
+  Iteration 39, thread  7: Hello, world! */
+  ```
+
+## Private and Shared Data
+
++ Private data: data that is owned by, and only visible to a single individual thread
++ Shared data: data that is owned and visible to all threads
+
 [00comsys1]: ./../image/00comsys1.png
 [00comsys2]: ./../image/00comsys2.png
 [00comsys3]: ./../image/00comsys3.png
