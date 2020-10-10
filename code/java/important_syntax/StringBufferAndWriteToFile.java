@@ -1,7 +1,10 @@
+package important_syntax;
+import java.lang.StringBuffer;
 import java.util.Scanner;
 import java.io.*;
+  
 
-public class HelloYou {
+public class WriteTStringBufferAndWriteToFileoFile {
     public static void main(String[] args) {
         StringBuffer sb = new StringBuffer();
         Scanner myScanner = new Scanner(System.in);

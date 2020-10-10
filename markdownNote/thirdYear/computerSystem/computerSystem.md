@@ -1,5 +1,9 @@
 # Computer Systems Classification
 
+## Note
+
++ To compile: `gcc -fopenmp -o name name.c`
+
 ## Hardware Classification
 
 ### Size
@@ -107,7 +111,7 @@ Different system is managed by different type of software
 
 + OpenMP is a technology that turns a serial program into a parallel one
 + Compare these following code
-  + No parallel. Output is always the same
+  + No parallel. Output is always the same.
 
     ```C++
     #include <stdio.h>
@@ -139,7 +143,7 @@ Different system is managed by different type of software
     Iteration  7, thread  0: Hello, world!
     */
     ```
-  + Have parallel. Output is change over time
+  + Have parallel. Output is change over time. Check [code](./code/openMPHelloWorld.c)
 
     ```C++
     #include <stdio.h>
@@ -174,7 +178,7 @@ Different system is managed by different type of software
     ```
 ## Chunks
 
-+ Have parallel. Output is change over time but thread `i` always goes with iterations = `[5*i, 5*i+1, 5*i+2, 5*i+3, 5*i+4]`
++ Have parallel. Output is change over time but thread `i` always goes with iterations = `[5*i, 5*i+1, 5*i+2, 5*i+3, 5*i+4]`. Check [code](./code/openMPForTest.c)
 
   ```C++
   #include <stdio.h>
@@ -242,7 +246,50 @@ Different system is managed by different type of software
 ## Private and Shared Data
 
 + Private data: data that is owned by, and only visible to a single individual thread
+  + when using `#pragma opt parallel for ...`, iteration by default will be private
 + Shared data: data that is owned and visible to all threads
++ We can setup what variable is for share, and what is for private
+
+```C++
+#pragma omp parallel for private(var1, var2) share(var3, var4)
+// var1 and var2: private, var3 and var4: shared
+#pragma omp parallel for default (shared) private(var1, var2)
+// var1 and var2: private, the rest: shared
+```
+
+## Scheduling 
+
++ OpenMP support 3 scheduling strategies:
+  + Static
+    + ![Error][00comsys18]
+  + Dynamic
+    + ![Error][00comsys19]
+  + Guided
+    + ![Error][00comsys20]
++ Syntax:
+  
+```C++
+#pragma omp parallel ... schedule (static)
+#pragma omp parallel ... schedule (guided)
+```
+
++ Also, we can setup schedule strategies when setup runtime (compile?)
+
+## Synchronization
+
++ `Barrier`: place where synchronization is forced. That is where threads that finish sooner have to wait for other threads finish as well.
+  + ![Error][00comsys22]
+  + Or use `#pragma omp barrier`
++ `Critical Sections`: place where only 1 thread can execute at a time
+  + ![Error][00comsys23]
++ Check `race condition` at [Operating System](../../secondYear/operatingSystem/operatingSystem.md)
++ Check [code](./code/barrier_critical_test.c)
+
+## Reduction
+
++ To reduce the code
+  + ![Error][00comsys21]
+
 
 [00comsys1]: ./../image/00comsys1.png
 [00comsys2]: ./../image/00comsys2.png
