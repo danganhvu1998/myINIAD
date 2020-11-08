@@ -291,6 +291,54 @@ Different system is managed by different type of software
   + ![Error][00comsys21]
 
 
+
+# MPI - Message Passing Interface
+
++ Parallel via message passing
++ Idea is that there is 1 server and multiple client. Server will send task (or task will be decided in advance) to client and wait for the result. It then processes the result to final outcome
++ Check code: [code](./code/../importantCode/mpi_task.test.c)
+
+## Note:
+
++ Server is an optional
++ Compile and running
+  + `mpicc -o name name.c`
+  + `mpirun -np numThreads name`
++ MPI Data Type
+
+|MPI datatype |C datatype | C++ datatype|
+|------|--|-------------------|
+|MPI::CHAR|char|char|
+|MPI::WCHAR|wchar_t|wchar_t|
+|MPI::SHORT|signed short|signed short|
+|MPI::INT|signed int|signed int|
+|MPI::LONG|signed long|signed long|
+|MPI::SIGNED_CHAR|signed char|signed char|
+|MPI::UNSIGNED_CHAR|unsigned char|unsigned char|
+|MPI::UNSIGNED_SHORT|unsigned short|unsigned short|
+|MPI::UNSIGNED|unsigned int|unsigned int|
+|MPI::UNSIGNED_LONG|unsigned long|unsigned long int|
+|MPI::FLOAT|float|float|
+|MPI::DOUBLE|double|double|
+|MPI::LONG_DOUBLE|long double|long double|
+|MPI::BOOL||bool|
+|MPI::COMPLEX||Complex<float>|
+|MPI::DOUBLE_COMPLEX||Complex<double>|
+|MPI::LONG_DOUBLE_COMPLEX||Complex<long double>|
+|MPI::BYTE||
+|MPI::PACKED||
+
++ Send and Receive
+  + ![Error][00comsys24]
+  + `MPI_Send(message, length, MPI_INT, destination, tag, MPI_COMM_WORLD);`
+  + `MPI_Recv(message, maximumMessageLength + 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);`
+
+# OPEN ACC
+
++ Parallel using accelerator (create thousand of thread to run in parallel)
++ 
+
+
 [00comsys1]: ./../image/00comsys1.png
 [00comsys2]: ./../image/00comsys2.png
 [00comsys3]: ./../image/00comsys3.png
