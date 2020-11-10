@@ -2,8 +2,8 @@ import numpy as  np
 from scipy import stats
 from scipy.stats import t
 
-X = np.array([20.1, 24.2, 23.4, 21.4, 24.6])
-twoside = 0
+X = np.array([2000, 3200, 2800, 4000, 1500, 2200, 3500, 2800])
+twoside = 1
 mu_0 = 25
 avg = X.mean()
 std = np.std(X, ddof = 1)
@@ -13,6 +13,7 @@ p = t.cdf(-np.abs(stat_t), df = (N-1))*(1+twoside)
 
 print("Stat_t =", stat_t)
 print("AVG = ", avg)
+print("STD = ", std)
 print("P =", p)
 print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 if(p>=0.05):
