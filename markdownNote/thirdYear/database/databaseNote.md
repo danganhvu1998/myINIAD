@@ -78,7 +78,25 @@
     ```
 + Subquery **IMPORTANT**
   + https://moocs.iniad.org/courses/2020/DS106/05/05-06
-  + 
+
+## Schema design
+
++ many to many: ![err][data11]
++ one to many: ![err][data12]
++ one to one: ![err][data13]
++ many to many to many: 
+  + ![err][data14]
+  + ![err][data15]
++ weak entity and weak relation: ![err][data16]
++ IsA: ![err][data17]
+
+## Conversion from ER diagram to RDB schema
+
++ ![err][data18]
++ ![err][data19]
++ ![err][data20]
++ ![err][data21]
++ ![err][data22]
 
 [data00]: ./../image/data00.png
 [data01]: ./../image/data01.png
