@@ -1,5 +1,9 @@
 # Star Network and Ring Network Comparation
 
+#### Note
+
++ This report is written in markdown. If the PDF version is too hard to read, consider reading on github: [Report On Github](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/report.md)
+
 ## Abstract
 
 ![alt text](./report1.png)
