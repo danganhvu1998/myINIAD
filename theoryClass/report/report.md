@@ -2,7 +2,7 @@
 
 #### Note
 
-+ This report is written in markdown. If the PDF version is too hard to read, consider reading on github: [Report On Github](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/report.md)
++ This report is written in markdown. If the PDF version is too hard to read, consider reading on github: [https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/report.md](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/report.md)
 
 ## Abstract
 
@@ -17,7 +17,7 @@ We want to compare SN with RN over 2 aspects: `packet lost rate` and `network co
 
 ### Packet Lost Rate Tolerance Experimental
 
-+ [Expemient Code Link](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/report.ipynb)
++ [Expemient Code Link: https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/report.ipynb](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/report.ipynb)
 + In both RN and SN with same amount of node and route, we will set a pre-determined route lost rate and see with that setting, how many links in network are bad link (with lost rate > 0.05). The more links in the network are bad link, the better bad link tolerance that network have, or more stable in other words.
 + Network Build
     + We build the all the network with number of node `numNode` is always even, node index start from 0 to `numNode`-1.
@@ -38,8 +38,8 @@ We want to compare SN with RN over 2 aspects: `packet lost rate` and `network co
 
 ### Network Congestion
 
-+ [Ring Network Expemient Code Link](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/circleNetwork.cc)
-+ [Star Network Expemient Code Link](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/starNetwork.cc)
++ [Ring Network Expemient Code Link: https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/circleNetwork.cc](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/circleNetwork.cc)
++ [Star Network Expemient Code Link: https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/starNetwork.cc](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/report/starNetwork.cc)
 + Send node and its receiver node will be defined bellow. In this experiment each send node will send 50Mb to its corenponding receive node and all links capacity are setted to 100Mbps and 5ms delay. Here we will see how much data each node have to be transfer. The more data a single node have to transfer, the worse network congetion is.
 + Network Build
   + We build the all the network with number of node `numNode` is 6, node index start from 0 to 5.
