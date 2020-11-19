@@ -1,13 +1,12 @@
 needFormat = """
-Suzuki	Semiconductor
-Koyama	Sales
-Tanaka	Semiconductor
-Uesugi	Visual
-Furuta	Semiconductor
+E2	Sales
+E5	Semiconductor
+E6	Sales
 """
 
 needFormat.strip()
 needFormat = needFormat.splitlines()
 for line in needFormat:
-    if(len(line) == 0): continue
+    if(len(line) == 0):
+        continue
     print(tuple(line.split()))
