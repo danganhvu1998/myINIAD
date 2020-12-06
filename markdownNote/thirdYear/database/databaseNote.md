@@ -39,6 +39,15 @@
             "name"	TEXT NOT NULL,
             "city"	TEXT NOT NULL
         );
+
+        CREATE TABLE "abc" (
+          "employee_id"	INTEGER NOT NULL,
+          "department_id"	INTEGER NOT NULL,
+          "score"	INTEGER DEFAULT 0,
+          PRIMARY KEY("employee_id","department_id")
+          FOREIGN KEY ("employee_id") REFERENCES employee
+          FOREIGN KEY ("department_id") REFERENCES department
+        );
     ```
 + Insert
   + ```sql
@@ -78,6 +87,35 @@
     ```
 + Subquery **IMPORTANT**
   + https://moocs.iniad.org/courses/2020/DS106/05/05-06
+  + ```sql
+        SELECT GS.student_id, GS.name
+        FROM ( SELECT * FROM grade NATURAL JOIN student WHERE course_id='J2' )
+        AS GS
+
+        SELECT student.name
+        FROM student
+        WHERE city = (SELECT city FROM student WHERE student_id = 'S1')
+
+        SELECT student.name
+        FROM student
+        WHERE city IN (SELECT city FROM student WHERE student_id IN ('S1', 'S2'))
+
+        SELECT student.name
+        FROM student
+        WHERE 'J2' NOT IN (
+          SELECT course_id 
+          FROM grade
+          WHERE student_id = student_id
+        )
+
+        SELECT student.name
+        FROM student
+        WHERE EXISTS (
+          SELECT * FROM grade
+          WHERE student_id = student_id
+          AND course_id = 'J2'
+        )
+    ```
 
 ## Schema design
 
