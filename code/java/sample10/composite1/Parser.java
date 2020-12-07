@@ -15,6 +15,10 @@ public class Parser {
     public Expression parse(String str) {
         Stack<Expression> stack = new Stack<Expression>();
         String[] tokens = str.split("\\s");
+        for(String token: tokens) {
+            System.out.println(token);
+
+        }
         for (String token : tokens) {
             if (token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/")) {
                 Operator operator = new Operator(token);
