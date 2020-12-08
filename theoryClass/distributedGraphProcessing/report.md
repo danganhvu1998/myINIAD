@@ -1,8 +1,11 @@
 # Investigation result on solution to distributed graph processing using PGX.D: A Fast Distributed Graph Processing Engine
 
+#### Note
+
++ This report is written in markdown. If the PDF version is too hard to read, consider reading on github: [https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/distributedGraphProcessing/report.md](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/distributedGraphProcessing/report.md)
 ## Graph Analysis Overview and introduction of PGX.D
 
-+ Graph analysis is a powerful method in data analysis. Normally, we can summarize any analysis process into 2 step
++ Graph analysis is a powerful method in data analysis. Normally, we can summarize any analysis process into 3 steps
   + Step 1: Gather data from it immediate neighbor (vertices that directly share an edge)
   + Step 2: Compute using gatherd data
   + Step 3: Update its new value and send it out to neighbor vertices
