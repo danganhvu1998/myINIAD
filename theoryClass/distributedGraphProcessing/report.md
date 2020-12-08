@@ -37,6 +37,20 @@
 
 ### To `Load Balancing`
 
++ PGX.D use `Edge Partitioning` to load balance. That is, each slave node is given equally number of edges
+  + ![alt text](./img2.png).
++ In detail, before partitioning the graph, PGX.D first computes the total sum of in-degrees and out-degrees for all vertices.It then chooses the pivot vertices that result in a balanced sum of in-degrees and out-degrees for each partition.
+
+## Evaluation
+
++ To evaluate, PGX.D is applied to run numbers of algorithm on 4 big graph data:
+  + ![alt text](./img3.png)
++ Result:
+  + ![alt text](./img4.png)
+  + ![alt text](./img5.png)
++ Overall, we can conclude that PGX.D is significantly faster than other framework.
+
+
 ## Reference
 
 + Sungpack Hong; Siegfried Depner; Thomas Manhardt; Jan Van Der Lugt; Merijn Verstraaten; Hassan Chafi: PGX.D: A Fast Distributed Graph Processing Engine 
