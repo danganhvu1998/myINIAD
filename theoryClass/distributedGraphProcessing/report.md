@@ -1,9 +1,9 @@
-# Investigation result on solution to distributed graph processing using PGX.D: A Fast Distributed Graph Processing Engine
+#  Investigation result on solution to distributed graph processing using PGX.D: A Fast Distributed Graph Processing Engine
 
 #### Note
 
 + This report is written in markdown. If the PDF version is too hard to read, consider reading on github: [https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/distributedGraphProcessing/report.md](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/distributedGraphProcessing/report.md)
-## Graph Analysis Overview and introduction of PGX.D
+## 1. Graph Analysis Overview and introduction of PGX.D
 
 + Graph analysis is a powerful method in data analysis. Normally, we can summarize any analysis process into 3 steps
   + Step 1: Gather data from it immediate neighbor (vertices that directly share an edge)
@@ -19,7 +19,7 @@
   + `Load Balancing`
 + Although several frameworks have been proposed for processing large graph instances in distributed environments, their performance is much lower than using efficient single-machine implementations provided with enough memory. In this report, we will get more insight about PGX.D, a fast  distributedgraph  processing  system. The result in the paper shows that  PGX.D outperforms other distributed graph systems like GraphLab significantly (3x – 90x). Furthermore, running PGX.D on 4 to 16 machines is also  faster  than  an  implementation optimized for single-machineexecution
 
-## PGX.D Overview Design
+## 2. PGX.D Overview Design
 
 + Overall, PGX.D try to improve process efficiency by combining multiple methods about `Task Management`, `Data Management` and `Communication Management`. Here in this report, we will mainly forcus on techniques to solve `Network overload` and `Load Balancing`. Though in the paper, there are plenty of technical techniques helps to speed up the process, but they are out of scope for this report.
 + Overview structure of a slave note. Each  machine  is  loaded  with  fairly  large  amounts  of  memory  aswell as many CPU cores, and the machines are connected by modern high-bandwidth, low-latency networks
@@ -28,7 +28,7 @@
   + Whenever a task reads or writes graph data, it checks withthe `Data Manager` which knows the location of the data. If the data resides in the current machine, the access is immediately resolved; otherwise,  the  Data  Manager  buffers  up  the  request  into  a  large request message
   + The blocked tasks are resumed when the response messagefor the corresponding request message comes back
 
-### To solve `Network Overload`
+### 2.1. To solve `Network Overload`
 
 + When loading the graph from very beginning, each vertice is labeled with a 64-bit number which concatenates the machine number and the local offset for that particular vertice. In that way, `Data manager` can immediately known location of any vertice.
 + PGX.D has both `pull data mode` and `push data mode`
@@ -38,13 +38,13 @@
 + Using `Selective Ghost Node`
   + `Selective ghost node creation` is a technique to choose a set of high-degree vertices and to duplicate ghost copies of them on each machine. `Ghost Nodes` are selected at loading time (using in-degree and out-degree)
 
-### To `Load Balancing`
+### 2.2. To `Load Balancing`
 
 + PGX.D use `Edge Partitioning` to load balance. That is, each slave node is given equally number of edges
   + ![alt text](./img2.png).
 + In detail, before partitioning the graph, PGX.D first computes the total sum of in-degrees and out-degrees for all vertices.It then chooses the pivot vertices that result in a balanced sum of in-degrees and out-degrees for each partition.
 
-## Evaluation
+## 3. Evaluation
 
 + To evaluate, PGX.D is applied to run numbers of algorithm on 4 big graph data:
   + ![alt text](./img3.png)
@@ -54,7 +54,7 @@
 + Overall, we can conclude that PGX.D is significantly faster than other framework.
 
 
-## Reference
+## 4. Reference
 
 + Sungpack Hong; Siegfried Depner; Thomas Manhardt; Jan Van Der Lugt; Merijn Verstraaten; Hassan Chafi: PGX.D: A Fast Distributed Graph Processing Engine 
 
