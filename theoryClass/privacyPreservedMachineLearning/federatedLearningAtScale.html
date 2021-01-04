@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Investigation result on Distributed processing and privacy protection in the cloud using Federated Learning</title>
+        <style>
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        
+        
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="investigation-result-on-distributed-processing-and-privacy-protection-in-the-cloud-using-federated-learning">Investigation result on Distributed processing and privacy protection in the cloud using Federated Learning</h1>
+<h2 id="1-overview-about-federated-learning-system-design">1. Overview about Federated Learning System Design</h2>
+<ul>
+<li>Federated Learning is a distributed machine learning approach which enables model training on a large corpus of decentralized data</li>
+<li>The idea is “bringing the code to the data, instead of the data to the code”
+<ul>
+<li><img src="file:////home/anhvu/gitRepo/myINIAD/theoryClass/privacyPreservedMachineLearning/fl.png" alt="alt text"></li>
+</ul>
+</li>
+<li>Using SSP over ASP due to many reasons:
+<ul>
+<li>There has been a consistent trend towards synchronous large batch training, even in the data center</li>
+<li>Enhancing privacyguarantee
+<ul>
+<li>Differentail Privacy</li>
+<li>Secure Aggregation: server side of the learningalgorithm only consumes a simple aggregate of the updatesfrom many users</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>This system is yet still far from perfect as existing numerous practical issues
+<ul>
+<li>Device availability  that  correlates  with  the  local  data  distribution  incomplex ways</li>
+<li>Unreliable device connectivity and interrupted execution</li>
+<li>etc</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-system-architecture">2. System Architecture</h2>
+<h2 id="21-basic-notions">2.1 Basic Notions</h2>
+<p><img src="file:////home/anhvu/gitRepo/myINIAD/theoryClass/privacyPreservedMachineLearning/systemArchi.png" alt="alt text"></p>
+<ul>
+<li>The basic participants in protocal are <code>devices</code>(android phone) and the <code>FL server</code></li>
+<li><code>Devices</code> will first annouce to server that they are ready to run an <code>FL task</code> for a givin <code>FL population</code>
+<ul>
+<li>An <code>FL population</code> is specified by a globally unique namewhich identifies the learning problem, or application</li>
+<li>An <code>FL task</code> is a specific computation for anFL population, such as training to be performed with givenhyperparameters, or evaluation of trained models on localdevice data.</li>
+</ul>
+</li>
+<li>From the potential tens of thousands of devices announcingavailability to the server during a certain time window, theserver selects a subset of typically a few hundred which are invited to work on a specific <code>FL task</code></li>
+<li>The <code>server</code> then tells the selected <code>devices</code> what computation to runwith an <code>FL plan</code>: a data structure that includes a TensorFlowgraph and instructions for how to execute it</li>
+<li>Once a round is established, the server next sends to each participant the current global model parameters and any other necessarystate as an <code>FL checkpoint</code>(essentially the serialized state of aTensorFlow session).</li>
+<li>Each participant <code>device</code> then performs a localcomputation based on the global state and its local dataset,and sends an update in the form of an <code>FL checkpoint</code> backt o the <code>server</code></li>
+<li>The <code>server</code> incorporates these updates into its global state, and the process repeats</li>
+</ul>
+<h2 id="22-devices">2.2 Devices</h2>
+<p><img src="file:////home/anhvu/gitRepo/myINIAD/theoryClass/privacyPreservedMachineLearning/devices.png" alt="alt text"></p>
+<p>There are there main parts in a device: <code>Job Invocation</code>, <code>Task Execution</code>, and <code>Reporting</code></p>
+<ul>
+<li><code>Job Invocation</code>: Upon invocation by the job scheduler ina separate process, the <code>FL runtime</code> contacts the <code>FL server</code> to announce that it is ready to run tasks for the given <code>FL population</code>.  The server decides whether any <code>FL tasks</code> are available for the population and will either return an <code>FL plan</code> or a suggested time to check in later.</li>
+<li><code>Task Execution</code>: If the device has been selected,  the <code>FL runtime</code> receives the <code>FL plan</code> and execute it</li>
+<li><code>Reporting</code>: After FL plan execution, the <code>FL runtime</code> reports computed updates and metrics to the server and cleans upany temporary resources.</li>
+</ul>
+<h2 id="23-server">2.3 Server</h2>
+<p><img src="file:////home/anhvu/gitRepo/myINIAD/theoryClass/privacyPreservedMachineLearning/server.png" alt="alt text">
+<img src="file:////home/anhvu/gitRepo/myINIAD/theoryClass/privacyPreservedMachineLearning/rcr.png" alt="alt text"></p>
+<p>There are there main parts that make up a server: <code>Coordinator</code>, <code>Aggregator</code>, and <code>Selector</code></p>
+<ul>
+<li><code>Coordinators</code> are the top-level actors which enable globalsynchronization and advancing rounds in lockstep. Thereare multiple <code>Coordinators</code>, and each one is responsible foran FL population of devices. There is always a single <code>Coordinators</code> for every <code>FL population </code></li>
+<li><code>Selectors</code> are responsible for accepting and forwarding device connections. They periodically receive informationfrom the <code>Coordinator</code> about how many devices are needed for each <code>FL population</code>, which they use to make local decisions about whether or not to accept each device.</li>
+<li><code>Master Aggregators</code> manage the rounds of each <code>FL task</code>. In order to scale with the number of devices and update size, they make dynamic decisions to spawn one or more <code>Aggregatorsto</code> which work is delegated</li>
+</ul>
+<h2 id="3-application">3. Application</h2>
+<ul>
+<li>Federated Learning applies best in situations where the on-device data is more relevant than the data that exists onservers. So its works best on:
+<ul>
+<li>On-device item ranking</li>
+<li>Content suggestions for on-device keyboards</li>
+<li>Next word prediction</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-reference">4. Reference</h2>
+<ul>
+<li>Keith Bonawitz, Hubert Eichner, Wolfgang Grieskamp, Dzmitry Huba, Alex Ingerman, Vladimir Ivanov, Chloé Kiddon, Jakub Konečný, Stefano Mazzocchi, H. Brendan McMahan, Timon Van Overveldt, David Petrou, Daniel Ramage, Jason Roselander: TOWARDS FEDERATED LEARNING AT SCALE : SYSTEM DESIGN</li>
+</ul>
+
+    </body>
+    </html>
