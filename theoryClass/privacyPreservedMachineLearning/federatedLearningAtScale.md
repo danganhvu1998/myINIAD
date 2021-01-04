@@ -1,6 +1,9 @@
 #  Investigation result on Distributed processing and privacy protection in the cloud using Federated Learning
 
 
+#### Note
+
++ This report is written in markdown. If the PDF version is too hard to read, consider reading on github: [https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/privacyPreservedMachineLearning/federatedLearningAtScale.md](https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/privacyPreservedMachineLearning/federatedLearningAtScale.md)
 ## 1. Overview about Federated Learning System Design
 
 + Federated Learning is a distributed machine learning approach which enables model training on a large corpus of decentralized data
