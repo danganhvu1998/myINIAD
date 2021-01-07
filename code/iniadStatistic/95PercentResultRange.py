@@ -14,7 +14,7 @@ def knownSD(listMeasurement, standardDeviation):
     print("RESULT:",round(rangeBelow, 2), " -> ",round(rangeAbove, 2))
     print("\n***************************************************")
 
-def unknownSD(listMeasurement):
+def unknownSD(listMeasurement, confidentLevel = 0.95):
     numMeasurement = len(listMeasurement)
     sumMeasurement = 0
     for measurement in listMeasurement:
@@ -28,8 +28,7 @@ def unknownSD(listMeasurement):
     S = pow(S2, 0.5)
 
     #calculate T-distribution (LOL wtf is this)
-    T_distribution = abs(st.t.ppf(0.05/2, numMeasurement-1)) #95%
-    #T_distribution = abs(st.t.ppf(0.01/2, numMeasurement-1)) #99%
+    T_distribution = abs(st.t.ppf((1 - confidentLevel)/2, numMeasurement-1)) #95%
 
     #calculate 95% range
     rangeBelow = meanMeasurement-T_distribution*S/pow(numMeasurement, 0.5)
@@ -43,8 +42,8 @@ def unknownSD(listMeasurement):
 
 
 def __MAIN__():
-    listMeasurement = [3.45, 2.87, 2.3, 2.23]
-    standardDeviation = 1
+    listMeasurement = [666.1426, 681.1522, 635.557, 655.4282, 689.601, 672.7978, 660.1482]
+    standardDeviation = -1
     #listMeasurement = []
     if(len(listMeasurement)==0):
         numMeasurement = int(input("numMeasurement:"))
@@ -56,7 +55,7 @@ def __MAIN__():
     if( standardDeviation>=0 ):
         knownSD(listMeasurement, standardDeviation)
     else:
-        unknownSD(listMeasurement)
+        unknownSD(listMeasurement, 0.95)
 
 __MAIN__()
 
