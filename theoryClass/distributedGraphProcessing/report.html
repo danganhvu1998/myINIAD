@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Investigation result on solution to distributed graph processing using PGX&period;D&colon; A Fast Distributed Graph Processing Engine</title>
+        <style>
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        
+        
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="investigation-result-on-solution-to-distributed-graph-processing-using-pgxd-a-fast-distributed-graph-processing-engine">Investigation result on solution to distributed graph processing using PGX.D: A Fast Distributed Graph Processing Engine</h1>
+<h4 id="note">Note</h4>
+<ul>
+<li>This report is written in markdown. If the PDF version is too hard to read, consider reading on github: <a href="https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/distributedGraphProcessing/report.html">https://github.com/danganhvu1998/myINIAD/blob/master/theoryClass/distributedGraphProcessing/report.md</a></li>
+</ul>
+<h2 id="1-graph-analysis-overview-and-introduction-of-pgxd">1. Graph Analysis Overview and introduction of PGX.D</h2>
+<ul>
+<li>Graph analysis is a powerful method in data analysis. Normally, we can summarize any analysis process into 3 steps
+<ul>
+<li>Step 1: Gather data from it immediate neighbor (vertices that directly share an edge)</li>
+<li>Step 2: Compute using gatherd data</li>
+<li>Step 3: Update its new value and send it out to neighbor vertices</li>
+</ul>
+</li>
+<li>To able to improve graph processing performance, we need to first understand some of its characteristics:
+<ul>
+<li>The size of the graph is very large – larger than the capacityof a single machine’s main memory.</li>
+<li>Many small-sized random memory accesses over the wholegraph instance are performed, especially during neighborhood iterations and graph traversals</li>
+<li>The computation-to-communication ratio is low</li>
+<li>There is a large degree of inherent parallelism.</li>
+</ul>
+</li>
+<li>And also, problems with most of the graph processing frameworks:
+<ul>
+<li><code>Network overload</code></li>
+<li><code>Load Balancing</code></li>
+</ul>
+</li>
+<li>Although several frameworks have been proposed for processing large graph instances in distributed environments, their performance is much lower than using efficient single-machine implementations provided with enough memory. In this report, we will get more insight about PGX.D, a fast  distributedgraph  processing  system. The result in the paper shows that  PGX.D outperforms other distributed graph systems like GraphLab significantly (3x – 90x). Furthermore, running PGX.D on 4 to 16 machines is also  faster  than  an  implementation optimized for single-machineexecution</li>
+</ul>
+<h2 id="2-pgxd-overview-design">2. PGX.D Overview Design</h2>
+<ul>
+<li>Overall, PGX.D try to improve process efficiency by combining multiple methods about <code>Task Management</code>, <code>Data Management</code> and <code>Communication Management</code>. Here in this report, we will mainly forcus on techniques to solve <code>Network overload</code> and <code>Load Balancing</code>. Though in the paper, there are plenty of technical techniques helps to speed up the process, but they are out of scope for this report.</li>
+<li>Overview structure of a slave note. Each  machine  is  loaded  with  fairly  large  amounts  of  memory  aswell as many CPU cores, and the machines are connected by modern high-bandwidth, low-latency networks
+<ul>
+<li><img src="file:////home/anhvu/gitRepo/myINIAD/theoryClass/distributedGraphProcessing/img1.png" alt="alt text"></li>
+<li>The graph algorithm is decomposed into numerous small task that can run in parallel (Each task in charge of some vertice)</li>
+<li>Whenever a task reads or writes graph data, it checks withthe <code>Data Manager</code> which knows the location of the data. If the data resides in the current machine, the access is immediately resolved; otherwise,  the  Data  Manager  buffers  up  the  request  into  a  large request message</li>
+<li>The blocked tasks are resumed when the response messagefor the corresponding request message comes back</li>
+</ul>
+</li>
+</ul>
+<h3 id="21-to-solve-network-overload">2.1. To solve <code>Network Overload</code></h3>
+<ul>
+<li>When loading the graph from very beginning, each vertice is labeled with a 64-bit number which concatenates the machine number and the local offset for that particular vertice. In that way, <code>Data manager</code> can immediately known location of any vertice.</li>
+<li>PGX.D has both <code>pull data mode</code> and <code>push data mode</code>
+<ul>
+<li><code>pull data mode</code>: When a vertice needed data from its immediate neighbors, it can pull data from them</li>
+<li><code>push data mode</code>: When a vertice complete its computation, can can send result to immediate neighbors</li>
+</ul>
+</li>
+<li>Using buffer to reduce network traffic. Request only be sent when message buffer has reached its maximum size or the worker thread has completed all task</li>
+<li>Using <code>Selective Ghost Node</code>
+<ul>
+<li><code>Selective ghost node creation</code> is a technique to choose a set of high-degree vertices and to duplicate ghost copies of them on each machine. <code>Ghost Nodes</code> are selected at loading time (using in-degree and out-degree)</li>
+</ul>
+</li>
+</ul>
+<h3 id="22-to-load-balancing">2.2. To <code>Load Balancing</code></h3>
+<ul>
+<li>PGX.D use <code>Edge Partitioning</code> to load balance. That is, each slave node is given equally number of edges
+<ul>
+<li><img src="file:////home/anhvu/gitRepo/myINIAD/theoryClass/distributedGraphProcessing/img2.png" alt="alt text">.</li>
+</ul>
+</li>
+<li>In detail, before partitioning the graph, PGX.D first computes the total sum of in-degrees and out-degrees for all <a href="http://vertices.It">vertices.It</a> then chooses the pivot vertices that result in a balanced sum of in-degrees and out-degrees for each partition.</li>
+</ul>
+<h2 id="3-evaluation">3. Evaluation</h2>
+<ul>
+<li>To evaluate, PGX.D is applied to run numbers of algorithm on 4 big graph data:
+<ul>
+<li><img src="file:////home/anhvu/gitRepo/myINIAD/theoryClass/distributedGraphProcessing/img3.png" alt="alt text"></li>
+</ul>
+</li>
+<li>Result:
+<ul>
+<li><img src="file:////home/anhvu/gitRepo/myINIAD/theoryClass/distributedGraphProcessing/img4.png" alt="alt text"></li>
+<li><img src="file:////home/anhvu/gitRepo/myINIAD/theoryClass/distributedGraphProcessing/img5.png" alt="alt text"></li>
+</ul>
+</li>
+<li>Overall, we can conclude that PGX.D is significantly faster than other framework.</li>
+</ul>
+<h2 id="4-reference">4. Reference</h2>
+<ul>
+<li>Sungpack Hong; Siegfried Depner; Thomas Manhardt; Jan Van Der Lugt; Merijn Verstraaten; Hassan Chafi: PGX.D: A Fast Distributed Graph Processing Engine</li>
+</ul>
+
+    </body>
+    </html>
