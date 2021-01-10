@@ -2,7 +2,7 @@ import random
 
 tryCount = 10000000
 alpha = 1
-contentCount = 100
+contentCount = 10
 cacheSize = 10
 
 def popularity(k, s = alpha, N = contentCount):
