@@ -11,6 +11,43 @@
   + ![err][javaDesign01]
   + ![err][javaDesign03]
 
+## Design Pattern
+
+### Adapter Pattern
+
++ Just a pattern to connect 2 partterns
+  + ![err][javaDesign04]
+
+### Singleton pattern
+
++ A class that manages exactly one instance (log class for example), that information needs to be shared across software
++ ![err][javaDesign06]
+  + Declare an instance as a private static field in
+  + Declare a private constuctor
+  + Declare a public static method to get the instance
++ Example code [Singleton Stack](../../../code/java/lecture9/singleton2/SingletonStack.java)
+
+### Observer Pattern
+
++ A pattern that observes the state change of an object and get notified when there is a change
++ ![err][javaDesign07]
++ ![err][javaDesign08]
++ Example [Observerable Stack](../../../code/java/lecture9/observer1/ObservableStack.java)
+
+### Template Method Pattern: Skip, just about design
+
+
+### Factory Method Pattern
+
++ Just define an interface or abstract class for creating an object but let the subclasses decide which class to instantiate. In other words, subclasses are responsible to create the instance of the class.
++ ![err][javaDesign09]
++ [More info](https://www.javatpoint.com/factory-method-design-pattern)
+
+### Composite Pattern
+
++ [Code folder](../../../code/java/sample10/composite1)
++ ![err][javaDesign10]
+
 [javaDesign00]: ./../image/javaDesign00.png
 [javaDesign01]: ./../image/javaDesign01.png
 [javaDesign02]: ./../image/javaDesign02.png
