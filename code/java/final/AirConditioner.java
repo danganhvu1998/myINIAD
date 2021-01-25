@@ -3,7 +3,7 @@ public class AirConditioner {
     private int mode = 0;
     private double temperature = 23.0;
 
-    public AirConditioner() {
+    private AirConditioner() {
     }
 
     public static AirConditioner getInstance() {

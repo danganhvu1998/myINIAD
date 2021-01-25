@@ -16,3 +16,4 @@ settings.json
 *.class
 *.o
 **/data/*
+out.txt
