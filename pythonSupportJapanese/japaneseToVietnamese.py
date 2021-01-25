@@ -29,7 +29,7 @@ for line in japaneseText:
     if not len(line): continue
     for character in line:
         vietnameseText += kanjiToVietnamese(character)
-    vietnameseText += "\n" + line + "\n"
+    vietnameseText += "\n" + line + "\n-------------------------------------\n"
 vietnameseTextFile = open("out.txt", "w")
 vietnameseTextFile.write(vietnameseText)
 vietnameseTextFile.close()
