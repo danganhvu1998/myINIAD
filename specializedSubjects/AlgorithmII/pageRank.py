@@ -4,13 +4,13 @@ import numpy as np
 def matrixConstructor(G):
     n = nx.number_of_nodes(G)
     A = nx.adjacency_matrix(G, nodelist=range(n), weight=None)
-
     A = A.todense()
     A = A.astype(float)
-
+    print(A)
     A = A.transpose()
+    # print(A)
     cols_sum = A.sum(axis=0)
-    cols_sum[0, 1]
+    print(cols_sum)
     for i in range(n):
         if (cols_sum[0, i]):
             A[:, i] = A[:, i]/cols_sum[0, i]

@@ -1,3 +1,5 @@
+import scipy.stats as st
+
 def unknownSD(listMeasurement, confidentLevel = 0.95):
     numMeasurement = len(listMeasurement)
     sumMeasurement = 0
@@ -26,8 +28,8 @@ def unknownSD(listMeasurement, confidentLevel = 0.95):
 
 
 def __MAIN__():
-    listMeasurement = [666.1426, 681.1522, 635.557, 655.4282, 689.601, 672.7978, 660.1482]
+    listMeasurement = [14.54, 20.52, 13.08, 12.41, 17.64, 15.53, 16.04, 14.41]
     standardDeviation = -1
-    unknownSD(listMeasurement, 0.95)
+    unknownSD(listMeasurement, 0.9)
 
 __MAIN__()
