@@ -762,6 +762,8 @@
 
 ## 12.3. Intermediate Representation and K-Normal Form
 
++ ![Error][00ocaml66]
+
 # Static Single Assignment (SSA) Form
 
 + Basically, we have to convert `K-normal form` into `SSA form` before register variable in to `register`
