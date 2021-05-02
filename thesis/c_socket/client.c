@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <sys/socket.h>
+#include <stdlib.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
@@ -10,7 +11,9 @@ int main(int argc, char const *argv[])
 {
 	int sock = 0, valread;
 	struct sockaddr_in serv_addr;
-	char *hello = "Hello from client";
+	char *hello = (char*)malloc(100 * sizeof(char));
+	sprintf(hello, "Hello from client id %d", rand());
+	printf("%s\n", hello);
 	char buffer[1024] = {0};
 	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 	{
