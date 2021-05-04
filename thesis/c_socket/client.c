@@ -11,9 +11,9 @@ int main(int argc, char const *argv[])
 {
 	int sock = 0, valread;
 	struct sockaddr_in serv_addr;
-	char *hello = (char*)malloc(100 * sizeof(char));
-	sprintf(hello, "Hello from client id %d", rand());
-	printf("%s\n", hello);
+	char *message = (char*)malloc(1000 * sizeof(char));
+	sprintf(message, "message from client id %d", rand());
+	printf("%s\n", message);
 	char buffer[1024] = {0};
 	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 	{
@@ -34,9 +34,12 @@ int main(int argc, char const *argv[])
 		printf("\nConnection Failed \n");
 		return -1;
 	}
+	printf("\nConnected. Ready to send \n");
+	send(sock , message , strlen(message) , 0 );
 	while(1){
-		send(sock , hello , strlen(hello) , 0 );
-		printf("Hello message sent\n");
+		scanf("%s", message);
+		send(sock , message , strlen(message) , 0 );
+		printf("message message sent\n");
 		valread = read( sock , buffer, 1024);
 		printf("%s %d\n",buffer,valread );
 	}
