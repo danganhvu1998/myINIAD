@@ -1,0 +1,64 @@
+// https://codeforces.com/contest/1336/problem/C
+#include <bits/stdc++.h>
+using namespace std;
+ 
+#define II pair<long long, long long>
+#define III pair<II, long long>
+#define X first.first
+#define Y first.second
+#define Z second
+#define all(a) (a).begin(), (a).end()
+#define for0(i, n) for (long long i = 0; i < n; i++)
+#define for1(i, n) for (long long i = 1; i <= n; i++)
+
+long long const MAX_ROUND = 1000;
+double const ACCEPT_ERROR = 0.00001;
+long long const oo = 1000000007, e5 = 100007, e6 = 1000007;
+long long const MAXIMUM_NODE_SUPPORT = e6; // Accept maximum e6 nodes
+
+vector<long long> edges[MAXIMUM_NODE_SUPPORT]; // Edges[i] contain list of nodes that can go to i
+double nodeWeight[2][MAXIMUM_NODE_SUPPORT];
+long long N, M;
+long long lastRound = 0;
+
+void calculation(long long round){
+    int lastRound = round % 2;
+    int currRound = 1 - lastRound;
+    for0(i, N){
+        double weight = 0;
+        for0(j, edges[i].size()){
+            const int fromNode = edges[i][j];
+            weight += nodeWeight[lastRound][fromNode] / edges[fromNode].size();
+        }
+        nodeWeight[currRound][i] =  weight;
+    }
+}
+
+bool isAcceptErrorSastified(){
+    for0(i, N) if( abs(nodeWeight[0][i] - nodeWeight[i][i]) > ACCEPT_ERROR ) return false;
+    return true;
+}
+
+int main(){
+    ios_base::sync_with_stdio(false); cin.tie(0);
+    freopen("graph.out","r",stdin);
+    freopen("result.out","w",stdout);
+    // INPUT GRAPH
+    cin>>N>>M;
+    for0(i, M){
+        long long a, b;
+        cin>>a>>b; // From a we can go to b
+        edges[b].push_back(a);
+    }
+
+    // INIT WEIGHT
+    for0(i, N) nodeWeight[0][i] = 1;
+    for0(i, MAX_ROUND){
+        calculation(i);
+        lastRound = i;
+        if( isAcceptErrorSastified() ) break;
+    }
+    const int lastRoundWeightIndex = lastRound % 2 ? 1 : 0;
+    for0(i, N) cout<<nodeWeight[ lastRoundWeightIndex ][i]<<' ';
+    cout<<'\n'<<lastRound<<' '<<lastRoundWeightIndex;
+}
