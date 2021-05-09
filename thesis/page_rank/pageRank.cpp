@@ -12,12 +12,13 @@ using namespace std;
 #define for1(i, n) for (long long i = 1; i <= n; i++)
 
 long long const MAX_ROUND = 1000;
-double const ACCEPT_ERROR = 0.00000001;
+double const ACCEPT_ERROR = 0.00001;
 long long const oo = 1000000007, e5 = 100007, e6 = 1000007;
 long long const MAXIMUM_NODE_SUPPORT = e6; // Accept maximum e6 nodes
 
-vector<long long> edges[MAXIMUM_NODE_SUPPORT]; // Edges[i] contain list of nodes that can go to i
+vector<long long> edgesTo[MAXIMUM_NODE_SUPPORT]; // edgesTo[i] contain list of nodes that can go to i
 double nodeWeight[2][MAXIMUM_NODE_SUPPORT];
+long long toNodesCount[MAXIMUM_NODE_SUPPORT];
 long long N, M;
 long long lastRound = 0;
 
@@ -26,9 +27,9 @@ void calculation(long long round){
     int currRound = 1 - lastRound;
     for0(i, N){
         double weight = 0;
-        for0(j, edges[i].size()){
-            const int fromNode = edges[i][j];
-            weight += nodeWeight[lastRound][fromNode] / edges[fromNode].size();
+        for0(j, edgesTo[i].size()){
+            const int fromNode = edgesTo[i][j];
+            weight += nodeWeight[lastRound][fromNode] / toNodesCount[fromNode];
         }
         nodeWeight[currRound][i] =  weight;
     }
@@ -51,10 +52,12 @@ int main(){
     freopen("result.out","w",stdout);
     // INPUT GRAPH
     cin>>N>>M;
+    for0(i, N) toNodesCount[i] = 0;
     for0(i, M){
         long long a, b;
         cin>>a>>b; // From a we can go to b
-        edges[b].push_back(a);
+        ++toNodesCount[a];
+        edgesTo[b].push_back(a);
     }
 
     // INIT WEIGHT
