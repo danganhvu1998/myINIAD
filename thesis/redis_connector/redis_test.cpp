@@ -2,12 +2,11 @@
 #include <hiredis/hiredis.h>
 
 void printRedisReply(redisReply *reply){
-    // printf("================================================\n");
-    // printf("TYPE: %d\n", reply->type);
-    // printf("INTEGER: %lld\n", reply->integer);
-    // printf("DOUBLE: %lf\n", reply->dval);
-    // printf("STRING: %s\n", reply->str);
-    // printf("================================================\n");
+    printf("================================================\n");
+    printf("TYPE: %d\n", reply->type);
+    printf("INTEGER: %lld\n", reply->integer);
+    printf("STRING: %s\n", reply->str);
+    printf("================================================\n");
 }
 
 int main(void) {
@@ -20,7 +19,7 @@ int main(void) {
         return -1;
     }
 
-    reply = redisCommand(context, "SET %s %s", "foo", "conmaxau");
+    reply = (redisReply *)redisCommand(context, "SET %s %d", "foo", 123);
     if (!reply || context->err) {
         fprintf(stderr, "Error:  Can't send command to Redis\n");
         return -1;
@@ -30,7 +29,7 @@ int main(void) {
 
     freeReplyObject(reply);
 
-    reply = redisCommand(context, "GET foo");
+    reply = (redisReply *)redisCommand(context, "GET foo");
     if (!reply || context->err || reply->type != REDIS_REPLY_STRING) {
         fprintf(stderr, "Error:  Can't send command to Redis\n");
         return -1;
