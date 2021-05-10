@@ -16,8 +16,9 @@ Todo list
 
 - [ ] Setup a working version of page rank algorithm between multiple `workers` run in same computer, using `edge partition` as it is proved to be than `node partition`
   - [ ] edge partition 
-  - [x] page rank algo
+  - [x] page rank algo (https://moocs.iniad.org/courses/2020/CS116/2020_08/10-03 - Page 16)
   - [x] Communication between `node workers` (using c socket?) [Currently working on]
+  - [x] Connect with redis as place to store data on ram
   - [ ] Implement some ultilize method mentioned from paper (optional later)
     - [ ] Ghost node
     - [ ] Merge multiple request into a bigger one to save internet bandwidth
@@ -59,5 +60,3 @@ We will probably have 3 main path in each each `worker`:
 ### Probably facing later problems
 
 - It is impossible to load the whole thing in ram. But then which `node` should stay in ram, which should be in hard drive?
-
-https://moocs.iniad.org/courses/2020/CS116/2020_08/10-03 - Page 16
