@@ -1,6 +1,15 @@
 #include <stdio.h>
 #include <hiredis/hiredis.h>
 
+void printRedisReply(redisReply *reply){
+    // printf("================================================\n");
+    // printf("TYPE: %d\n", reply->type);
+    // printf("INTEGER: %lld\n", reply->integer);
+    // printf("DOUBLE: %lf\n", reply->dval);
+    // printf("STRING: %s\n", reply->str);
+    // printf("================================================\n");
+}
+
 int main(void) {
     redisContext *context;
     redisReply *reply;
@@ -17,6 +26,7 @@ int main(void) {
         return -1;
     }
     printf("set rec: %s\n", reply->str);
+    printRedisReply(reply);
 
     freeReplyObject(reply);
 
@@ -27,6 +37,7 @@ int main(void) {
     }
 
     printf("foo = %s\n", reply->str);
+    printRedisReply(reply);
     freeReplyObject(reply);
 
     return 0;
