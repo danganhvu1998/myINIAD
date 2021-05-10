@@ -1,6 +1,12 @@
 Todo list
 ====
 
+## Project Purpose
+
+- Speed up graph computing on Heterogeneous Clusters by sharing workload between workers
+  - Expect speed up by 10-30% when using BSP. Probablly not compatible with SSP or ASP
+- Allow adding clusters if needed even when computation is going
+
 ## Work to do
 
 ### Implementation
