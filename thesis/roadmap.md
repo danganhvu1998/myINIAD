@@ -60,3 +60,9 @@ We will probably have 3 main path in each each `worker`:
 ### Probably facing later problems
 
 - It is impossible to load the whole thing in ram. But then which `node` should stay in ram, which should be in hard drive?
+
+
+todo: 
++ how many time access redis
++ how much data is sent via network
++ volumn computing reduce after adding a node
