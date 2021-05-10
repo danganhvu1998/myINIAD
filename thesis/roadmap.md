@@ -4,7 +4,10 @@ Todo list
 ## Project Purpose
 
 - Speed up graph computing on Heterogeneous Clusters by sharing workload between workers
-  - Expect speed up by 10-30% when using BSP. Probablly not compatible with SSP or ASP
+  - Expect speed up by 10-30% when using BSP. Probablly not compatible with SSP or ASP 
+    - There is no proof yet, and there is a chance this target is not possible to make
+      - Depend on how much workload the slow workers send to fast worker
+  - But we also adding a stage for each round, that should not take much time. But still a point to pay attendtion to
 - Allow adding clusters if needed even when computation is going
 
 ## Work to do
@@ -56,3 +59,5 @@ We will probably have 3 main path in each each `worker`:
 ### Probably facing later problems
 
 - It is impossible to load the whole thing in ram. But then which `node` should stay in ram, which should be in hard drive?
+
+https://moocs.iniad.org/courses/2020/CS116/2020_08/10-03 - Page 16
