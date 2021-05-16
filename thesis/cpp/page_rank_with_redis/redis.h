@@ -18,13 +18,14 @@ char* getValName(long long nodeId, long long roundId){
     return res;
 }
 
-char* getVal(char* valName){
+double getVal(char* valName){
     char* res = "0";
     printf("-> GET %s\n", valName);
     reply = (redisReply *)redisCommand(context, "GET %s", valName);
     if(reply->str) res = reply->str;
+    double resDouble = atof(res);
     freeReplyObject(reply);
-    return res;
+    return resDouble;
 }
 
 void setNodeVal(long long nodeId, long long roundId, double value){
@@ -39,12 +40,7 @@ void setNodeVal(long long nodeId, long long roundId, double value){
     freeReplyObject(reply);
 }
 
-double getValDouble(char* valName){
-    double res = atof(getVal(valName));
-    return res;
-}
-
 double getNodeVal(long long nodeId, long long roundId){
     char* valName = getValName(nodeId, roundId);
-    return getValDouble(valName);
+    return getVal(valName);
 }
