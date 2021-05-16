@@ -7,10 +7,10 @@ int main(){
         fprintf(stderr, "Error:  Can't connect to Redis\n");
         return -1;
     }
-    // setNodeVal(100, 10, 104.412);
-    // setNodeVal(100, 11, 104.412);
-    // setNodeVal(100, 12, 104.412);
-    getNodeVal (100, 11);
+    setNodeVal(100, 10, 104.412);
+    setNodeVal(100, 11, 104.412);
+    setNodeVal(100, 12, 104.412);
+    // getNodeVal (100, 11);
     // double a = getNodeVal (100, 11);
     // double b = getNodeVal (100, 11);
     // double c = getNodeVal (100, 12);

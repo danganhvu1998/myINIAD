@@ -4,6 +4,13 @@
 redisContext *context;
 redisReply *reply;
 
+void printRedisReply(redisReply *reply){
+    printf("================================================\n");
+    printf("TYPE: %d\n", reply->type);
+    printf("INTEGER: %lld\n", reply->integer);
+    printf("STRING: %s\n", reply->str);
+    printf("================================================\n");
+}
 
 char* getValName(long long nodeId, long long roundId){
     char *res = new char[255];
@@ -13,12 +20,9 @@ char* getValName(long long nodeId, long long roundId){
 
 char* getVal(char* valName){
     char* res = "0";
+    printf("-> GET %s\n", valName);
     reply = (redisReply *)redisCommand(context, "GET %s", valName);
-    if (!reply || context->err || reply->type != REDIS_REPLY_STRING) {
-        fprintf(stderr, "Error:  Can't send command to Redis\n");
-        return res;
-    }
-    res = reply->str;
+    if(reply->str) res = reply->str;
     freeReplyObject(reply);
     return res;
 }
