@@ -5,11 +5,11 @@ redisContext *context;
 redisReply *reply;
 
 void printRedisReply(redisReply *reply){
-    printf("================================================\n");
-    printf("TYPE: %d\n", reply->type);
-    printf("INTEGER: %lld\n", reply->integer);
-    printf("STRING: %s\n", reply->str);
-    printf("================================================\n");
+    // printf("================================================\n");
+    // printf("TYPE: %d\n", reply->type);
+    // printf("INTEGER: %lld\n", reply->integer);
+    // printf("STRING: %s\n", reply->str);
+    // printf("================================================\n");
 }
 
 char* getValName(long long nodeId, long long roundId){
@@ -20,7 +20,7 @@ char* getValName(long long nodeId, long long roundId){
 
 double getVal(char* valName){
     char* res = "0";
-    printf("-> GET %s\n", valName);
+    // printf("-> GET %s\n", valName);
     reply = (redisReply *)redisCommand(context, "GET %s", valName);
     if(reply->str) res = reply->str;
     double resDouble = atof(res);
@@ -32,7 +32,7 @@ void setNodeVal(long long nodeId, long long roundId, double value){
     char* valName = getValName(nodeId, roundId);
     char *cmd = new char[255];
     sprintf(cmd, "SET %s %lf", valName, value);
-    printf("-> %s\n", cmd);
+    // printf("-> %s\n", cmd);
     reply = (redisReply *)redisCommand(context, cmd);
     freeReplyObject(reply);
     if(roundId>=2){
