@@ -34,11 +34,13 @@ void setNodeVal(long long nodeId, long long roundId, double value){
     sprintf(cmd, "SET %s %lf", valName, value);
     printf("-> %s\n", cmd);
     reply = (redisReply *)redisCommand(context, cmd);
-    if (!reply || context->err) {
-        fprintf(stderr, "Error:  Can't send command to Redis %d\n", context->err);
-        return;
-    }
     freeReplyObject(reply);
+    if(roundId>=2){
+        char* valNodeNodeOldRound = getValName(nodeId, roundId-2);
+        reply = (redisReply *)redisCommand(context, "DEL %s", valNodeNodeOldRound);
+        free(valNodeNodeOldRound);
+        freeReplyObject(reply);
+    }
     free(cmd);
     free(valName);
 }
