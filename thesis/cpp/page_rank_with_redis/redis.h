@@ -30,17 +30,22 @@ double getVal(char* valName){
 
 void setNodeVal(long long nodeId, long long roundId, double value){
     char* valName = getValName(nodeId, roundId);
-    printf("-> SET %s %lf\n", valName, value);
-    reply = (redisReply *)redisCommand(context, "SET %s %lf", valName, value);
+    char *cmd = new char[255];
+    sprintf(cmd, "SET %s %lf", valName, value);
+    printf("-> %s\n", cmd);
+    reply = (redisReply *)redisCommand(context, cmd);
     if (!reply || context->err) {
-        fprintf(stderr, "Error:  Can't send command to Redis\n");
+        fprintf(stderr, "Error:  Can't send command to Redis %d\n", context->err);
         return;
     }
-    printf("set rec: %s\n", reply->str);
     freeReplyObject(reply);
+    free(cmd);
+    free(valName);
 }
 
 double getNodeVal(long long nodeId, long long roundId){
     char* valName = getValName(nodeId, roundId);
-    return getVal(valName);
+    double res = getVal(valName);
+    free(valName);
+    return res;
 }
