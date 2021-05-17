@@ -64,6 +64,7 @@ int main(){
     for0(i, N) nodeWeight[0][i] = 1;
     for0(i, MAX_ROUND){
         calculation(i);
+        cout<<"DONE "<<lastRound<<'\n';
         lastRound = i;
         if( isAcceptErrorSastified() ) break;
     }
