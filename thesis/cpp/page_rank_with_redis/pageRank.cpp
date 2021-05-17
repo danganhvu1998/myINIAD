@@ -77,5 +77,5 @@ int main(){
         if( isAcceptErrorSastified() ) break;
     }
     for0(i, N) cout<<getNodeVal(i, lastRound)<<' ';
-    cout<<'\n'<<lastRound;
+    cout<<'\n'<<lastRound<<" "<<redisGetCount<<" "<<redisSetCount<<" "<<redisCommandCount;
 }

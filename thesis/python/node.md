@@ -14,4 +14,8 @@ sys     0m0.008s
 real	2m40.334s
 user	0m19.272s
 sys 	1m9.298s
+
+GET:6008346
+SET:13000
+TOTAL COMMAND: 6034346 (Including DEL)
 ```
