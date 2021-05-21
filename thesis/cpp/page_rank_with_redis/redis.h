@@ -4,6 +4,7 @@
 redisContext *context;
 redisReply *reply;
 long long redisGetCount = 0, redisSetCount = 0, redisCommandCount = 0;
+double cachedNodeValue[2][10000007]; // 2 * 10^7 * 8 byte = 0.15Gb
 
 char* getValName(long long nodeId, long long roundId){
     char *res = new char[255];
