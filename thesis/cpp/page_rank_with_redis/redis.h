@@ -89,14 +89,14 @@ bool __testRedis(){
     long long nodesCount = 7;
     long long roundId = 9;
     long long nodesId[] = {1, 4, 6, 7 ,8, 20, 15};
-    double values[] = {1.1432, 4.1234, 6.41324, 7.5234 ,8.74567, 20.7456, 15.4567};
+    double values[] = {1.13412341432, 4.1132413241234, 6.412341321324, 7.541323234 ,8.713241234567, 20.7456, 15.456098765437};
     setNodeVal(nodesId, values, nodesCount, roundId);
     double *getVals = getNodeVal(nodesId, nodesCount, roundId);
     for(int i=0; i<nodesCount; i++){
         if(! isEqual(values[i], getVals[i]) ) testResult = false;
     }
     if(debug){
-        printf("Test result: %d\n", testResult);
+        printf("Test result: %s\n", testResult ? "OK" : "FALSE");
         for(int i=0; i<nodesCount; i++){
             printf("Set value: %lf; Get value: %lf; Is correct: %d\n", values[i], getVals[i], isEqual(values[i], getVals[i]));
         }
