@@ -4,8 +4,6 @@
 redisContext *context = redisConnect("127.0.0.1", 6379);;
 redisReply *reply;
 long long redisGetCount = 0, redisSetCount = 0, redisCommandCount = 0;
-long long currentRoundId = 0;
-double cachedNodeValue[2][10000007]; // 2 * 10^7 * 8 byte = 0.15Gb
 bool debug = 1;
 
 bool isEqual(double a, double b, double acceptError = 0.00001){
