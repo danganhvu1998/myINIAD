@@ -39,7 +39,7 @@ void addCache(long long nodeId, long long roundId, double value){
 }
 
 // TODO: Not only get its value, but its number of children is also important
-double* getNodesValFromCache(long long* nodesId, long long nodesCount, long long roundId){ 
+double* getNodesVal(long long* nodesId, long long nodesCount, long long roundId){ 
     double* res = new double[nodesCount];
     long long notCachedNodesCount = 0;
     // Check Cache
@@ -50,7 +50,7 @@ double* getNodesValFromCache(long long* nodesId, long long nodesCount, long long
         }
     }
     if(debugLevel >= 20){
-        printf("getNodesValFromCache->[notCachedNodesCount, nodeCached]: %lld %lld\n", notCachedNodesCount, nodesCount-notCachedNodesCount);
+        printf("getNodesVal->[notCachedNodesCount, nodeCached]: %lld %lld\n", notCachedNodesCount, nodesCount-notCachedNodesCount);
     }
     // Check Redis
     long long currPos = 0;
@@ -75,6 +75,14 @@ double* getNodesValFromCache(long long* nodesId, long long nodesCount, long long
     // Check Other Workers: Not yet implemented
 }
 
+double getNodeVal(long long nodeId, long long roundId){
+    long long nodesId[] = {nodeId};
+    double *resArray = getNodesVal(nodesId, 1, roundId ); 
+    double res = resArray[0];
+    free(resArray);
+    return res;
+}
+
 bool __testDataReader(){
     bool testResult = true;
     long long nodesCount = 7;
@@ -82,7 +90,7 @@ bool __testDataReader(){
     long long nodesId[] = {1, 4, 6, 7 ,8, 20, 15};
     double values[] = {1.13412341432, 4.1132413241234, 6.412341321324, 7.541323234 ,8.713241234567, 20.7456, 15.456098765437};
     setNodesValRedis(nodesId, values, nodesCount, roundId);
-    double *getVals = getNodesValFromCache(nodesId, nodesCount, roundId);
+    double *getVals = getNodesVal(nodesId, nodesCount, roundId);
     for(int i=0; i<nodesCount; i++){
         if(! isEqual(values[i], getVals[i]) ) testResult = false;
     }
@@ -93,7 +101,7 @@ bool __testDataReader(){
         printf("\n");
     }
     free(getVals);
-    getVals = getNodesValFromCache(nodesId, nodesCount, roundId);
+    getVals = getNodesVal(nodesId, nodesCount, roundId);
     for(int i=0; i<nodesCount; i++){
         if(! isEqual(values[i], getVals[i]) ) testResult = false;
     }
@@ -104,7 +112,7 @@ bool __testDataReader(){
         printf("\n");
     }
     free(getVals);
-    getVals = getNodesValFromCache(nodesId, nodesCount, 11);
+    getVals = getNodesVal(nodesId, nodesCount, 11);
     for(int i=0; i<nodesCount; i++){
         if(! isEqual(getVals[i], -1) ) testResult = false;
     }

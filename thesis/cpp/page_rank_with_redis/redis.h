@@ -39,6 +39,7 @@ char* getSetPath(long long nodeId, double value, long long roundId){
 }
 
 char* getValsCommand(long long* nodesId, long long nodesCount, long long roundId){
+    // TODO: Add maximum nodesCount
     char *res = new char[ 28 * nodesCount ]; // 28 stand for length of node_%s_%lf
     strcpy(res, "MGET ");
     for(int i = 0; i<nodesCount; i++){
@@ -49,7 +50,20 @@ char* getValsCommand(long long* nodesId, long long nodesCount, long long roundId
     return res;
 }
 
+char* delValsCommand(long long* nodesId, long long nodesCount, long long roundId){
+    // TODO: Add maximum nodesCount
+    char *res = new char[ 28 * nodesCount ]; // 28 stand for length of node_%s_%lf
+    strcpy(res, "DEL ");
+    for(int i = 0; i<nodesCount; i++){
+        char* valName = getValName(nodesId[i], roundId);
+        strcat(res, valName);
+        free(valName);
+    }
+    return res;
+}
+
 char* setValsCommand(long long* nodesId, double* values, long long nodesCount, long long roundId){
+    // TODO: Add maximum nodesCount
     char *res = new char[ 28 * nodesCount ];
     strcpy(res, "MSET ");
     for(int i = 0; i<nodesCount; i++){
@@ -103,6 +117,12 @@ void setNodesValRedis(long long* nodesId, double* values, long long nodesCount, 
     char* command = setValsCommand(nodesId, values, nodesCount, roundId);
     executeSetValsCommand(command);
     free(command);
+}
+
+void setNodeVal(long long nodeId, double value, long long roundId){
+    long long nodesId[] = {nodeId};
+    double values[] = {value};
+    setNodesValRedis(nodesId, values, 1, roundId);
 }
 
 double* getNodesValRedis(long long* nodesId, long long nodesCount, long long roundId){
