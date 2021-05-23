@@ -86,22 +86,34 @@ bool __testDataReader(){
     for(int i=0; i<nodesCount; i++){
         if(! isEqual(values[i], getVals[i]) ) testResult = false;
     }
-    free(getVals);
-    getVals = getNodesValFromCache(nodesId, nodesCount, roundId);
-    for(int i=0; i<nodesCount; i++){
-        if(! isEqual(values[i], getVals[i]) ) testResult = false;
-    }
-    roundId = 11;
-    getVals = getNodesValFromCache(nodesId, nodesCount, roundId);
-    for(int i=0; i<nodesCount; i++){
-        if(! isEqual(values[i], getVals[i]) ) testResult = false;
-    }
-    if(debugLevel >= 10){
-        printf("__testDataReader: Test result: %s\n", testResult ? "OK" : "FAIL");
+    if(debugLevel >= 20){
         for(int i=0; i<nodesCount; i++){
             printf("Set value: %lf; Get value: %lf; Is correct: %d\n", values[i], getVals[i], isEqual(values[i], getVals[i]));
         }
         printf("\n");
     }
+    free(getVals);
+    getVals = getNodesValFromCache(nodesId, nodesCount, roundId);
+    for(int i=0; i<nodesCount; i++){
+        if(! isEqual(values[i], getVals[i]) ) testResult = false;
+    }
+    if(debugLevel >= 20){
+        for(int i=0; i<nodesCount; i++){
+            printf("Set value: %lf; Get value: %lf; Is correct: %d\n", values[i], getVals[i], isEqual(values[i], getVals[i]));
+        }
+        printf("\n");
+    }
+    free(getVals);
+    getVals = getNodesValFromCache(nodesId, nodesCount, 11);
+    for(int i=0; i<nodesCount; i++){
+        if(! isEqual(getVals[i], -1) ) testResult = false;
+    }
+    if(debugLevel >= 20){
+        for(int i=0; i<nodesCount; i++){
+            printf("Set value: null; Get value: %lf; Is correct: %d\n", getVals[i], isEqual(values[i], -1));
+        }
+        printf("\n");
+    }
+    printf("__testDataReader: Test result: %s\n", testResult ? "OK" : "FAIL");
     return testResult;
 }

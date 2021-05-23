@@ -4,7 +4,7 @@
 redisContext *context = redisConnect("127.0.0.1", 6379);
 redisReply *reply;
 long long redisGetCount = 0, redisSetCount = 0, redisCommandCount = 0;
-long long debugLevel = 50;
+long long debugLevel = 20;
 
 void printRedisReply(redisReply *reply, char* startStr = ""){
     printf("%s================================================\n", startStr);
@@ -13,7 +13,7 @@ void printRedisReply(redisReply *reply, char* startStr = ""){
     printf("%sSTRING: %s\n", startStr, reply->str);
     printf("%sELEMENTS: %ld\n", startStr, reply->elements);
     for(int i=0; i<reply->elements; i++){
-        printRedisReply(reply->element[i], "----");
+        printRedisReply(reply->element[i], "____ ");
     }
     printf("%s================================================\n", startStr);
 }
