@@ -52,12 +52,6 @@ int main(){
     ios_base::sync_with_stdio(false); cin.tie(0);
     freopen("graph.out","r",stdin);
     freopen("result.out","w",stdout);
-    // INIT CONNECTION
-    context = redisConnect("127.0.0.1", 6379);
-    if (!context) {
-        fprintf(stderr, "Error:  Can't connect to Redis\n");
-        return -1;
-    }
     // INPUT GRAPH
     cin>>N>>M;
     for0(i, N) toNodesCount[i] = 0;

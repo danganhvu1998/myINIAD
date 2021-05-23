@@ -4,7 +4,7 @@
 redisContext *context = redisConnect("127.0.0.1", 6379);
 redisReply *reply;
 long long redisGetCount = 0, redisSetCount = 0, redisCommandCount = 0;
-long long debugLevel = 20;
+long long debugLevel = 0;
 
 void printRedisReply(redisReply *reply, char* startStr = ""){
     printf("%s================================================\n", startStr);
@@ -99,13 +99,13 @@ void executeSetValsCommand(char* command){
     return;
 }
 
-void setNodesVal(long long* nodesId, double* values, long long nodesCount, long long roundId){
+void setNodesValRedis(long long* nodesId, double* values, long long nodesCount, long long roundId){
     char* command = setValsCommand(nodesId, values, nodesCount, roundId);
     executeSetValsCommand(command);
     free(command);
 }
 
-double* getNodesVal(long long* nodesId, long long nodesCount, long long roundId){
+double* getNodesValRedis(long long* nodesId, long long nodesCount, long long roundId){
     char* command = getValsCommand(nodesId, nodesCount, roundId);
     double* res = executeGetValsCommand(command);
     free(command);
@@ -118,17 +118,17 @@ bool __testRedis(){
     long long roundId = 9;
     long long nodesId[] = {1, 4, 6, 7 ,8, 20, 15};
     double values[] = {1.13412341432, 4.1132413241234, 6.412341321324, 7.541323234 ,8.713241234567, 20.7456, 15.456098765437};
-    setNodesVal(nodesId, values, nodesCount, roundId);
-    double *getVals = getNodesVal(nodesId, nodesCount, roundId);
+    setNodesValRedis(nodesId, values, nodesCount, roundId);
+    double *getVals = getNodesValRedis(nodesId, nodesCount, roundId);
     for(int i=0; i<nodesCount; i++){
         if(! isEqual(values[i], getVals[i]) ) testResult = false;
     }
     if(debugLevel >= 10){
-        printf("Test result: %s\n", testResult ? "OK" : "FAIL");
         for(int i=0; i<nodesCount; i++){
             printf("Set value: %lf; Get value: %lf; Is correct: %d\n", values[i], getVals[i], isEqual(values[i], getVals[i]));
         }
         printf("\n");
     }
+    printf("__testRedis: Test result: %s\n", testResult ? "OK" : "FAIL");
     return testResult;
 }

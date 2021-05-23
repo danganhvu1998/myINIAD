@@ -3,6 +3,6 @@
 #include "dataReader.h"
 
 int main(){
-    // __testRedis();
+    __testRedis();
     __testDataReader();
 }

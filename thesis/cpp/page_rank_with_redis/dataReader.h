@@ -61,7 +61,7 @@ double* getNodesValFromCache(long long* nodesId, long long nodesCount, long long
             ++currPos;
         }
     }
-    double* resultFromRedis = getNodesVal( notCachedNodesId, notCachedNodesCount, roundId);
+    double* resultFromRedis = getNodesValRedis( notCachedNodesId, notCachedNodesCount, roundId);
     currPos = 0;
     for(int i=0; i<nodesCount; i++){
         if( res[i] < 0 ){  // Not found
@@ -81,7 +81,7 @@ bool __testDataReader(){
     long long roundId = 9;
     long long nodesId[] = {1, 4, 6, 7 ,8, 20, 15};
     double values[] = {1.13412341432, 4.1132413241234, 6.412341321324, 7.541323234 ,8.713241234567, 20.7456, 15.456098765437};
-    setNodesVal(nodesId, values, nodesCount, roundId);
+    setNodesValRedis(nodesId, values, nodesCount, roundId);
     double *getVals = getNodesValFromCache(nodesId, nodesCount, roundId);
     for(int i=0; i<nodesCount; i++){
         if(! isEqual(values[i], getVals[i]) ) testResult = false;
