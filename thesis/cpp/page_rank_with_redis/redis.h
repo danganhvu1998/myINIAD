@@ -4,7 +4,19 @@
 redisContext *context = redisConnect("127.0.0.1", 6379);
 redisReply *reply;
 long long redisGetCount = 0, redisSetCount = 0, redisCommandCount = 0;
-long long debugLevel = 10;
+long long debugLevel = 50;
+
+void printRedisReply(redisReply *reply, char* startStr = ""){
+    printf("%s================================================\n", startStr);
+    printf("%sTYPE: %d\n", startStr, reply->type);
+    printf("%sINTEGER: %lld\n", startStr, reply->integer);
+    printf("%sSTRING: %s\n", startStr, reply->str);
+    printf("%sELEMENTS: %ld\n", startStr, reply->elements);
+    for(int i=0; i<reply->elements; i++){
+        printRedisReply(reply->element[i], "----");
+    }
+    printf("%s================================================\n", startStr);
+}
 
 bool isEqual(double a, double b, double acceptError = 0.00001){
     return abs(a-b) < acceptError;
@@ -54,8 +66,25 @@ double* executeGetValsCommand(char* command){
     }
     reply = (redisReply *)redisCommand(context, command);
     double* res = new double[reply->elements];
-    for(int i=0; i<reply->elements; i++){
-        res[i] = atof(reply->element[i]->str);
+    if(debugLevel >= 25){
+        printRedisReply(reply);
+    }
+    for(long long i=0; i<reply->elements; i++){
+        if(debugLevel >= 30){
+            printf("____ executeGetValsCommand->[i, strResult, strResultLen]: %lld %s\n", i, reply->element[i]->str);
+        }
+        if(reply->element[i]->str) {
+            res[i] = atof(reply->element[i]->str);
+        } else {
+            res[i] = -1;
+        }
+    }
+    if(debugLevel >= 20){
+        printf("____ _____ executeGetValsCommand result: ");
+        for(int i=0; i<reply->elements; i++){
+            printf("%lf ", res[i]);
+        }
+        printf("\n");
     }
     freeReplyObject(reply);
     return res;

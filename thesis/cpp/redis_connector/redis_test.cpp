@@ -33,7 +33,7 @@ int main(void) {
 
     freeReplyObject(reply);
 
-    reply = (redisReply *)redisCommand(context, "MGET foo bar");
+    reply = (redisReply *)redisCommand(context, "MGET foo bar haha");
     // if (!reply || context->err || reply->type != REDIS_REPLY_STRING) {
     //     fprintf(stderr, "Error:  Can't send MGET command to Redis\n");
     //     return -1;

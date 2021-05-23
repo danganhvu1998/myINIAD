@@ -91,6 +91,11 @@ bool __testDataReader(){
     for(int i=0; i<nodesCount; i++){
         if(! isEqual(values[i], getVals[i]) ) testResult = false;
     }
+    roundId = 11;
+    getVals = getNodesValFromCache(nodesId, nodesCount, roundId);
+    for(int i=0; i<nodesCount; i++){
+        if(! isEqual(values[i], getVals[i]) ) testResult = false;
+    }
     if(debugLevel >= 10){
         printf("__testDataReader: Test result: %s\n", testResult ? "OK" : "FAIL");
         for(int i=0; i<nodesCount; i++){
