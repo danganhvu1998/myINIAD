@@ -13,53 +13,39 @@ using namespace std;
 int const oo = 1000000007, e5 = 100007, e6 = 1000007;
 
 int __init__() {
-  return 0;
+  	return 0;
 }
 
 void print01(int val, int showNums = 20) {
-  char answer[showNums];
-  for0(i, showNums) {
-    answer[showNums - 1 - i] = val % 2 + '0';
-    val /= 2;
-  }
-  cout << answer;
+	char answer[showNums];
+	for0(i, showNums) {
+		answer[showNums - 1 - i] = val % 2 + '0';
+		val /= 2;
+	}
+	cout << answer;
 }
 
-int N;
+int N, a,b,k;
 
 int ask(int pos, bool isAnswer = false) {
-  if (pos == 0 || pos == N + 1) return oo;
-  if (isAnswer) cout << "! ";
-  else cout << "? ";
-  cout << pos << endl;
-  fflush(stdout);
-  int x = 0;
-  if (not isAnswer) cin >> x;
-  return x;
+    if (pos == 0 || pos == N + 1) return oo;
+    if (isAnswer) cout << "! ";
+    else cout << "? ";
+    cout << pos << endl;
+    fflush(stdout);
+    int x = 0;
+    if (not isAnswer) cin >> x;
+    return x;
 }
 
 int main() {
-  ios_base::sync_with_stdio(false); cin.tie(0);__init__();
-  cin >> N;
-  int ll = 1, rr = N;
-  while (rr > ll + 5) {
-    int m1, m2;
-    //cout << ll << ' ' << rr << '\n';
-    m1 = ask((ll + rr) / 2);
-    m2 = ask((ll + rr) / 2 + 1);
-    //cout << ll << ' ' << rr << ' ' << m1 << ' ' << m2 << '\n';
-    if (m1 > m2) {
-      ll = (ll + rr) / 2 + 1;
-    }
-    else {
-      rr = (ll + rr) / 2;
-    }
-  }
-  for (int i = ll; i <= rr; i++) {
-    if (ask(i - 1) > ask(i) and ask(i + 1) > ask(i)) {
-      ask(i, true);
-      return 0;
-    }
-  }
+    ios_base::sync_with_stdio(false); cin.tie(0);__init__();
+    freopen("test.txt", "r", stdin);
+	cin>>a>>b>>k;
+	long long curr = 0;
+	N = a + b;
 
+	for0(i, N){
+
+	}
 }

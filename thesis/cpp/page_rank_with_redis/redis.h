@@ -4,6 +4,7 @@
 redisContext *context = redisConnect("127.0.0.1", 6379);;
 redisReply *reply;
 long long redisGetCount = 0, redisSetCount = 0, redisCommandCount = 0;
+long long currentRoundId = 0;
 double cachedNodeValue[2][10000007]; // 2 * 10^7 * 8 byte = 0.15Gb
 bool debug = 1;
 
@@ -71,13 +72,13 @@ void executeSetValsCommand(char* command){
     return;
 }
 
-void setNodeVal(long long* nodesId, double* values, long long nodesCount, long long roundId){
+void setNodesVal(long long* nodesId, double* values, long long nodesCount, long long roundId){
     char* command = setValsCommand(nodesId, values, nodesCount, roundId);
     executeSetValsCommand(command);
     free(command);
 }
 
-double* getNodeVal(long long* nodesId, long long nodesCount, long long roundId){
+double* getNodesVal(long long* nodesId, long long nodesCount, long long roundId){
     char* command = getValsCommand(nodesId, nodesCount, roundId);
     double* res = executeGetValsCommand(command);
     free(command);
@@ -90,13 +91,13 @@ bool __testRedis(){
     long long roundId = 9;
     long long nodesId[] = {1, 4, 6, 7 ,8, 20, 15};
     double values[] = {1.13412341432, 4.1132413241234, 6.412341321324, 7.541323234 ,8.713241234567, 20.7456, 15.456098765437};
-    setNodeVal(nodesId, values, nodesCount, roundId);
-    double *getVals = getNodeVal(nodesId, nodesCount, roundId);
+    setNodesVal(nodesId, values, nodesCount, roundId);
+    double *getVals = getNodesVal(nodesId, nodesCount, roundId);
     for(int i=0; i<nodesCount; i++){
         if(! isEqual(values[i], getVals[i]) ) testResult = false;
     }
     if(debug){
-        printf("Test result: %s\n", testResult ? "OK" : "FALSE");
+        printf("Test result: %s\n", testResult ? "OK" : "FAIL");
         for(int i=0; i<nodesCount; i++){
             printf("Set value: %lf; Get value: %lf; Is correct: %d\n", values[i], getVals[i], isEqual(values[i], getVals[i]));
         }
