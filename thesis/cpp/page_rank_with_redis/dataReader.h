@@ -52,6 +52,7 @@ double* getNodesVal(long long* nodesId, long long nodesCount, long long roundId)
     if(debugLevel >= 20){
         printf("getNodesVal->[notCachedNodesCount, nodeCached]: %lld %lld\n", notCachedNodesCount, nodesCount-notCachedNodesCount);
     }
+    if( notCachedNodesCount == 0 ) return res;
     // Check Redis
     long long currPos = 0;
     long long* notCachedNodesId = new long long[notCachedNodesCount];

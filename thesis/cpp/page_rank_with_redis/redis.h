@@ -4,7 +4,7 @@
 redisContext *context = redisConnect("127.0.0.1", 6379);
 redisReply *reply;
 long long redisGetCount = 0, redisSetCount = 0, redisCommandCount = 0;
-long long debugLevel = 20;
+long long debugLevel = 0;
 
 void printRedisReply(redisReply *reply, char* startStr = ""){
     printf("%s================================================\n", startStr);
@@ -59,6 +59,7 @@ char* delValsCommand(long long* nodesId, long long nodesCount, long long roundId
         strcat(res, valName);
         free(valName);
     }
+    ++redisCommandCount;
     return res;
 }
 
@@ -78,6 +79,7 @@ void delAllNodesAtRound(long long roundId){
     freeReplyObject(reply);
     reply = (redisReply *)redisCommand(context, command);
     freeReplyObject(reply);
+    redisCommandCount+=2;
 }
 
 char* setValsCommand(long long* nodesId, double* values, long long nodesCount, long long roundId){
@@ -119,6 +121,8 @@ double* executeGetValsCommand(char* command){
         printf("\n");
     }
     freeReplyObject(reply);
+    ++redisCommandCount;
+    ++redisGetCount;
     return res;
 }
 
@@ -128,6 +132,8 @@ void executeSetValsCommand(char* command){
     }
     reply = (redisReply *)redisCommand(context, command);
     freeReplyObject(reply);
+    ++redisCommandCount;
+    ++redisSetCount;
     return;
 }
 

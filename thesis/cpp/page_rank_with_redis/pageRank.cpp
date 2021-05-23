@@ -34,7 +34,7 @@ void calculation(long long round){
             weight += getNodeVal(fromNode, lastRound) / toNodesCount[fromNode];
         }
         // nodeWeight[currRound][i] =  weight;
-        setNodeVal(i, round, weight);
+        setNodeVal(i, weight, round);
     }
 }
 
@@ -50,7 +50,7 @@ bool isAcceptErrorSastified(){
 
 int main(){
     ios_base::sync_with_stdio(false); cin.tie(0);
-    freopen("graph.out","r",stdin);
+    freopen("graph_1000.out","r",stdin);
     freopen("result.out","w",stdout);
     // INPUT GRAPH
     cin>>N>>M;
@@ -64,8 +64,9 @@ int main(){
 
     // INIT WEIGHT
     // for0(i, N) nodeWeight[0][i] = 1;
-    for0(i, N) setNodeVal(i, 0, 1.0);
+    for0(i, N) setNodeVal(i, 1.0, 0);
     for1(i, MAX_ROUND){
+        if(i>=2) delAllNodesAtRound(i-2);
         calculation(i);
         lastRound = i;
         if( isAcceptErrorSastified() ) break;
