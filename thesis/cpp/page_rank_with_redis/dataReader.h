@@ -22,21 +22,20 @@ double getValueFromCache(long long nodeId, long long roundId){
     }
 }
 
+void clearCache(long long removeCaches = 0){
+    if(removeCaches){
+        it = nodesCache.begin();
+        std::advance(it, removeCaches);
+        nodesCache.erase(nodesCache.begin(), it);
+    }
+}
+
 void addCache(long long nodeId, long long roundId, double value){
     long long key = roundId * maxNodes + nodeId;
     nodesCache[key] = value;
     // TODO: Reduce number of time check this by using random
     long long removeCaches = nodesCache.size()-maxCaches;
     if( removeCaches > 100000 )  clearCache(removeCaches);
-}
-
-void clearCache(long long removeCaches = 0){
-    // TODO: Implement clear cache: https://stackoverflow.com/questions/41284763/erase-first-n-items-from-a-stdmap
-    if(removeCaches){
-        it = nodesCache.begin();
-        std::advance(it, removeCaches);
-        nodesCache.erase(nodesCache.begin(), it);
-    }
 }
 
 // TODO: Not only get its value, but its number of children is also important
@@ -49,6 +48,9 @@ double* getNodesValFromCache(long long* nodesId, long long nodesCount, long long
         if( res[i] < 0 ){  // Not found
             ++notCachedNodesCount;
         }
+    }
+    if(debugLevel >= 20){
+        printf("getNodesValFromCache->[notCachedNodesCount, nodeCached]: %lld %lld\n", notCachedNodesCount, nodesCount-notCachedNodesCount);
     }
     // Check Redis
     long long currPos = 0;
@@ -71,4 +73,30 @@ double* getNodesValFromCache(long long* nodesId, long long nodesCount, long long
     free(resultFromRedis);
     return res;
     // Check Other Workers: Not yet implemented
+}
+
+bool __testDataReader(){
+    bool testResult = true;
+    long long nodesCount = 7;
+    long long roundId = 9;
+    long long nodesId[] = {1, 4, 6, 7 ,8, 20, 15};
+    double values[] = {1.13412341432, 4.1132413241234, 6.412341321324, 7.541323234 ,8.713241234567, 20.7456, 15.456098765437};
+    setNodesVal(nodesId, values, nodesCount, roundId);
+    double *getVals = getNodesValFromCache(nodesId, nodesCount, roundId);
+    for(int i=0; i<nodesCount; i++){
+        if(! isEqual(values[i], getVals[i]) ) testResult = false;
+    }
+    free(getVals);
+    getVals = getNodesValFromCache(nodesId, nodesCount, roundId);
+    for(int i=0; i<nodesCount; i++){
+        if(! isEqual(values[i], getVals[i]) ) testResult = false;
+    }
+    if(debugLevel >= 10){
+        printf("__testDataReader: Test result: %s\n", testResult ? "OK" : "FAIL");
+        for(int i=0; i<nodesCount; i++){
+            printf("Set value: %lf; Get value: %lf; Is correct: %d\n", values[i], getVals[i], isEqual(values[i], getVals[i]));
+        }
+        printf("\n");
+    }
+    return testResult;
 }

@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <hiredis/hiredis.h>
 
-redisContext *context = redisConnect("127.0.0.1", 6379);;
+redisContext *context = redisConnect("127.0.0.1", 6379);
 redisReply *reply;
 long long redisGetCount = 0, redisSetCount = 0, redisCommandCount = 0;
-bool debug = 1;
+long long debugLevel = 10;
 
 bool isEqual(double a, double b, double acceptError = 0.00001){
     return abs(a-b) < acceptError;
@@ -13,7 +13,7 @@ bool isEqual(double a, double b, double acceptError = 0.00001){
 char* getValName(long long nodeId, long long roundId){
     char *res = new char[255];
     sprintf(res, "node_%lld_%lld ", nodeId, roundId); // Never hurt to add an space at the end
-    if(debug) printf("getValName->[nodeId, roundId, res]: %lld, %lld, '%s'\n", nodeId, roundId, res);
+    if(debugLevel >= 30) printf("getValName->[nodeId, roundId, res]: %lld, %lld, '%s'\n", nodeId, roundId, res);
     return res;
 }
 
@@ -21,7 +21,7 @@ char* getSetPath(long long nodeId, double value, long long roundId){
     char *res = new char[255];
     char* valName = getValName(nodeId, roundId);
     sprintf(res, "%s%lf ", valName, value); // Never hurt to add an space at the end
-    if(debug) printf("getSetPath->[nodeId, value, roundId, res]: %lld, %lf, %lld, '%s'\n", nodeId, value, roundId, res);
+    if(debugLevel >= 30) printf("getSetPath->[nodeId, value, roundId, res]: %lld, %lf, %lld, '%s'\n", nodeId, value, roundId, res);
     free(valName);
     return res;
 }
@@ -49,7 +49,7 @@ char* setValsCommand(long long* nodesId, double* values, long long nodesCount, l
 }
 
 double* executeGetValsCommand(char* command){
-    if(debug){
+    if(debugLevel >= 20){
         printf("executeGetValsCommand->command: %s\n", command);
     }
     reply = (redisReply *)redisCommand(context, command);
@@ -62,7 +62,7 @@ double* executeGetValsCommand(char* command){
 }
 
 void executeSetValsCommand(char* command){
-    if(debug){
+    if(debugLevel >= 20){
         printf("executeSetValsCommand->command: %s\n", command);
     }
     reply = (redisReply *)redisCommand(context, command);
@@ -94,7 +94,7 @@ bool __testRedis(){
     for(int i=0; i<nodesCount; i++){
         if(! isEqual(values[i], getVals[i]) ) testResult = false;
     }
-    if(debug){
+    if(debugLevel >= 10){
         printf("Test result: %s\n", testResult ? "OK" : "FAIL");
         for(int i=0; i<nodesCount; i++){
             printf("Set value: %lf; Get value: %lf; Is correct: %d\n", values[i], getVals[i], isEqual(values[i], getVals[i]));
