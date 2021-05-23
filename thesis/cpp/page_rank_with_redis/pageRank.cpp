@@ -28,12 +28,17 @@ void calculation(long long round){
     int lastRound = round -1;
     for0(i, N){
         double weight = 0;
+        long long* nodesId = new long long [edgesTo[i].size()];
+        for0(j, edgesTo[i].size()){
+            nodesId[j] = edgesTo[i][j];
+        }
+        double* values = getNodesVal(nodesId, edgesTo[i].size(), lastRound);
+        free(nodesId);
         for0(j, edgesTo[i].size()){
             const int fromNode = edgesTo[i][j];
-            // weight += nodeWeight[lastRound][fromNode] / toNodesCount[fromNode];
-            weight += getNodeVal(fromNode, lastRound) / toNodesCount[fromNode];
+            weight += values[j] / toNodesCount[fromNode];
         }
-        // nodeWeight[currRound][i] =  weight;
+        free(values);
         setNodeVal(i, weight, round);
     }
 }
