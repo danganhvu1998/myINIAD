@@ -4,7 +4,7 @@
 redisContext *context = redisConnect("127.0.0.1", 6379);
 redisReply *reply;
 long long redisGetCount = 0, redisSetCount = 0, redisCommandCount = 0;
-long long debugLevel = 0;
+long long debugLevel = 20;
 
 void printRedisReply(redisReply *reply, char* startStr = ""){
     printf("%s================================================\n", startStr);
@@ -60,6 +60,24 @@ char* delValsCommand(long long* nodesId, long long nodesCount, long long roundId
         free(valName);
     }
     return res;
+}
+
+void delAllNodesAtRound(long long roundId){
+    char* command = new char[100];
+    sprintf(command, "KEYS *_%lld", roundId);
+    reply = (redisReply *)redisCommand(context, command);
+    if(debugLevel >= 30) printRedisReply(reply);
+    free(command);
+    command =  new char[5 + 28 * reply->elements];
+    strcpy(command, "DEL ");
+    for(int i = 0; i<reply->elements; i++){
+        strcat(command, reply->element[i]->str);
+        strcat(command, " ");
+    }
+    if(debugLevel >= 20) printf("delAllNodesAtRound->command: %s\n", command);
+    freeReplyObject(reply);
+    reply = (redisReply *)redisCommand(context, command);
+    freeReplyObject(reply);
 }
 
 char* setValsCommand(long long* nodesId, double* values, long long nodesCount, long long roundId){
@@ -143,9 +161,20 @@ bool __testRedis(){
     for(int i=0; i<nodesCount; i++){
         if(! isEqual(values[i], getVals[i]) ) testResult = false;
     }
-    if(debugLevel >= 10){
+    if(debugLevel >= 20){
         for(int i=0; i<nodesCount; i++){
             printf("Set value: %lf; Get value: %lf; Is correct: %d\n", values[i], getVals[i], isEqual(values[i], getVals[i]));
+        }
+        printf("\n");
+    }
+    delAllNodesAtRound(9);
+    getVals = getNodesValRedis(nodesId, nodesCount, roundId);
+    for(int i=0; i<nodesCount; i++){
+        if(! isEqual(-1, getVals[i]) ) testResult = false;
+    }
+    if(debugLevel >= 20){
+        for(int i=0; i<nodesCount; i++){
+            printf("Set value: null(deleted); Get value: %lf; Is correct: %d\n", getVals[i], isEqual(-1, getVals[i]));
         }
         printf("\n");
     }
