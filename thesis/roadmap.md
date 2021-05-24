@@ -66,3 +66,4 @@ todo:
 + how many time access redis
 + how much data is sent via network
 + volumn computing reduce after adding a node
++ 
