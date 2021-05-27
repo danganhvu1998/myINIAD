@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>cross_validation_reg</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>ai-07-assign1</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14259,7 +14259,7 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="AI-07:-Cross-validation-of-linear-regression">AI-07: Cross-validation of linear regression<a class="anchor-link" href="#AI-07:-Cross-validation-of-linear-regression">&#182;</a></h3>
+<h3 id="Sample-program-for-calculating-accuracy-measures-and-plotting-ROC-/-PR-curve">Sample program for calculating accuracy measures and plotting ROC / PR curve<a class="anchor-link" href="#Sample-program-for-calculating-accuracy-measures-and-plotting-ROC-/-PR-curve">&#182;</a></h3>
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
@@ -14272,12 +14272,14 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_absolute_error</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span><span class="p">,</span> <span class="n">roc_auc_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">precision_recall_curve</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">precision_score</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">,</span> <span class="n">accuracy_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">matthews_corrcoef</span>
 </pre></div>
 
      </div>
@@ -14288,17 +14290,36 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Read-CSV-file">Read CSV file<a class="anchor-link" href="#Read-CSV-file">&#182;</a></h4>
+<h4 id="Parameters">Parameters<a class="anchor-link" href="#Parameters">&#182;</a></h4>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">csv_in</span> <span class="o">=</span> <span class="s1">&#39;reg100x50.csv&#39;</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_in</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">csv_in</span> <span class="o">=</span> <span class="s1">&#39;class_pre2.csv&#39;</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="CSV-file">CSV file<a class="anchor-link" href="#CSV-file">&#182;</a></h4>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_in</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
 <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
 
@@ -14319,7 +14340,19 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>(100, 51)
+<pre>(100, 4)
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 100 entries, 0 to 99
+Data columns (total 4 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   label   100 non-null    int64  
+ 1   A       100 non-null    float64
+ 2   B       100 non-null    float64
+ 3   C       100 non-null    float64
+dtypes: float64(3), int64(1)
+memory usage: 3.2 KB
+None
 </pre>
 </div>
 </div>
@@ -14350,153 +14383,50 @@ a.anchor-link {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>x0</th>
-      <th>x1</th>
-      <th>x2</th>
-      <th>x3</th>
-      <th>x4</th>
-      <th>x5</th>
-      <th>x6</th>
-      <th>x7</th>
-      <th>x8</th>
-      <th>x9</th>
-      <th>...</th>
-      <th>x41</th>
-      <th>x42</th>
-      <th>x43</th>
-      <th>x44</th>
-      <th>x45</th>
-      <th>x46</th>
-      <th>x47</th>
-      <th>x48</th>
-      <th>x49</th>
-      <th>y</th>
+      <th>label</th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.4</td>
-      <td>-0.3</td>
-      <td>2.4</td>
-      <td>-0.3</td>
-      <td>0.1</td>
-      <td>1.6</td>
-      <td>-0.9</td>
-      <td>-0.6</td>
-      <td>0.2</td>
-      <td>-0.3</td>
-      <td>...</td>
-      <td>1.1</td>
-      <td>-0.4</td>
-      <td>-0.8</td>
-      <td>0.3</td>
-      <td>2.0</td>
-      <td>-0.5</td>
-      <td>-1.3</td>
-      <td>0.1</td>
-      <td>0.5</td>
-      <td>1.4</td>
+      <td>1</td>
+      <td>0.967236</td>
+      <td>0.727885</td>
+      <td>0.698040</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.7</td>
-      <td>0.1</td>
-      <td>-0.4</td>
-      <td>0.0</td>
-      <td>-0.1</td>
-      <td>0.8</td>
-      <td>-0.6</td>
-      <td>-0.0</td>
-      <td>-0.1</td>
-      <td>-0.1</td>
-      <td>...</td>
-      <td>0.2</td>
-      <td>-0.1</td>
-      <td>-1.1</td>
-      <td>-0.1</td>
-      <td>-1.3</td>
-      <td>0.7</td>
-      <td>0.1</td>
-      <td>0.6</td>
-      <td>1.0</td>
-      <td>15.2</td>
+      <td>0</td>
+      <td>0.418231</td>
+      <td>0.129677</td>
+      <td>0.497822</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>1.4</td>
-      <td>0.2</td>
-      <td>-1.3</td>
-      <td>-0.7</td>
-      <td>-0.6</td>
-      <td>1.2</td>
-      <td>-0.1</td>
-      <td>2.3</td>
-      <td>0.7</td>
-      <td>0.1</td>
-      <td>...</td>
-      <td>1.2</td>
-      <td>-1.3</td>
-      <td>0.8</td>
-      <td>0.2</td>
-      <td>0.1</td>
-      <td>0.5</td>
-      <td>-0.6</td>
-      <td>0.8</td>
-      <td>0.1</td>
-      <td>10.4</td>
+      <td>0</td>
+      <td>0.370626</td>
+      <td>0.075308</td>
+      <td>0.434023</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>-1.4</td>
-      <td>0.9</td>
-      <td>-0.2</td>
-      <td>-0.6</td>
-      <td>-0.2</td>
-      <td>2.1</td>
-      <td>0.3</td>
-      <td>0.7</td>
-      <td>0.8</td>
-      <td>1.0</td>
-      <td>...</td>
-      <td>-0.7</td>
-      <td>0.2</td>
-      <td>-0.3</td>
-      <td>-0.5</td>
-      <td>-0.1</td>
-      <td>1.8</td>
-      <td>-0.8</td>
-      <td>-0.3</td>
-      <td>1.4</td>
-      <td>1.6</td>
+      <td>1</td>
+      <td>0.567236</td>
+      <td>0.620885</td>
+      <td>0.849366</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.8</td>
-      <td>0.2</td>
-      <td>-1.8</td>
-      <td>0.6</td>
-      <td>0.5</td>
-      <td>1.0</td>
-      <td>-0.8</td>
-      <td>2.5</td>
-      <td>-1.2</td>
-      <td>0.7</td>
-      <td>...</td>
-      <td>0.5</td>
-      <td>-1.0</td>
-      <td>0.6</td>
-      <td>-1.7</td>
-      <td>-0.8</td>
-      <td>-0.9</td>
-      <td>0.5</td>
-      <td>0.7</td>
-      <td>-1.3</td>
-      <td>-8.5</td>
+      <td>0</td>
+      <td>0.400454</td>
+      <td>0.439406</td>
+      <td>0.460549</td>
     </tr>
   </tbody>
 </table>
-<p>5 rows × 51 columns</p>
 </div>
 </div>
 
@@ -14509,54 +14439,7 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Estimation-of-generalization-performance-using-5-fold-cross-validation">Estimation of generalization performance using 5-fold cross validation<a class="anchor-link" href="#Estimation-of-generalization-performance-using-5-fold-cross-validation">&#182;</a></h4>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h5 id="Firstly,-prepare-for-data-with-25-variables-...">Firstly, prepare for data with 25 variables ...<a class="anchor-link" href="#Firstly,-prepare-for-data-with-25-variables-...">&#182;</a></h5>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Xh</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;x25&#39;</span><span class="p">:</span><span class="s1">&#39;x49&#39;</span><span class="p">]</span>  <span class="c1"># explanatory variables</span>
-<span class="n">yh</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>  <span class="c1"># objective variable</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Xh</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">yh</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>(100, 25) (100,)
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h5 id="Then-execute-regression-calculation-within-CV-loop">Then execute regression calculation within CV loop<a class="anchor-link" href="#Then-execute-regression-calculation-within-CV-loop">&#182;</a></h5>
+<h4 id="Confusing-matrix-(&#28151;&#21516;&#34892;&#21015;)-and-measurements-for-prediction-accuracy-for-each-method">Confusing matrix (&#28151;&#21516;&#34892;&#21015;) and measurements for prediction accuracy for each method<a class="anchor-link" href="#Confusing-matrix-(&#28151;&#21516;&#34892;&#21015;)-and-measurements-for-prediction-accuracy-for-each-method">&#182;</a></h4>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -14564,19 +14447,18 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">skf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">mae_all</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">pred_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([])</span>
-<span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">skf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">Xh</span><span class="p">,</span> <span class="n">yh</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># debug</span>
-    <span class="n">Xh_train_c</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">Xh</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train</span><span class="p">])</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">yh</span><span class="p">[</span><span class="n">train</span><span class="p">],</span> <span class="n">Xh_train_c</span><span class="p">)</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-    <span class="n">Xh_test_c</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">Xh</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">test</span><span class="p">])</span>
-    <span class="n">yh_test_pred</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xh_test_c</span><span class="p">)</span>
-    <span class="n">mae</span> <span class="o">=</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">yh_test_pred</span><span class="p">,</span><span class="n">yh</span><span class="p">[</span><span class="n">test</span><span class="p">])</span>
-    <span class="n">mae_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mae</span><span class="p">)</span>
-    <span class="n">pred_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pred_all</span><span class="p">,</span><span class="n">yh_test_pred</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;precision:&#39;</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.6</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;recall:&#39;</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.6</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;accuracy(Q2):&#39;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.6</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;f1:&#39;</span><span class="p">,</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.6</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;matthews:&#39;</span><span class="p">,</span> <span class="n">matthews_corrcoef</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.6</span><span class="p">))</span>
+<span class="n">predA</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mf">0.6</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">ctA</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">predA</span><span class="p">)</span>
+<span class="n">fpA</span> <span class="o">=</span> <span class="n">ctA</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">tnA</span> <span class="o">=</span> <span class="n">ctA</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;false positive rate:&#39;</span><span class="p">,</span> <span class="n">fpA</span><span class="o">/</span><span class="p">(</span><span class="n">fpA</span><span class="o">+</span><span class="n">tnA</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">ctA</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14596,14 +14478,68 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>(75,) (25,)
-(75,) (25,)
-(75,) (25,)
-(75,) (25,)
-&lt;ipython-input-4-6b80f1908018&gt;:3: DeprecationWarning: The default dtype for empty Series will be &#39;object&#39; instead of &#39;float64&#39; in a future version. Specify a dtype explicitly to silence this warning.
-  pred_all = pd.Series([])
+<pre>A
+precision: 0.45161290322580644
+recall: 0.5833333333333334
+accuracy(Q2): 0.73
+f1: 0.509090909090909
+matthews: 0.3321131181045284
+false positive rate: 0.2236842105263158
 </pre>
 </div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>A</th>
+      <th>0</th>
+      <th>1</th>
+    </tr>
+    <tr>
+      <th>label</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>59</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>10</td>
+      <td>14</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
 </div>
 
 </div>
@@ -14613,12 +14549,21 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mae_all</span><span class="p">),</span> <span class="n">mae_all</span><span class="p">)</span>
-<span class="c1"># or</span>
-<span class="c1">#print(mean_squared_error(pred_all,yh))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;precision:&#39;</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.6</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;recall:&#39;</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.6</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;accuracy(Q2):&#39;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.6</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;f1:&#39;</span><span class="p">,</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.6</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;matthews:&#39;</span><span class="p">,</span> <span class="n">matthews_corrcoef</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.6</span><span class="p">))</span>
+<span class="n">predB</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mf">0.6</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">ctB</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">predB</span><span class="p">)</span>
+<span class="n">fpB</span> <span class="o">=</span> <span class="n">ctB</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">tnB</span> <span class="o">=</span> <span class="n">ctB</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;false positive rate:&#39;</span><span class="p">,</span> <span class="n">fpB</span><span class="o">/</span><span class="p">(</span><span class="n">fpB</span><span class="o">+</span><span class="n">tnB</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;specificity:&#39;</span><span class="p">,</span> <span class="n">tnB</span><span class="o">/</span><span class="p">(</span><span class="n">fpB</span><span class="o">+</span><span class="n">tnB</span><span class="p">))</span>
 </pre></div>
 
      </div>
@@ -14638,7 +14583,14 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>4.855702790390043 [3.3552268572216697, 5.039189356330483, 5.74792672659645, 5.28046822141157]
+<pre>B
+precision: 0.6538461538461539
+recall: 0.7083333333333334
+accuracy(Q2): 0.84
+f1: 0.68
+matthews: 0.5743773696831201
+false positive rate: 0.11842105263157894
+specificity: 0.881578947368421
 </pre>
 </div>
 </div>
@@ -14653,15 +14605,68 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#print(pred_all.shape, yh.shape)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Test by 5-fold CV (25 variables)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Pred&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pred_all</span><span class="p">,</span> <span class="n">yh</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">],[</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;precision:&#39;</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;recall:&#39;</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;accuracy(Q2):&#39;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;f1:&#39;</span><span class="p">,</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;matthews:&#39;</span><span class="p">,</span> <span class="n">matthews_corrcoef</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">predC</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">ctC</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">predC</span><span class="p">)</span>
+<span class="n">fpC</span> <span class="o">=</span> <span class="n">ctC</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">tnC</span> <span class="o">=</span> <span class="n">ctC</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;false positive rate:&#39;</span><span class="p">,</span> <span class="n">fpC</span><span class="o">/</span><span class="p">(</span><span class="n">fpC</span><span class="o">+</span><span class="n">tnC</span><span class="p">))</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>C
+precision: 0.5128205128205128
+recall: 0.8333333333333334
+accuracy(Q2): 0.77
+f1: 0.6349206349206349
+matthews: 0.5107777726419588
+false positive rate: 0.25
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fprA</span><span class="p">,</span> <span class="n">tprA</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fprB</span><span class="p">,</span> <span class="n">tprB</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fprC</span><span class="p">,</span> <span class="n">tprC</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;ROC curve&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;False positive rate&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;True positive rate&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -14686,12 +14691,12 @@ a.anchor-link {
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg height="277.314375pt" version="1.1" viewBox="0 0 273.622813 277.314375" width="273.622813pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg height="277.314375pt" version="1.1" viewBox="0 0 268.42125 277.314375" width="268.42125pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
  <metadata>
   <rdf:RDF xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2021-05-24T13:55:04.981230</dc:date>
+    <dc:date>2021-05-24T13:29:01.179331</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -14707,137 +14712,20 @@ a.anchor-link {
  <g id="figure_1">
   <g id="patch_1">
    <path d="M 0 277.314375 
-L 273.622813 277.314375 
-L 273.622813 0 
+L 268.42125 277.314375 
+L 268.42125 0 
 L 0 0 
 z
 " style="fill:none;"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 48.982813 239.758125 
-L 266.422813 239.758125 
-L 266.422813 22.318125 
-L 48.982813 22.318125 
+    <path d="M 43.78125 239.758125 
+L 261.22125 239.758125 
+L 261.22125 22.318125 
+L 43.78125 22.318125 
 z
 " style="fill:#ffffff;"/>
-   </g>
-   <g id="PathCollection_1">
-    <defs>
-     <path d="M 0 3 
-C 0.795609 3 1.55874 2.683901 2.12132 2.12132 
-C 2.683901 1.55874 3 0.795609 3 0 
-C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132 
-C 1.55874 -2.683901 0.795609 -3 0 -3 
-C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132 
-C -2.683901 -1.55874 -3 -0.795609 -3 0 
-C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132 
-C -1.55874 2.683901 -0.795609 3 0 3 
-z
-" id="m98a78fa276" style="stroke:#1f77b4;"/>
-    </defs>
-    <g clip-path="url(#p5d7990d275)">
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="171.435804" xlink:href="#m98a78fa276" y="124.949805"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="207.845033" xlink:href="#m98a78fa276" y="64.936365"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="198.740377" xlink:href="#m98a78fa276" y="85.810605"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="144.556705" xlink:href="#m98a78fa276" y="124.080045"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="108.062037" xlink:href="#m98a78fa276" y="168.002925"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="139.009541" xlink:href="#m98a78fa276" y="130.168365"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="188.565413" xlink:href="#m98a78fa276" y="95.812845"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="203.941201" xlink:href="#m98a78fa276" y="93.638445"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="95.556281" xlink:href="#m98a78fa276" y="197.139885"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="149.165024" xlink:href="#m98a78fa276" y="160.175085"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="171.855139" xlink:href="#m98a78fa276" y="77.982765"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="167.469379" xlink:href="#m98a78fa276" y="153.217005"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="165.376231" xlink:href="#m98a78fa276" y="111.033645"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="137.422402" xlink:href="#m98a78fa276" y="145.824045"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="112.781584" xlink:href="#m98a78fa276" y="158.870445"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="144.276481" xlink:href="#m98a78fa276" y="121.905645"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="150.289933" xlink:href="#m98a78fa276" y="138.431085"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="168.457654" xlink:href="#m98a78fa276" y="121.470765"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="217.832838" xlink:href="#m98a78fa276" y="86.680365"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="195.303796" xlink:href="#m98a78fa276" y="91.464045"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="152.051755" xlink:href="#m98a78fa276" y="154.086765"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="118.961246" xlink:href="#m98a78fa276" y="114.077805"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="143.144664" xlink:href="#m98a78fa276" y="152.347245"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="147.657293" xlink:href="#m98a78fa276" y="151.912365"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="168.810649" xlink:href="#m98a78fa276" y="128.863725"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="183.928993" xlink:href="#m98a78fa276" y="113.642925"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="177.836912" xlink:href="#m98a78fa276" y="114.512685"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="150.828536" xlink:href="#m98a78fa276" y="127.559085"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="167.087689" xlink:href="#m98a78fa276" y="184.963245"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="168.753832" xlink:href="#m98a78fa276" y="127.559085"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="157.314472" xlink:href="#m98a78fa276" y="127.559085"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="213.909527" xlink:href="#m98a78fa276" y="84.940845"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="137.820237" xlink:href="#m98a78fa276" y="75.373485"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="228.352588" xlink:href="#m98a78fa276" y="94.073325"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="122.68182" xlink:href="#m98a78fa276" y="100.596525"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="206.231936" xlink:href="#m98a78fa276" y="52.324845"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="198.018357" xlink:href="#m98a78fa276" y="127.993965"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="153.740839" xlink:href="#m98a78fa276" y="138.865965"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="139.022402" xlink:href="#m98a78fa276" y="114.947565"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="178.412161" xlink:href="#m98a78fa276" y="78.417645"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="147.429391" xlink:href="#m98a78fa276" y="137.996205"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="140.244475" xlink:href="#m98a78fa276" y="138.431085"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="169.727606" xlink:href="#m98a78fa276" y="112.773165"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="186.586431" xlink:href="#m98a78fa276" y="86.245485"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="157.612825" xlink:href="#m98a78fa276" y="153.651885"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="152.687152" xlink:href="#m98a78fa276" y="148.433325"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="176.912884" xlink:href="#m98a78fa276" y="98.422125"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="223.993977" xlink:href="#m98a78fa276" y="74.068845"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="166.474809" xlink:href="#m98a78fa276" y="106.684845"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="192.859622" xlink:href="#m98a78fa276" y="77.113005"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="160.736712" xlink:href="#m98a78fa276" y="57.543405"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="181.990595" xlink:href="#m98a78fa276" y="112.773165"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="165.65577" xlink:href="#m98a78fa276" y="86.245485"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="157.034003" xlink:href="#m98a78fa276" y="137.996205"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="158.490688" xlink:href="#m98a78fa276" y="116.687085"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="195.430242" xlink:href="#m98a78fa276" y="100.596525"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="184.520141" xlink:href="#m98a78fa276" y="131.907885"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="142.33652" xlink:href="#m98a78fa276" y="172.351725"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="186.053068" xlink:href="#m98a78fa276" y="63.631725"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="211.09827" xlink:href="#m98a78fa276" y="84.940845"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="134.389064" xlink:href="#m98a78fa276" y="165.393645"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="179.545866" xlink:href="#m98a78fa276" y="144.519405"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="153.273823" xlink:href="#m98a78fa276" y="195.835245"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="178.896371" xlink:href="#m98a78fa276" y="94.943085"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="120.286851" xlink:href="#m98a78fa276" y="165.393645"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="162.986576" xlink:href="#m98a78fa276" y="104.075565"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="150.018942" xlink:href="#m98a78fa276" y="147.128685"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="144.870562" xlink:href="#m98a78fa276" y="156.261165"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="142.824704" xlink:href="#m98a78fa276" y="155.391405"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="171.817237" xlink:href="#m98a78fa276" y="142.345005"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="145.3366" xlink:href="#m98a78fa276" y="218.883885"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="180.871058" xlink:href="#m98a78fa276" y="91.464045"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="188.620678" xlink:href="#m98a78fa276" y="120.166125"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="179.763002" xlink:href="#m98a78fa276" y="113.642925"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="121.910395" xlink:href="#m98a78fa276" y="101.031405"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="137.531308" xlink:href="#m98a78fa276" y="147.998445"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="134.785106" xlink:href="#m98a78fa276" y="138.431085"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="200.391725" xlink:href="#m98a78fa276" y="119.296365"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="121.437979" xlink:href="#m98a78fa276" y="173.221485"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="188.987099" xlink:href="#m98a78fa276" y="95.377965"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="89.875" xlink:href="#m98a78fa276" y="170.612205"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="149.241794" xlink:href="#m98a78fa276" y="166.263405"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="163.528935" xlink:href="#m98a78fa276" y="125.384685"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="96.590373" xlink:href="#m98a78fa276" y="141.910125"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="175.511333" xlink:href="#m98a78fa276" y="151.912365"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="134.125648" xlink:href="#m98a78fa276" y="169.742445"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="130.019047" xlink:href="#m98a78fa276" y="152.782125"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="148.5354" xlink:href="#m98a78fa276" y="117.556845"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="101.920408" xlink:href="#m98a78fa276" y="197.139885"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="195.706488" xlink:href="#m98a78fa276" y="129.733485"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="189.840958" xlink:href="#m98a78fa276" y="107.119725"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="135.903331" xlink:href="#m98a78fa276" y="125.384685"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="113.424241" xlink:href="#m98a78fa276" y="205.402605"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="142.442499" xlink:href="#m98a78fa276" y="155.826285"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="176.31149" xlink:href="#m98a78fa276" y="182.353965"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="245.342428" xlink:href="#m98a78fa276" y="91.464045"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="160.244654" xlink:href="#m98a78fa276" y="119.731245"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="134.767023" xlink:href="#m98a78fa276" y="173.656365"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="168.116604" xlink:href="#m98a78fa276" y="102.336045"/>
-     <use style="fill:#1f77b4;stroke:#1f77b4;" x="135.843126" xlink:href="#m98a78fa276" y="113.642925"/>
-    </g>
    </g>
    <g id="matplotlib.axis_1">
     <g id="xtick_1">
@@ -14845,23 +14733,61 @@ z
       <defs>
        <path d="M 0 0 
 L 0 3.5 
-" id="m40268ec800" style="stroke:#000000;stroke-width:0.8;"/>
+" id="mee5ef9e25c" style="stroke:#000000;stroke-width:0.8;"/>
       </defs>
       <g>
-       <use style="stroke:#000000;stroke-width:0.8;" x="70.726812" xlink:href="#m40268ec800" y="239.758125"/>
+       <use style="stroke:#000000;stroke-width:0.8;" x="61.90125" xlink:href="#mee5ef9e25c" y="239.758125"/>
       </g>
      </g>
      <g id="text_1">
-      <!-- −20 -->
-      <g transform="translate(60.174469 254.356562)scale(0.1 -0.1)">
+      <!-- 0.0 -->
+      <g transform="translate(53.949688 254.356562)scale(0.1 -0.1)">
        <defs>
-        <path d="M 678 2272 
-L 4684 2272 
-L 4684 1741 
-L 678 1741 
-L 678 2272 
+        <path d="M 2034 4250 
+Q 1547 4250 1301 3770 
+Q 1056 3291 1056 2328 
+Q 1056 1369 1301 889 
+Q 1547 409 2034 409 
+Q 2525 409 2770 889 
+Q 3016 1369 3016 2328 
+Q 3016 3291 2770 3770 
+Q 2525 4250 2034 4250 
 z
-" id="DejaVuSans-2212" transform="scale(0.015625)"/>
+M 2034 4750 
+Q 2819 4750 3233 4129 
+Q 3647 3509 3647 2328 
+Q 3647 1150 3233 529 
+Q 2819 -91 2034 -91 
+Q 1250 -91 836 529 
+Q 422 1150 422 2328 
+Q 422 3509 836 4129 
+Q 1250 4750 2034 4750 
+z
+" id="DejaVuSans-30" transform="scale(0.015625)"/>
+        <path d="M 684 794 
+L 1344 794 
+L 1344 0 
+L 684 0 
+L 684 794 
+z
+" id="DejaVuSans-2e" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="98.14125" xlink:href="#mee5ef9e25c" y="239.758125"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <!-- 0.2 -->
+      <g transform="translate(90.189688 254.356562)scale(0.1 -0.1)">
+       <defs>
         <path d="M 1228 531 
 L 3431 531 
 L 3431 0 
@@ -14886,43 +14812,161 @@ Q 2828 2175 2409 1742
 Q 1991 1309 1228 531 
 z
 " id="DejaVuSans-32" transform="scale(0.015625)"/>
-        <path d="M 2034 4250 
-Q 1547 4250 1301 3770 
-Q 1056 3291 1056 2328 
-Q 1056 1369 1301 889 
-Q 1547 409 2034 409 
-Q 2525 409 2770 889 
-Q 3016 1369 3016 2328 
-Q 3016 3291 2770 3770 
-Q 2525 4250 2034 4250 
-z
-M 2034 4750 
-Q 2819 4750 3233 4129 
-Q 3647 3509 3647 2328 
-Q 3647 1150 3233 529 
-Q 2819 -91 2034 -91 
-Q 1250 -91 836 529 
-Q 422 1150 422 2328 
-Q 422 3509 836 4129 
-Q 1250 4750 2034 4750 
-z
-" id="DejaVuSans-30" transform="scale(0.015625)"/>
        </defs>
-       <use xlink:href="#DejaVuSans-2212"/>
-       <use x="83.789062" xlink:href="#DejaVuSans-32"/>
-       <use x="147.412109" xlink:href="#DejaVuSans-30"/>
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-32"/>
       </g>
      </g>
     </g>
-    <g id="xtick_2">
-     <g id="line2d_2">
+    <g id="xtick_3">
+     <g id="line2d_3">
       <g>
-       <use style="stroke:#000000;stroke-width:0.8;" x="114.214812" xlink:href="#m40268ec800" y="239.758125"/>
+       <use style="stroke:#000000;stroke-width:0.8;" x="134.38125" xlink:href="#mee5ef9e25c" y="239.758125"/>
       </g>
      </g>
-     <g id="text_2">
-      <!-- −10 -->
-      <g transform="translate(103.662469 254.356562)scale(0.1 -0.1)">
+     <g id="text_3">
+      <!-- 0.4 -->
+      <g transform="translate(126.429688 254.356562)scale(0.1 -0.1)">
+       <defs>
+        <path d="M 2419 4116 
+L 825 1625 
+L 2419 1625 
+L 2419 4116 
+z
+M 2253 4666 
+L 3047 4666 
+L 3047 1625 
+L 3713 1625 
+L 3713 1100 
+L 3047 1100 
+L 3047 0 
+L 2419 0 
+L 2419 1100 
+L 313 1100 
+L 313 1709 
+L 2253 4666 
+z
+" id="DejaVuSans-34" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-34"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="170.62125" xlink:href="#mee5ef9e25c" y="239.758125"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <!-- 0.6 -->
+      <g transform="translate(162.669688 254.356562)scale(0.1 -0.1)">
+       <defs>
+        <path d="M 2113 2584 
+Q 1688 2584 1439 2293 
+Q 1191 2003 1191 1497 
+Q 1191 994 1439 701 
+Q 1688 409 2113 409 
+Q 2538 409 2786 701 
+Q 3034 994 3034 1497 
+Q 3034 2003 2786 2293 
+Q 2538 2584 2113 2584 
+z
+M 3366 4563 
+L 3366 3988 
+Q 3128 4100 2886 4159 
+Q 2644 4219 2406 4219 
+Q 1781 4219 1451 3797 
+Q 1122 3375 1075 2522 
+Q 1259 2794 1537 2939 
+Q 1816 3084 2150 3084 
+Q 2853 3084 3261 2657 
+Q 3669 2231 3669 1497 
+Q 3669 778 3244 343 
+Q 2819 -91 2113 -91 
+Q 1303 -91 875 529 
+Q 447 1150 447 2328 
+Q 447 3434 972 4092 
+Q 1497 4750 2381 4750 
+Q 2619 4750 2861 4703 
+Q 3103 4656 3366 4563 
+z
+" id="DejaVuSans-36" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-36"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="206.86125" xlink:href="#mee5ef9e25c" y="239.758125"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <!-- 0.8 -->
+      <g transform="translate(198.909688 254.356562)scale(0.1 -0.1)">
+       <defs>
+        <path d="M 2034 2216 
+Q 1584 2216 1326 1975 
+Q 1069 1734 1069 1313 
+Q 1069 891 1326 650 
+Q 1584 409 2034 409 
+Q 2484 409 2743 651 
+Q 3003 894 3003 1313 
+Q 3003 1734 2745 1975 
+Q 2488 2216 2034 2216 
+z
+M 1403 2484 
+Q 997 2584 770 2862 
+Q 544 3141 544 3541 
+Q 544 4100 942 4425 
+Q 1341 4750 2034 4750 
+Q 2731 4750 3128 4425 
+Q 3525 4100 3525 3541 
+Q 3525 3141 3298 2862 
+Q 3072 2584 2669 2484 
+Q 3125 2378 3379 2068 
+Q 3634 1759 3634 1313 
+Q 3634 634 3220 271 
+Q 2806 -91 2034 -91 
+Q 1263 -91 848 271 
+Q 434 634 434 1313 
+Q 434 1759 690 2068 
+Q 947 2378 1403 2484 
+z
+M 1172 3481 
+Q 1172 3119 1398 2916 
+Q 1625 2713 2034 2713 
+Q 2441 2713 2670 2916 
+Q 2900 3119 2900 3481 
+Q 2900 3844 2670 4047 
+Q 2441 4250 2034 4250 
+Q 1625 4250 1398 4047 
+Q 1172 3844 1172 3481 
+z
+" id="DejaVuSans-38" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-38"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="243.10125" xlink:href="#mee5ef9e25c" y="239.758125"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <!-- 1.0 -->
+      <g transform="translate(235.149688 254.356562)scale(0.1 -0.1)">
        <defs>
         <path d="M 794 531 
 L 1825 531 
@@ -14939,95 +14983,100 @@ L 794 531
 z
 " id="DejaVuSans-31" transform="scale(0.015625)"/>
        </defs>
-       <use xlink:href="#DejaVuSans-2212"/>
-       <use x="83.789062" xlink:href="#DejaVuSans-31"/>
-       <use x="147.412109" xlink:href="#DejaVuSans-30"/>
-      </g>
-     </g>
-    </g>
-    <g id="xtick_3">
-     <g id="line2d_3">
-      <g>
-       <use style="stroke:#000000;stroke-width:0.8;" x="157.702812" xlink:href="#m40268ec800" y="239.758125"/>
-      </g>
-     </g>
-     <g id="text_3">
-      <!-- 0 -->
-      <g transform="translate(154.521562 254.356562)scale(0.1 -0.1)">
-       <use xlink:href="#DejaVuSans-30"/>
-      </g>
-     </g>
-    </g>
-    <g id="xtick_4">
-     <g id="line2d_4">
-      <g>
-       <use style="stroke:#000000;stroke-width:0.8;" x="201.190812" xlink:href="#m40268ec800" y="239.758125"/>
-      </g>
-     </g>
-     <g id="text_4">
-      <!-- 10 -->
-      <g transform="translate(194.828312 254.356562)scale(0.1 -0.1)">
        <use xlink:href="#DejaVuSans-31"/>
-       <use x="63.623047" xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-30"/>
       </g>
      </g>
     </g>
-    <g id="xtick_5">
-     <g id="line2d_5">
-      <g>
-       <use style="stroke:#000000;stroke-width:0.8;" x="244.678812" xlink:href="#m40268ec800" y="239.758125"/>
-      </g>
-     </g>
-     <g id="text_5">
-      <!-- 20 -->
-      <g transform="translate(238.316312 254.356562)scale(0.1 -0.1)">
-       <use xlink:href="#DejaVuSans-32"/>
-       <use x="63.623047" xlink:href="#DejaVuSans-30"/>
-      </g>
-     </g>
-    </g>
-    <g id="text_6">
-     <!-- Pred -->
-     <g transform="translate(146.581719 268.034687)scale(0.1 -0.1)">
+    <g id="text_7">
+     <!-- False positive rate -->
+     <g transform="translate(107.000469 268.034687)scale(0.1 -0.1)">
       <defs>
-       <path d="M 1259 4147 
-L 1259 2394 
-L 2053 2394 
-Q 2494 2394 2734 2622 
-Q 2975 2850 2975 3272 
-Q 2975 3691 2734 3919 
-Q 2494 4147 2053 4147 
-L 1259 4147 
-z
-M 628 4666 
-L 2053 4666 
-Q 2838 4666 3239 4311 
-Q 3641 3956 3641 3272 
-Q 3641 2581 3239 2228 
-Q 2838 1875 2053 1875 
-L 1259 1875 
+       <path d="M 628 4666 
+L 3309 4666 
+L 3309 4134 
+L 1259 4134 
+L 1259 2759 
+L 3109 2759 
+L 3109 2228 
+L 1259 2228 
 L 1259 0 
 L 628 0 
 L 628 4666 
 z
-" id="DejaVuSans-50" transform="scale(0.015625)"/>
-       <path d="M 2631 2963 
-Q 2534 3019 2420 3045 
-Q 2306 3072 2169 3072 
-Q 1681 3072 1420 2755 
-Q 1159 2438 1159 1844 
-L 1159 0 
-L 581 0 
-L 581 3500 
-L 1159 3500 
-L 1159 2956 
-Q 1341 3275 1631 3429 
-Q 1922 3584 2338 3584 
-Q 2397 3584 2469 3576 
-Q 2541 3569 2628 3553 
-L 2631 2963 
+" id="DejaVuSans-46" transform="scale(0.015625)"/>
+       <path d="M 2194 1759 
+Q 1497 1759 1228 1600 
+Q 959 1441 959 1056 
+Q 959 750 1161 570 
+Q 1363 391 1709 391 
+Q 2188 391 2477 730 
+Q 2766 1069 2766 1631 
+L 2766 1759 
+L 2194 1759 
 z
-" id="DejaVuSans-72" transform="scale(0.015625)"/>
+M 3341 1997 
+L 3341 0 
+L 2766 0 
+L 2766 531 
+Q 2569 213 2275 61 
+Q 1981 -91 1556 -91 
+Q 1019 -91 701 211 
+Q 384 513 384 1019 
+Q 384 1609 779 1909 
+Q 1175 2209 1959 2209 
+L 2766 2209 
+L 2766 2266 
+Q 2766 2663 2505 2880 
+Q 2244 3097 1772 3097 
+Q 1472 3097 1187 3025 
+Q 903 2953 641 2809 
+L 641 3341 
+Q 956 3463 1253 3523 
+Q 1550 3584 1831 3584 
+Q 2591 3584 2966 3190 
+Q 3341 2797 3341 1997 
+z
+" id="DejaVuSans-61" transform="scale(0.015625)"/>
+       <path d="M 603 4863 
+L 1178 4863 
+L 1178 0 
+L 603 0 
+L 603 4863 
+z
+" id="DejaVuSans-6c" transform="scale(0.015625)"/>
+       <path d="M 2834 3397 
+L 2834 2853 
+Q 2591 2978 2328 3040 
+Q 2066 3103 1784 3103 
+Q 1356 3103 1142 2972 
+Q 928 2841 928 2578 
+Q 928 2378 1081 2264 
+Q 1234 2150 1697 2047 
+L 1894 2003 
+Q 2506 1872 2764 1633 
+Q 3022 1394 3022 966 
+Q 3022 478 2636 193 
+Q 2250 -91 1575 -91 
+Q 1294 -91 989 -36 
+Q 684 19 347 128 
+L 347 722 
+Q 666 556 975 473 
+Q 1284 391 1588 391 
+Q 1994 391 2212 530 
+Q 2431 669 2431 922 
+Q 2431 1156 2273 1281 
+Q 2116 1406 1581 1522 
+L 1381 1569 
+Q 847 1681 609 1914 
+Q 372 2147 372 2553 
+Q 372 3047 722 3315 
+Q 1072 3584 1716 3584 
+Q 2034 3584 2315 3537 
+Q 2597 3491 2834 3397 
+z
+" id="DejaVuSans-73" transform="scale(0.015625)"/>
        <path d="M 3597 1894 
 L 3597 1613 
 L 953 1613 
@@ -15053,120 +15102,237 @@ Q 1016 2553 972 2059
 L 3022 2063 
 z
 " id="DejaVuSans-65" transform="scale(0.015625)"/>
-       <path d="M 2906 2969 
-L 2906 4863 
-L 3481 4863 
-L 3481 0 
-L 2906 0 
-L 2906 525 
-Q 2725 213 2448 61 
-Q 2172 -91 1784 -91 
-Q 1150 -91 751 415 
-Q 353 922 353 1747 
-Q 353 2572 751 3078 
-Q 1150 3584 1784 3584 
-Q 2172 3584 2448 3432 
-Q 2725 3281 2906 2969 
+       <path id="DejaVuSans-20" transform="scale(0.015625)"/>
+       <path d="M 1159 525 
+L 1159 -1331 
+L 581 -1331 
+L 581 3500 
+L 1159 3500 
+L 1159 2969 
+Q 1341 3281 1617 3432 
+Q 1894 3584 2278 3584 
+Q 2916 3584 3314 3078 
+Q 3713 2572 3713 1747 
+Q 3713 922 3314 415 
+Q 2916 -91 2278 -91 
+Q 1894 -91 1617 61 
+Q 1341 213 1159 525 
 z
-M 947 1747 
-Q 947 1113 1208 752 
-Q 1469 391 1925 391 
-Q 2381 391 2643 752 
-Q 2906 1113 2906 1747 
-Q 2906 2381 2643 2742 
-Q 2381 3103 1925 3103 
-Q 1469 3103 1208 2742 
-Q 947 2381 947 1747 
+M 3116 1747 
+Q 3116 2381 2855 2742 
+Q 2594 3103 2138 3103 
+Q 1681 3103 1420 2742 
+Q 1159 2381 1159 1747 
+Q 1159 1113 1420 752 
+Q 1681 391 2138 391 
+Q 2594 391 2855 752 
+Q 3116 1113 3116 1747 
 z
-" id="DejaVuSans-64" transform="scale(0.015625)"/>
+" id="DejaVuSans-70" transform="scale(0.015625)"/>
+       <path d="M 1959 3097 
+Q 1497 3097 1228 2736 
+Q 959 2375 959 1747 
+Q 959 1119 1226 758 
+Q 1494 397 1959 397 
+Q 2419 397 2687 759 
+Q 2956 1122 2956 1747 
+Q 2956 2369 2687 2733 
+Q 2419 3097 1959 3097 
+z
+M 1959 3584 
+Q 2709 3584 3137 3096 
+Q 3566 2609 3566 1747 
+Q 3566 888 3137 398 
+Q 2709 -91 1959 -91 
+Q 1206 -91 779 398 
+Q 353 888 353 1747 
+Q 353 2609 779 3096 
+Q 1206 3584 1959 3584 
+z
+" id="DejaVuSans-6f" transform="scale(0.015625)"/>
+       <path d="M 603 3500 
+L 1178 3500 
+L 1178 0 
+L 603 0 
+L 603 3500 
+z
+M 603 4863 
+L 1178 4863 
+L 1178 4134 
+L 603 4134 
+L 603 4863 
+z
+" id="DejaVuSans-69" transform="scale(0.015625)"/>
+       <path d="M 1172 4494 
+L 1172 3500 
+L 2356 3500 
+L 2356 3053 
+L 1172 3053 
+L 1172 1153 
+Q 1172 725 1289 603 
+Q 1406 481 1766 481 
+L 2356 481 
+L 2356 0 
+L 1766 0 
+Q 1100 0 847 248 
+Q 594 497 594 1153 
+L 594 3053 
+L 172 3053 
+L 172 3500 
+L 594 3500 
+L 594 4494 
+L 1172 4494 
+z
+" id="DejaVuSans-74" transform="scale(0.015625)"/>
+       <path d="M 191 3500 
+L 800 3500 
+L 1894 563 
+L 2988 3500 
+L 3597 3500 
+L 2284 0 
+L 1503 0 
+L 191 3500 
+z
+" id="DejaVuSans-76" transform="scale(0.015625)"/>
+       <path d="M 2631 2963 
+Q 2534 3019 2420 3045 
+Q 2306 3072 2169 3072 
+Q 1681 3072 1420 2755 
+Q 1159 2438 1159 1844 
+L 1159 0 
+L 581 0 
+L 581 3500 
+L 1159 3500 
+L 1159 2956 
+Q 1341 3275 1631 3429 
+Q 1922 3584 2338 3584 
+Q 2397 3584 2469 3576 
+Q 2541 3569 2628 3553 
+L 2631 2963 
+z
+" id="DejaVuSans-72" transform="scale(0.015625)"/>
       </defs>
-      <use xlink:href="#DejaVuSans-50"/>
-      <use x="58.552734" xlink:href="#DejaVuSans-72"/>
-      <use x="97.416016" xlink:href="#DejaVuSans-65"/>
-      <use x="158.939453" xlink:href="#DejaVuSans-64"/>
+      <use xlink:href="#DejaVuSans-46"/>
+      <use x="48.394531" xlink:href="#DejaVuSans-61"/>
+      <use x="109.673828" xlink:href="#DejaVuSans-6c"/>
+      <use x="137.457031" xlink:href="#DejaVuSans-73"/>
+      <use x="189.556641" xlink:href="#DejaVuSans-65"/>
+      <use x="251.080078" xlink:href="#DejaVuSans-20"/>
+      <use x="282.867188" xlink:href="#DejaVuSans-70"/>
+      <use x="346.34375" xlink:href="#DejaVuSans-6f"/>
+      <use x="407.525391" xlink:href="#DejaVuSans-73"/>
+      <use x="459.625" xlink:href="#DejaVuSans-69"/>
+      <use x="487.408203" xlink:href="#DejaVuSans-74"/>
+      <use x="526.617188" xlink:href="#DejaVuSans-69"/>
+      <use x="554.400391" xlink:href="#DejaVuSans-76"/>
+      <use x="613.580078" xlink:href="#DejaVuSans-65"/>
+      <use x="675.103516" xlink:href="#DejaVuSans-20"/>
+      <use x="706.890625" xlink:href="#DejaVuSans-72"/>
+      <use x="748.003906" xlink:href="#DejaVuSans-61"/>
+      <use x="809.283203" xlink:href="#DejaVuSans-74"/>
+      <use x="848.492188" xlink:href="#DejaVuSans-65"/>
      </g>
     </g>
    </g>
    <g id="matplotlib.axis_2">
     <g id="ytick_1">
-     <g id="line2d_6">
+     <g id="line2d_7">
       <defs>
        <path d="M 0 0 
 L -3.5 0 
-" id="m4c4487267f" style="stroke:#000000;stroke-width:0.8;"/>
+" id="ma7641e7e6c" style="stroke:#000000;stroke-width:0.8;"/>
       </defs>
       <g>
-       <use style="stroke:#000000;stroke-width:0.8;" x="48.982813" xlink:href="#m4c4487267f" y="218.014125"/>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#ma7641e7e6c" y="221.638125"/>
       </g>
      </g>
-     <g id="text_7">
-      <!-- −20 -->
-      <g transform="translate(20.878125 221.813344)scale(0.1 -0.1)">
-       <use xlink:href="#DejaVuSans-2212"/>
-       <use x="83.789062" xlink:href="#DejaVuSans-32"/>
-       <use x="147.412109" xlink:href="#DejaVuSans-30"/>
+     <g id="text_8">
+      <!-- 0.0 -->
+      <g transform="translate(20.878125 225.437344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-30"/>
       </g>
      </g>
     </g>
     <g id="ytick_2">
-     <g id="line2d_7">
+     <g id="line2d_8">
       <g>
-       <use style="stroke:#000000;stroke-width:0.8;" x="48.982813" xlink:href="#m4c4487267f" y="174.526125"/>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#ma7641e7e6c" y="185.398125"/>
       </g>
      </g>
-     <g id="text_8">
-      <!-- −10 -->
-      <g transform="translate(20.878125 178.325344)scale(0.1 -0.1)">
-       <use xlink:href="#DejaVuSans-2212"/>
-       <use x="83.789062" xlink:href="#DejaVuSans-31"/>
-       <use x="147.412109" xlink:href="#DejaVuSans-30"/>
+     <g id="text_9">
+      <!-- 0.2 -->
+      <g transform="translate(20.878125 189.197344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-32"/>
       </g>
      </g>
     </g>
     <g id="ytick_3">
-     <g id="line2d_8">
+     <g id="line2d_9">
       <g>
-       <use style="stroke:#000000;stroke-width:0.8;" x="48.982813" xlink:href="#m4c4487267f" y="131.038125"/>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#ma7641e7e6c" y="149.158125"/>
       </g>
      </g>
-     <g id="text_9">
-      <!-- 0 -->
-      <g transform="translate(35.620313 134.837344)scale(0.1 -0.1)">
+     <g id="text_10">
+      <!-- 0.4 -->
+      <g transform="translate(20.878125 152.957344)scale(0.1 -0.1)">
        <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-34"/>
       </g>
      </g>
     </g>
     <g id="ytick_4">
-     <g id="line2d_9">
+     <g id="line2d_10">
       <g>
-       <use style="stroke:#000000;stroke-width:0.8;" x="48.982813" xlink:href="#m4c4487267f" y="87.550125"/>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#ma7641e7e6c" y="112.918125"/>
       </g>
      </g>
-     <g id="text_10">
-      <!-- 10 -->
-      <g transform="translate(29.257813 91.349344)scale(0.1 -0.1)">
-       <use xlink:href="#DejaVuSans-31"/>
-       <use x="63.623047" xlink:href="#DejaVuSans-30"/>
+     <g id="text_11">
+      <!-- 0.6 -->
+      <g transform="translate(20.878125 116.717344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-36"/>
       </g>
      </g>
     </g>
     <g id="ytick_5">
-     <g id="line2d_10">
+     <g id="line2d_11">
       <g>
-       <use style="stroke:#000000;stroke-width:0.8;" x="48.982813" xlink:href="#m4c4487267f" y="44.062125"/>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#ma7641e7e6c" y="76.678125"/>
       </g>
      </g>
-     <g id="text_11">
-      <!-- 20 -->
-      <g transform="translate(29.257813 47.861344)scale(0.1 -0.1)">
-       <use xlink:href="#DejaVuSans-32"/>
-       <use x="63.623047" xlink:href="#DejaVuSans-30"/>
+     <g id="text_12">
+      <!-- 0.8 -->
+      <g transform="translate(20.878125 80.477344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-38"/>
       </g>
      </g>
     </g>
-    <g id="text_12">
-     <!-- True -->
-     <g transform="translate(14.798438 141.655312)rotate(-90)scale(0.1 -0.1)">
+    <g id="ytick_6">
+     <g id="line2d_12">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#ma7641e7e6c" y="40.438125"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <!-- 1.0 -->
+      <g transform="translate(20.878125 44.237344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-31"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="text_14">
+     <!-- True positive rate -->
+     <g transform="translate(14.798438 174.602187)rotate(-90)scale(0.1 -0.1)">
       <defs>
        <path d="M -19 4666 
 L 3928 4666 
@@ -15206,215 +15372,207 @@ z
       <use x="46.333984" xlink:href="#DejaVuSans-72"/>
       <use x="87.447266" xlink:href="#DejaVuSans-75"/>
       <use x="150.826172" xlink:href="#DejaVuSans-65"/>
+      <use x="212.349609" xlink:href="#DejaVuSans-20"/>
+      <use x="244.136719" xlink:href="#DejaVuSans-70"/>
+      <use x="307.613281" xlink:href="#DejaVuSans-6f"/>
+      <use x="368.794922" xlink:href="#DejaVuSans-73"/>
+      <use x="420.894531" xlink:href="#DejaVuSans-69"/>
+      <use x="448.677734" xlink:href="#DejaVuSans-74"/>
+      <use x="487.886719" xlink:href="#DejaVuSans-69"/>
+      <use x="515.669922" xlink:href="#DejaVuSans-76"/>
+      <use x="574.849609" xlink:href="#DejaVuSans-65"/>
+      <use x="636.373047" xlink:href="#DejaVuSans-20"/>
+      <use x="668.160156" xlink:href="#DejaVuSans-72"/>
+      <use x="709.273438" xlink:href="#DejaVuSans-61"/>
+      <use x="770.552734" xlink:href="#DejaVuSans-74"/>
+      <use x="809.761719" xlink:href="#DejaVuSans-65"/>
      </g>
     </g>
    </g>
-   <g id="line2d_11">
-    <path clip-path="url(#p5d7990d275)" d="M 48.982812 239.758125 
-L 266.422812 22.318125 
+   <g id="line2d_13">
+    <path clip-path="url(#pa2aa4657e7)" d="M 61.90125 221.638125 
+L 64.285461 221.638125 
+L 64.285461 214.088125 
+L 66.669671 214.088125 
+L 66.669671 183.888125 
+L 78.590724 183.888125 
+L 78.590724 176.338125 
+L 80.974934 176.338125 
+L 80.974934 161.238125 
+L 85.743355 161.238125 
+L 85.743355 153.688125 
+L 88.127566 153.688125 
+L 88.127566 146.138125 
+L 92.895987 146.138125 
+L 92.895987 138.588125 
+L 100.048618 138.588125 
+L 100.048618 131.038125 
+L 102.432829 131.038125 
+L 102.432829 115.938125 
+L 109.585461 115.938125 
+L 109.585461 108.388125 
+L 116.738092 108.388125 
+L 116.738092 93.288125 
+L 121.506513 93.288125 
+L 121.506513 85.738125 
+L 138.195987 85.738125 
+L 138.195987 78.188125 
+L 204.953882 78.188125 
+L 204.953882 63.088125 
+L 216.874934 63.088125 
+L 216.874934 55.538125 
+L 233.564408 55.538125 
+L 233.564408 47.988125 
+L 235.948618 47.988125 
+L 235.948618 40.438125 
+L 243.10125 40.438125 
 " style="fill:none;stroke:#1f77b4;stroke-linecap:square;stroke-width:1.5;"/>
    </g>
+   <g id="line2d_14">
+    <path clip-path="url(#pa2aa4657e7)" d="M 61.90125 221.638125 
+L 61.90125 214.088125 
+L 64.285461 214.088125 
+L 64.285461 176.338125 
+L 66.669671 176.338125 
+L 66.669671 168.788125 
+L 69.053882 168.788125 
+L 69.053882 161.238125 
+L 71.438092 161.238125 
+L 71.438092 146.138125 
+L 73.822303 146.138125 
+L 73.822303 138.588125 
+L 76.206513 138.588125 
+L 76.206513 131.038125 
+L 78.590724 131.038125 
+L 78.590724 115.938125 
+L 80.974934 115.938125 
+L 80.974934 100.838125 
+L 83.359145 100.838125 
+L 83.359145 78.188125 
+L 92.895987 78.188125 
+L 92.895987 70.638125 
+L 100.048618 70.638125 
+L 100.048618 63.088125 
+L 142.964408 63.088125 
+L 142.964408 55.538125 
+L 200.185461 55.538125 
+L 200.185461 47.988125 
+L 238.332829 47.988125 
+L 238.332829 40.438125 
+L 243.10125 40.438125 
+" style="fill:none;stroke:#ff7f0e;stroke-linecap:square;stroke-width:1.5;"/>
+   </g>
+   <g id="line2d_15">
+    <path clip-path="url(#pa2aa4657e7)" d="M 61.90125 221.638125 
+L 61.90125 214.088125 
+L 61.90125 168.788125 
+L 71.438092 168.788125 
+L 71.438092 161.238125 
+L 80.974934 161.238125 
+L 80.974934 146.138125 
+L 85.743355 146.138125 
+L 85.743355 123.488125 
+L 92.895987 123.488125 
+L 92.895987 115.938125 
+L 95.280197 115.938125 
+L 95.280197 108.388125 
+L 100.048618 108.388125 
+L 100.048618 100.838125 
+L 102.432829 100.838125 
+L 102.432829 93.288125 
+L 104.817039 93.288125 
+L 104.817039 85.738125 
+L 107.20125 85.738125 
+L 107.20125 70.638125 
+L 111.969671 70.638125 
+L 111.969671 63.088125 
+L 154.885461 63.088125 
+L 154.885461 55.538125 
+L 188.264408 55.538125 
+L 188.264408 47.988125 
+L 202.569671 47.988125 
+L 202.569671 40.438125 
+L 243.10125 40.438125 
+" style="fill:none;stroke:#2ca02c;stroke-linecap:square;stroke-width:1.5;"/>
+   </g>
+   <g id="line2d_16">
+    <path clip-path="url(#pa2aa4657e7)" d="M 61.90125 221.638125 
+L 243.10125 40.438125 
+" style="fill:none;stroke:#d62728;stroke-linecap:square;stroke-width:1.5;"/>
+   </g>
    <g id="patch_3">
-    <path d="M 48.982813 239.758125 
-L 48.982813 22.318125 
+    <path d="M 43.78125 239.758125 
+L 43.78125 22.318125 
 " style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
    </g>
    <g id="patch_4">
-    <path d="M 266.422813 239.758125 
-L 266.422813 22.318125 
+    <path d="M 261.22125 239.758125 
+L 261.22125 22.318125 
 " style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
    </g>
    <g id="patch_5">
-    <path d="M 48.982812 239.758125 
-L 266.422812 239.758125 
+    <path d="M 43.78125 239.758125 
+L 261.22125 239.758125 
 " style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
    </g>
    <g id="patch_6">
-    <path d="M 48.982812 22.318125 
-L 266.422812 22.318125 
+    <path d="M 43.78125 22.318125 
+L 261.22125 22.318125 
 " style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
    </g>
-   <g id="text_13">
-    <!-- Test by 5-fold CV (25 variables) -->
-    <g transform="translate(63.809375 16.318125)scale(0.12 -0.12)">
+   <g id="text_15">
+    <!-- ROC curve -->
+    <g transform="translate(120.70125 16.318125)scale(0.12 -0.12)">
      <defs>
-      <path d="M 2834 3397 
-L 2834 2853 
-Q 2591 2978 2328 3040 
-Q 2066 3103 1784 3103 
-Q 1356 3103 1142 2972 
-Q 928 2841 928 2578 
-Q 928 2378 1081 2264 
-Q 1234 2150 1697 2047 
-L 1894 2003 
-Q 2506 1872 2764 1633 
-Q 3022 1394 3022 966 
-Q 3022 478 2636 193 
-Q 2250 -91 1575 -91 
-Q 1294 -91 989 -36 
-Q 684 19 347 128 
-L 347 722 
-Q 666 556 975 473 
-Q 1284 391 1588 391 
-Q 1994 391 2212 530 
-Q 2431 669 2431 922 
-Q 2431 1156 2273 1281 
-Q 2116 1406 1581 1522 
-L 1381 1569 
-Q 847 1681 609 1914 
-Q 372 2147 372 2553 
-Q 372 3047 722 3315 
-Q 1072 3584 1716 3584 
-Q 2034 3584 2315 3537 
-Q 2597 3491 2834 3397 
+      <path d="M 2841 2188 
+Q 3044 2119 3236 1894 
+Q 3428 1669 3622 1275 
+L 4263 0 
+L 3584 0 
+L 2988 1197 
+Q 2756 1666 2539 1819 
+Q 2322 1972 1947 1972 
+L 1259 1972 
+L 1259 0 
+L 628 0 
+L 628 4666 
+L 2053 4666 
+Q 2853 4666 3247 4331 
+Q 3641 3997 3641 3322 
+Q 3641 2881 3436 2590 
+Q 3231 2300 2841 2188 
 z
-" id="DejaVuSans-73" transform="scale(0.015625)"/>
-      <path d="M 1172 4494 
-L 1172 3500 
-L 2356 3500 
-L 2356 3053 
-L 1172 3053 
-L 1172 1153 
-Q 1172 725 1289 603 
-Q 1406 481 1766 481 
-L 2356 481 
-L 2356 0 
-L 1766 0 
-Q 1100 0 847 248 
-Q 594 497 594 1153 
-L 594 3053 
-L 172 3053 
-L 172 3500 
-L 594 3500 
-L 594 4494 
-L 1172 4494 
+M 1259 4147 
+L 1259 2491 
+L 2053 2491 
+Q 2509 2491 2742 2702 
+Q 2975 2913 2975 3322 
+Q 2975 3731 2742 3939 
+Q 2509 4147 2053 4147 
+L 1259 4147 
 z
-" id="DejaVuSans-74" transform="scale(0.015625)"/>
-      <path id="DejaVuSans-20" transform="scale(0.015625)"/>
-      <path d="M 3116 1747 
-Q 3116 2381 2855 2742 
-Q 2594 3103 2138 3103 
-Q 1681 3103 1420 2742 
-Q 1159 2381 1159 1747 
-Q 1159 1113 1420 752 
-Q 1681 391 2138 391 
-Q 2594 391 2855 752 
-Q 3116 1113 3116 1747 
+" id="DejaVuSans-52" transform="scale(0.015625)"/>
+      <path d="M 2522 4238 
+Q 1834 4238 1429 3725 
+Q 1025 3213 1025 2328 
+Q 1025 1447 1429 934 
+Q 1834 422 2522 422 
+Q 3209 422 3611 934 
+Q 4013 1447 4013 2328 
+Q 4013 3213 3611 3725 
+Q 3209 4238 2522 4238 
 z
-M 1159 2969 
-Q 1341 3281 1617 3432 
-Q 1894 3584 2278 3584 
-Q 2916 3584 3314 3078 
-Q 3713 2572 3713 1747 
-Q 3713 922 3314 415 
-Q 2916 -91 2278 -91 
-Q 1894 -91 1617 61 
-Q 1341 213 1159 525 
-L 1159 0 
-L 581 0 
-L 581 4863 
-L 1159 4863 
-L 1159 2969 
+M 2522 4750 
+Q 3503 4750 4090 4092 
+Q 4678 3434 4678 2328 
+Q 4678 1225 4090 567 
+Q 3503 -91 2522 -91 
+Q 1538 -91 948 565 
+Q 359 1222 359 2328 
+Q 359 3434 948 4092 
+Q 1538 4750 2522 4750 
 z
-" id="DejaVuSans-62" transform="scale(0.015625)"/>
-      <path d="M 2059 -325 
-Q 1816 -950 1584 -1140 
-Q 1353 -1331 966 -1331 
-L 506 -1331 
-L 506 -850 
-L 844 -850 
-Q 1081 -850 1212 -737 
-Q 1344 -625 1503 -206 
-L 1606 56 
-L 191 3500 
-L 800 3500 
-L 1894 763 
-L 2988 3500 
-L 3597 3500 
-L 2059 -325 
-z
-" id="DejaVuSans-79" transform="scale(0.015625)"/>
-      <path d="M 691 4666 
-L 3169 4666 
-L 3169 4134 
-L 1269 4134 
-L 1269 2991 
-Q 1406 3038 1543 3061 
-Q 1681 3084 1819 3084 
-Q 2600 3084 3056 2656 
-Q 3513 2228 3513 1497 
-Q 3513 744 3044 326 
-Q 2575 -91 1722 -91 
-Q 1428 -91 1123 -41 
-Q 819 9 494 109 
-L 494 744 
-Q 775 591 1075 516 
-Q 1375 441 1709 441 
-Q 2250 441 2565 725 
-Q 2881 1009 2881 1497 
-Q 2881 1984 2565 2268 
-Q 2250 2553 1709 2553 
-Q 1456 2553 1204 2497 
-Q 953 2441 691 2322 
-L 691 4666 
-z
-" id="DejaVuSans-35" transform="scale(0.015625)"/>
-      <path d="M 313 2009 
-L 1997 2009 
-L 1997 1497 
-L 313 1497 
-L 313 2009 
-z
-" id="DejaVuSans-2d" transform="scale(0.015625)"/>
-      <path d="M 2375 4863 
-L 2375 4384 
-L 1825 4384 
-Q 1516 4384 1395 4259 
-Q 1275 4134 1275 3809 
-L 1275 3500 
-L 2222 3500 
-L 2222 3053 
-L 1275 3053 
-L 1275 0 
-L 697 0 
-L 697 3053 
-L 147 3053 
-L 147 3500 
-L 697 3500 
-L 697 3744 
-Q 697 4328 969 4595 
-Q 1241 4863 1831 4863 
-L 2375 4863 
-z
-" id="DejaVuSans-66" transform="scale(0.015625)"/>
-      <path d="M 1959 3097 
-Q 1497 3097 1228 2736 
-Q 959 2375 959 1747 
-Q 959 1119 1226 758 
-Q 1494 397 1959 397 
-Q 2419 397 2687 759 
-Q 2956 1122 2956 1747 
-Q 2956 2369 2687 2733 
-Q 2419 3097 1959 3097 
-z
-M 1959 3584 
-Q 2709 3584 3137 3096 
-Q 3566 2609 3566 1747 
-Q 3566 888 3137 398 
-Q 2709 -91 1959 -91 
-Q 1206 -91 779 398 
-Q 353 888 353 1747 
-Q 353 2609 779 3096 
-Q 1206 3584 1959 3584 
-z
-" id="DejaVuSans-6f" transform="scale(0.015625)"/>
-      <path d="M 603 4863 
-L 1178 4863 
-L 1178 0 
-L 603 0 
-L 603 4863 
-z
-" id="DejaVuSans-6c" transform="scale(0.015625)"/>
+" id="DejaVuSans-4f" transform="scale(0.015625)"/>
       <path d="M 4122 4306 
 L 4122 3641 
 Q 3803 3938 3442 4084 
@@ -15436,40 +15594,627 @@ Q 3056 4750 3426 4639
 Q 3797 4528 4122 4306 
 z
 " id="DejaVuSans-43" transform="scale(0.015625)"/>
-      <path d="M 1831 0 
-L 50 4666 
-L 709 4666 
-L 2188 738 
-L 3669 4666 
-L 4325 4666 
-L 2547 0 
-L 1831 0 
+      <path d="M 3122 3366 
+L 3122 2828 
+Q 2878 2963 2633 3030 
+Q 2388 3097 2138 3097 
+Q 1578 3097 1268 2742 
+Q 959 2388 959 1747 
+Q 959 1106 1268 751 
+Q 1578 397 2138 397 
+Q 2388 397 2633 464 
+Q 2878 531 3122 666 
+L 3122 134 
+Q 2881 22 2623 -34 
+Q 2366 -91 2075 -91 
+Q 1284 -91 818 406 
+Q 353 903 353 1747 
+Q 353 2603 823 3093 
+Q 1294 3584 2113 3584 
+Q 2378 3584 2631 3529 
+Q 2884 3475 3122 3366 
 z
-" id="DejaVuSans-56" transform="scale(0.015625)"/>
-      <path d="M 1984 4856 
-Q 1566 4138 1362 3434 
-Q 1159 2731 1159 2009 
-Q 1159 1288 1364 580 
-Q 1569 -128 1984 -844 
-L 1484 -844 
-Q 1016 -109 783 600 
-Q 550 1309 550 2009 
-Q 550 2706 781 3412 
-Q 1013 4119 1484 4856 
-L 1984 4856 
+" id="DejaVuSans-63" transform="scale(0.015625)"/>
+     </defs>
+     <use xlink:href="#DejaVuSans-52"/>
+     <use x="69.482422" xlink:href="#DejaVuSans-4f"/>
+     <use x="148.193359" xlink:href="#DejaVuSans-43"/>
+     <use x="218.017578" xlink:href="#DejaVuSans-20"/>
+     <use x="249.804688" xlink:href="#DejaVuSans-63"/>
+     <use x="304.785156" xlink:href="#DejaVuSans-75"/>
+     <use x="368.164062" xlink:href="#DejaVuSans-72"/>
+     <use x="409.277344" xlink:href="#DejaVuSans-76"/>
+     <use x="468.457031" xlink:href="#DejaVuSans-65"/>
+    </g>
+   </g>
+   <g id="legend_1">
+    <g id="patch_7">
+     <path d="M 50.78125 74.3525 
+L 89.764063 74.3525 
+Q 91.764063 74.3525 91.764063 72.3525 
+L 91.764063 29.318125 
+Q 91.764063 27.318125 89.764063 27.318125 
+L 50.78125 27.318125 
+Q 48.78125 27.318125 48.78125 29.318125 
+L 48.78125 72.3525 
+Q 48.78125 74.3525 50.78125 74.3525 
 z
-" id="DejaVuSans-28" transform="scale(0.015625)"/>
-      <path d="M 191 3500 
-L 800 3500 
-L 1894 563 
-L 2988 3500 
-L 3597 3500 
-L 2284 0 
-L 1503 0 
-L 191 3500 
+" style="fill:#ffffff;opacity:0.8;stroke:#cccccc;stroke-linejoin:miter;"/>
+    </g>
+    <g id="line2d_17">
+     <path d="M 52.78125 35.416562 
+L 72.78125 35.416562 
+" style="fill:none;stroke:#1f77b4;stroke-linecap:square;stroke-width:1.5;"/>
+    </g>
+    <g id="line2d_18"/>
+    <g id="text_16">
+     <!-- A -->
+     <g transform="translate(80.78125 38.916562)scale(0.1 -0.1)">
+      <defs>
+       <path d="M 2188 4044 
+L 1331 1722 
+L 3047 1722 
+L 2188 4044 
 z
-" id="DejaVuSans-76" transform="scale(0.015625)"/>
-      <path d="M 2194 1759 
+M 1831 4666 
+L 2547 4666 
+L 4325 0 
+L 3669 0 
+L 3244 1197 
+L 1141 1197 
+L 716 0 
+L 50 0 
+L 1831 4666 
+z
+" id="DejaVuSans-41" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#DejaVuSans-41"/>
+     </g>
+    </g>
+    <g id="line2d_19">
+     <path d="M 52.78125 50.094687 
+L 72.78125 50.094687 
+" style="fill:none;stroke:#ff7f0e;stroke-linecap:square;stroke-width:1.5;"/>
+    </g>
+    <g id="line2d_20"/>
+    <g id="text_17">
+     <!-- B -->
+     <g transform="translate(80.78125 53.594687)scale(0.1 -0.1)">
+      <defs>
+       <path d="M 1259 2228 
+L 1259 519 
+L 2272 519 
+Q 2781 519 3026 730 
+Q 3272 941 3272 1375 
+Q 3272 1813 3026 2020 
+Q 2781 2228 2272 2228 
+L 1259 2228 
+z
+M 1259 4147 
+L 1259 2741 
+L 2194 2741 
+Q 2656 2741 2882 2914 
+Q 3109 3088 3109 3444 
+Q 3109 3797 2882 3972 
+Q 2656 4147 2194 4147 
+L 1259 4147 
+z
+M 628 4666 
+L 2241 4666 
+Q 2963 4666 3353 4366 
+Q 3744 4066 3744 3513 
+Q 3744 3084 3544 2831 
+Q 3344 2578 2956 2516 
+Q 3422 2416 3680 2098 
+Q 3938 1781 3938 1306 
+Q 3938 681 3513 340 
+Q 3088 0 2303 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-42" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#DejaVuSans-42"/>
+     </g>
+    </g>
+    <g id="line2d_21">
+     <path d="M 52.78125 64.772812 
+L 72.78125 64.772812 
+" style="fill:none;stroke:#2ca02c;stroke-linecap:square;stroke-width:1.5;"/>
+    </g>
+    <g id="line2d_22"/>
+    <g id="text_18">
+     <!-- C -->
+     <g transform="translate(80.78125 68.272812)scale(0.1 -0.1)">
+      <use xlink:href="#DejaVuSans-43"/>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pa2aa4657e7">
+   <rect height="217.44" width="217.44" x="43.78125" y="22.318125"/>
+  </clipPath>
+ </defs>
+</svg>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="PR-curve-and-its-AUC-for-each-method">PR curve and its AUC for each method<a class="anchor-link" href="#PR-curve-and-its-AUC-for-each-method">&#182;</a></h4>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y_true</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+<span class="n">y_scoreA</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+<span class="n">precisionA</span><span class="p">,</span> <span class="n">recallA</span><span class="p">,</span> <span class="n">thresholdsA</span> <span class="o">=</span> <span class="n">precision_recall_curve</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_scoreA</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;PR-AUC(A):&#39;</span><span class="p">,</span> <span class="n">auc</span><span class="p">(</span><span class="n">recallA</span><span class="p">,</span> <span class="n">precisionA</span><span class="p">))</span>
+<span class="n">y_scoreB</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span>
+<span class="n">precisionB</span><span class="p">,</span> <span class="n">recallB</span><span class="p">,</span> <span class="n">thresholdsB</span> <span class="o">=</span> <span class="n">precision_recall_curve</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_scoreB</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;PR-AUC(B):&#39;</span><span class="p">,</span> <span class="n">auc</span><span class="p">(</span><span class="n">recallB</span><span class="p">,</span> <span class="n">precisionB</span><span class="p">))</span>
+<span class="n">y_scoreC</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span>
+<span class="n">precisionC</span><span class="p">,</span> <span class="n">recallC</span><span class="p">,</span> <span class="n">thresholdsC</span> <span class="o">=</span> <span class="n">precision_recall_curve</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_scoreC</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;PR-AUC(C):&#39;</span><span class="p">,</span> <span class="n">auc</span><span class="p">(</span><span class="n">recallC</span><span class="p">,</span> <span class="n">precisionC</span><span class="p">))</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>PR-AUC(A): 0.4088131094661411
+PR-AUC(B): 0.6489467735367046
+PR-AUC(C): 0.6348901148476905
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">recallA</span><span class="p">,</span> <span class="n">precisionA</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">recallB</span><span class="p">,</span> <span class="n">precisionB</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">recallC</span><span class="p">,</span> <span class="n">precisionC</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;PR curve&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Recall&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Precision&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedSVG jp-OutputArea-output " data-mime-type="image/svg+xml">
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height="277.314375pt" version="1.1" viewBox="0 0 268.42125 277.314375" width="268.42125pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <metadata>
+  <rdf:RDF xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2021-05-24T13:29:01.459493</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.4.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linecap:butt;stroke-linejoin:round;}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 277.314375 
+L 268.42125 277.314375 
+L 268.42125 0 
+L 0 0 
+z
+" style="fill:none;"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 43.78125 239.758125 
+L 261.22125 239.758125 
+L 261.22125 22.318125 
+L 43.78125 22.318125 
+z
+" style="fill:#ffffff;"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path d="M 0 0 
+L 0 3.5 
+" id="m5d9865ca79" style="stroke:#000000;stroke-width:0.8;"/>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="61.90125" xlink:href="#m5d9865ca79" y="239.758125"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <!-- 0.0 -->
+      <g transform="translate(53.949688 254.356562)scale(0.1 -0.1)">
+       <defs>
+        <path d="M 2034 4250 
+Q 1547 4250 1301 3770 
+Q 1056 3291 1056 2328 
+Q 1056 1369 1301 889 
+Q 1547 409 2034 409 
+Q 2525 409 2770 889 
+Q 3016 1369 3016 2328 
+Q 3016 3291 2770 3770 
+Q 2525 4250 2034 4250 
+z
+M 2034 4750 
+Q 2819 4750 3233 4129 
+Q 3647 3509 3647 2328 
+Q 3647 1150 3233 529 
+Q 2819 -91 2034 -91 
+Q 1250 -91 836 529 
+Q 422 1150 422 2328 
+Q 422 3509 836 4129 
+Q 1250 4750 2034 4750 
+z
+" id="DejaVuSans-30" transform="scale(0.015625)"/>
+        <path d="M 684 794 
+L 1344 794 
+L 1344 0 
+L 684 0 
+L 684 794 
+z
+" id="DejaVuSans-2e" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="98.14125" xlink:href="#m5d9865ca79" y="239.758125"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <!-- 0.2 -->
+      <g transform="translate(90.189688 254.356562)scale(0.1 -0.1)">
+       <defs>
+        <path d="M 1228 531 
+L 3431 531 
+L 3431 0 
+L 469 0 
+L 469 531 
+Q 828 903 1448 1529 
+Q 2069 2156 2228 2338 
+Q 2531 2678 2651 2914 
+Q 2772 3150 2772 3378 
+Q 2772 3750 2511 3984 
+Q 2250 4219 1831 4219 
+Q 1534 4219 1204 4116 
+Q 875 4013 500 3803 
+L 500 4441 
+Q 881 4594 1212 4672 
+Q 1544 4750 1819 4750 
+Q 2544 4750 2975 4387 
+Q 3406 4025 3406 3419 
+Q 3406 3131 3298 2873 
+Q 3191 2616 2906 2266 
+Q 2828 2175 2409 1742 
+Q 1991 1309 1228 531 
+z
+" id="DejaVuSans-32" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-32"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="134.38125" xlink:href="#m5d9865ca79" y="239.758125"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <!-- 0.4 -->
+      <g transform="translate(126.429688 254.356562)scale(0.1 -0.1)">
+       <defs>
+        <path d="M 2419 4116 
+L 825 1625 
+L 2419 1625 
+L 2419 4116 
+z
+M 2253 4666 
+L 3047 4666 
+L 3047 1625 
+L 3713 1625 
+L 3713 1100 
+L 3047 1100 
+L 3047 0 
+L 2419 0 
+L 2419 1100 
+L 313 1100 
+L 313 1709 
+L 2253 4666 
+z
+" id="DejaVuSans-34" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-34"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="170.62125" xlink:href="#m5d9865ca79" y="239.758125"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <!-- 0.6 -->
+      <g transform="translate(162.669688 254.356562)scale(0.1 -0.1)">
+       <defs>
+        <path d="M 2113 2584 
+Q 1688 2584 1439 2293 
+Q 1191 2003 1191 1497 
+Q 1191 994 1439 701 
+Q 1688 409 2113 409 
+Q 2538 409 2786 701 
+Q 3034 994 3034 1497 
+Q 3034 2003 2786 2293 
+Q 2538 2584 2113 2584 
+z
+M 3366 4563 
+L 3366 3988 
+Q 3128 4100 2886 4159 
+Q 2644 4219 2406 4219 
+Q 1781 4219 1451 3797 
+Q 1122 3375 1075 2522 
+Q 1259 2794 1537 2939 
+Q 1816 3084 2150 3084 
+Q 2853 3084 3261 2657 
+Q 3669 2231 3669 1497 
+Q 3669 778 3244 343 
+Q 2819 -91 2113 -91 
+Q 1303 -91 875 529 
+Q 447 1150 447 2328 
+Q 447 3434 972 4092 
+Q 1497 4750 2381 4750 
+Q 2619 4750 2861 4703 
+Q 3103 4656 3366 4563 
+z
+" id="DejaVuSans-36" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-36"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="206.86125" xlink:href="#m5d9865ca79" y="239.758125"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <!-- 0.8 -->
+      <g transform="translate(198.909688 254.356562)scale(0.1 -0.1)">
+       <defs>
+        <path d="M 2034 2216 
+Q 1584 2216 1326 1975 
+Q 1069 1734 1069 1313 
+Q 1069 891 1326 650 
+Q 1584 409 2034 409 
+Q 2484 409 2743 651 
+Q 3003 894 3003 1313 
+Q 3003 1734 2745 1975 
+Q 2488 2216 2034 2216 
+z
+M 1403 2484 
+Q 997 2584 770 2862 
+Q 544 3141 544 3541 
+Q 544 4100 942 4425 
+Q 1341 4750 2034 4750 
+Q 2731 4750 3128 4425 
+Q 3525 4100 3525 3541 
+Q 3525 3141 3298 2862 
+Q 3072 2584 2669 2484 
+Q 3125 2378 3379 2068 
+Q 3634 1759 3634 1313 
+Q 3634 634 3220 271 
+Q 2806 -91 2034 -91 
+Q 1263 -91 848 271 
+Q 434 634 434 1313 
+Q 434 1759 690 2068 
+Q 947 2378 1403 2484 
+z
+M 1172 3481 
+Q 1172 3119 1398 2916 
+Q 1625 2713 2034 2713 
+Q 2441 2713 2670 2916 
+Q 2900 3119 2900 3481 
+Q 2900 3844 2670 4047 
+Q 2441 4250 2034 4250 
+Q 1625 4250 1398 4047 
+Q 1172 3844 1172 3481 
+z
+" id="DejaVuSans-38" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-38"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="243.10125" xlink:href="#m5d9865ca79" y="239.758125"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <!-- 1.0 -->
+      <g transform="translate(235.149688 254.356562)scale(0.1 -0.1)">
+       <defs>
+        <path d="M 794 531 
+L 1825 531 
+L 1825 4091 
+L 703 3866 
+L 703 4441 
+L 1819 4666 
+L 2450 4666 
+L 2450 531 
+L 3481 531 
+L 3481 0 
+L 794 0 
+L 794 531 
+z
+" id="DejaVuSans-31" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#DejaVuSans-31"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="text_7">
+     <!-- Recall -->
+     <g transform="translate(137.584063 268.034687)scale(0.1 -0.1)">
+      <defs>
+       <path d="M 2841 2188 
+Q 3044 2119 3236 1894 
+Q 3428 1669 3622 1275 
+L 4263 0 
+L 3584 0 
+L 2988 1197 
+Q 2756 1666 2539 1819 
+Q 2322 1972 1947 1972 
+L 1259 1972 
+L 1259 0 
+L 628 0 
+L 628 4666 
+L 2053 4666 
+Q 2853 4666 3247 4331 
+Q 3641 3997 3641 3322 
+Q 3641 2881 3436 2590 
+Q 3231 2300 2841 2188 
+z
+M 1259 4147 
+L 1259 2491 
+L 2053 2491 
+Q 2509 2491 2742 2702 
+Q 2975 2913 2975 3322 
+Q 2975 3731 2742 3939 
+Q 2509 4147 2053 4147 
+L 1259 4147 
+z
+" id="DejaVuSans-52" transform="scale(0.015625)"/>
+       <path d="M 3597 1894 
+L 3597 1613 
+L 953 1613 
+Q 991 1019 1311 708 
+Q 1631 397 2203 397 
+Q 2534 397 2845 478 
+Q 3156 559 3463 722 
+L 3463 178 
+Q 3153 47 2828 -22 
+Q 2503 -91 2169 -91 
+Q 1331 -91 842 396 
+Q 353 884 353 1716 
+Q 353 2575 817 3079 
+Q 1281 3584 2069 3584 
+Q 2775 3584 3186 3129 
+Q 3597 2675 3597 1894 
+z
+M 3022 2063 
+Q 3016 2534 2758 2815 
+Q 2500 3097 2075 3097 
+Q 1594 3097 1305 2825 
+Q 1016 2553 972 2059 
+L 3022 2063 
+z
+" id="DejaVuSans-65" transform="scale(0.015625)"/>
+       <path d="M 3122 3366 
+L 3122 2828 
+Q 2878 2963 2633 3030 
+Q 2388 3097 2138 3097 
+Q 1578 3097 1268 2742 
+Q 959 2388 959 1747 
+Q 959 1106 1268 751 
+Q 1578 397 2138 397 
+Q 2388 397 2633 464 
+Q 2878 531 3122 666 
+L 3122 134 
+Q 2881 22 2623 -34 
+Q 2366 -91 2075 -91 
+Q 1284 -91 818 406 
+Q 353 903 353 1747 
+Q 353 2603 823 3093 
+Q 1294 3584 2113 3584 
+Q 2378 3584 2631 3529 
+Q 2884 3475 3122 3366 
+z
+" id="DejaVuSans-63" transform="scale(0.015625)"/>
+       <path d="M 2194 1759 
 Q 1497 1759 1228 1600 
 Q 959 1441 959 1056 
 Q 959 750 1161 570 
@@ -15502,7 +16247,162 @@ Q 2591 3584 2966 3190
 Q 3341 2797 3341 1997 
 z
 " id="DejaVuSans-61" transform="scale(0.015625)"/>
-      <path d="M 603 3500 
+       <path d="M 603 4863 
+L 1178 4863 
+L 1178 0 
+L 603 0 
+L 603 4863 
+z
+" id="DejaVuSans-6c" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#DejaVuSans-52"/>
+      <use x="64.982422" xlink:href="#DejaVuSans-65"/>
+      <use x="126.505859" xlink:href="#DejaVuSans-63"/>
+      <use x="181.486328" xlink:href="#DejaVuSans-61"/>
+      <use x="242.765625" xlink:href="#DejaVuSans-6c"/>
+      <use x="270.548828" xlink:href="#DejaVuSans-6c"/>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7">
+      <defs>
+       <path d="M 0 0 
+L -3.5 0 
+" id="mb70292721b" style="stroke:#000000;stroke-width:0.8;"/>
+      </defs>
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#mb70292721b" y="221.638125"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <!-- 0.0 -->
+      <g transform="translate(20.878125 225.437344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#mb70292721b" y="185.398125"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <!-- 0.2 -->
+      <g transform="translate(20.878125 189.197344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-32"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_9">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#mb70292721b" y="149.158125"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <!-- 0.4 -->
+      <g transform="translate(20.878125 152.957344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-34"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_10">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#mb70292721b" y="112.918125"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <!-- 0.6 -->
+      <g transform="translate(20.878125 116.717344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-36"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_11">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#mb70292721b" y="76.678125"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <!-- 0.8 -->
+      <g transform="translate(20.878125 80.477344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-30"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-38"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_12">
+      <g>
+       <use style="stroke:#000000;stroke-width:0.8;" x="43.78125" xlink:href="#mb70292721b" y="40.438125"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <!-- 1.0 -->
+      <g transform="translate(20.878125 44.237344)scale(0.1 -0.1)">
+       <use xlink:href="#DejaVuSans-31"/>
+       <use x="63.623047" xlink:href="#DejaVuSans-2e"/>
+       <use x="95.410156" xlink:href="#DejaVuSans-30"/>
+      </g>
+     </g>
+    </g>
+    <g id="text_14">
+     <!-- Precision -->
+     <g transform="translate(14.798438 153.345156)rotate(-90)scale(0.1 -0.1)">
+      <defs>
+       <path d="M 1259 4147 
+L 1259 2394 
+L 2053 2394 
+Q 2494 2394 2734 2622 
+Q 2975 2850 2975 3272 
+Q 2975 3691 2734 3919 
+Q 2494 4147 2053 4147 
+L 1259 4147 
+z
+M 628 4666 
+L 2053 4666 
+Q 2838 4666 3239 4311 
+Q 3641 3956 3641 3272 
+Q 3641 2581 3239 2228 
+Q 2838 1875 2053 1875 
+L 1259 1875 
+L 1259 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-50" transform="scale(0.015625)"/>
+       <path d="M 2631 2963 
+Q 2534 3019 2420 3045 
+Q 2306 3072 2169 3072 
+Q 1681 3072 1420 2755 
+Q 1159 2438 1159 1844 
+L 1159 0 
+L 581 0 
+L 581 3500 
+L 1159 3500 
+L 1159 2956 
+Q 1341 3275 1631 3429 
+Q 1922 3584 2338 3584 
+Q 2397 3584 2469 3576 
+Q 2541 3569 2628 3553 
+L 2631 2963 
+z
+" id="DejaVuSans-72" transform="scale(0.015625)"/>
+       <path d="M 603 3500 
 L 1178 3500 
 L 1178 0 
 L 603 0 
@@ -15515,59 +16415,579 @@ L 603 4134
 L 603 4863 
 z
 " id="DejaVuSans-69" transform="scale(0.015625)"/>
-      <path d="M 513 4856 
-L 1013 4856 
-Q 1481 4119 1714 3412 
-Q 1947 2706 1947 2009 
-Q 1947 1309 1714 600 
-Q 1481 -109 1013 -844 
-L 513 -844 
-Q 928 -128 1133 580 
-Q 1338 1288 1338 2009 
-Q 1338 2731 1133 3434 
-Q 928 4138 513 4856 
+       <path d="M 2834 3397 
+L 2834 2853 
+Q 2591 2978 2328 3040 
+Q 2066 3103 1784 3103 
+Q 1356 3103 1142 2972 
+Q 928 2841 928 2578 
+Q 928 2378 1081 2264 
+Q 1234 2150 1697 2047 
+L 1894 2003 
+Q 2506 1872 2764 1633 
+Q 3022 1394 3022 966 
+Q 3022 478 2636 193 
+Q 2250 -91 1575 -91 
+Q 1294 -91 989 -36 
+Q 684 19 347 128 
+L 347 722 
+Q 666 556 975 473 
+Q 1284 391 1588 391 
+Q 1994 391 2212 530 
+Q 2431 669 2431 922 
+Q 2431 1156 2273 1281 
+Q 2116 1406 1581 1522 
+L 1381 1569 
+Q 847 1681 609 1914 
+Q 372 2147 372 2553 
+Q 372 3047 722 3315 
+Q 1072 3584 1716 3584 
+Q 2034 3584 2315 3537 
+Q 2597 3491 2834 3397 
 z
-" id="DejaVuSans-29" transform="scale(0.015625)"/>
+" id="DejaVuSans-73" transform="scale(0.015625)"/>
+       <path d="M 1959 3097 
+Q 1497 3097 1228 2736 
+Q 959 2375 959 1747 
+Q 959 1119 1226 758 
+Q 1494 397 1959 397 
+Q 2419 397 2687 759 
+Q 2956 1122 2956 1747 
+Q 2956 2369 2687 2733 
+Q 2419 3097 1959 3097 
+z
+M 1959 3584 
+Q 2709 3584 3137 3096 
+Q 3566 2609 3566 1747 
+Q 3566 888 3137 398 
+Q 2709 -91 1959 -91 
+Q 1206 -91 779 398 
+Q 353 888 353 1747 
+Q 353 2609 779 3096 
+Q 1206 3584 1959 3584 
+z
+" id="DejaVuSans-6f" transform="scale(0.015625)"/>
+       <path d="M 3513 2113 
+L 3513 0 
+L 2938 0 
+L 2938 2094 
+Q 2938 2591 2744 2837 
+Q 2550 3084 2163 3084 
+Q 1697 3084 1428 2787 
+Q 1159 2491 1159 1978 
+L 1159 0 
+L 581 0 
+L 581 3500 
+L 1159 3500 
+L 1159 2956 
+Q 1366 3272 1645 3428 
+Q 1925 3584 2291 3584 
+Q 2894 3584 3203 3211 
+Q 3513 2838 3513 2113 
+z
+" id="DejaVuSans-6e" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#DejaVuSans-50"/>
+      <use x="58.552734" xlink:href="#DejaVuSans-72"/>
+      <use x="97.416016" xlink:href="#DejaVuSans-65"/>
+      <use x="158.939453" xlink:href="#DejaVuSans-63"/>
+      <use x="213.919922" xlink:href="#DejaVuSans-69"/>
+      <use x="241.703125" xlink:href="#DejaVuSans-73"/>
+      <use x="293.802734" xlink:href="#DejaVuSans-69"/>
+      <use x="321.585938" xlink:href="#DejaVuSans-6f"/>
+      <use x="382.767578" xlink:href="#DejaVuSans-6e"/>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_13">
+    <path clip-path="url(#p5b5048a65a)" d="M 243.10125 176.805135 
+L 235.55125 178.225625 
+L 235.55125 177.768651 
+L 228.00125 179.229614 
+L 228.00125 178.773609 
+L 228.00125 178.30769 
+L 228.00125 177.831532 
+L 228.00125 177.344792 
+L 228.00125 176.847114 
+L 228.00125 176.338125 
+L 228.00125 175.817435 
+L 220.45125 177.391613 
+L 220.45125 176.871066 
+L 220.45125 176.338125 
+L 220.45125 175.792342 
+L 220.45125 175.233247 
+L 220.45125 174.660347 
+L 212.90125 176.338125 
+L 205.35125 178.058378 
+L 205.35125 177.499663 
+L 205.35125 176.926437 
+L 205.35125 176.338125 
+L 205.35125 175.734125 
+L 205.35125 175.113801 
+L 205.35125 174.476481 
+L 205.35125 173.821458 
+L 205.35125 173.147984 
+L 205.35125 172.455268 
+L 205.35125 171.742473 
+L 205.35125 171.008713 
+L 205.35125 170.25305 
+L 205.35125 169.474489 
+L 205.35125 168.671971 
+L 205.35125 167.844375 
+L 205.35125 166.990506 
+L 205.35125 166.109093 
+L 205.35125 165.198781 
+L 205.35125 164.258125 
+L 205.35125 163.285583 
+L 205.35125 162.279504 
+L 205.35125 161.238125 
+L 205.35125 160.159554 
+L 205.35125 159.041761 
+L 205.35125 157.882569 
+L 205.35125 156.679634 
+L 205.35125 155.430433 
+L 205.35125 154.132243 
+L 197.80125 156.406125 
+L 197.80125 155.07486 
+L 197.80125 153.688125 
+L 197.80125 152.24238 
+L 197.80125 150.733777 
+L 197.80125 149.158125 
+L 197.80125 147.510852 
+L 197.80125 145.786962 
+L 190.25125 148.295268 
+L 190.25125 146.506418 
+L 190.25125 144.628125 
+L 182.70125 147.299663 
+L 175.15125 150.111809 
+L 175.15125 148.178666 
+L 175.15125 146.138125 
+L 175.15125 143.980982 
+L 167.60125 147.02636 
+L 167.60125 144.765398 
+L 167.60125 142.363125 
+L 167.60125 139.805867 
+L 160.05125 143.118125 
+L 152.50125 146.658815 
+L 152.50125 143.980982 
+L 144.95125 147.815903 
+L 144.95125 144.976587 
+L 144.95125 141.910125 
+L 144.95125 138.588125 
+L 137.40125 142.855516 
+L 137.40125 139.274489 
+L 137.40125 135.352411 
+L 129.85125 140.098125 
+L 129.85125 135.806546 
+L 122.30125 141.104792 
+L 122.30125 136.367537 
+L 122.30125 131.038125 
+L 114.75125 137.078125 
+L 107.20125 143.980982 
+L 107.20125 138.007356 
+L 99.65125 146.138125 
+L 99.65125 139.274489 
+L 99.65125 131.038125 
+L 99.65125 120.971458 
+L 99.65125 108.388125 
+L 99.65125 92.209554 
+L 92.10125 100.838125 
+L 84.55125 112.918125 
+L 77.00125 131.038125 
+L 69.45125 161.238125 
+L 69.45125 131.038125 
+L 61.90125 221.638125 
+L 61.90125 40.438125 
+" style="fill:none;stroke:#1f77b4;stroke-linecap:square;stroke-width:1.5;"/>
+   </g>
+   <g id="line2d_14">
+    <path clip-path="url(#p5b5048a65a)" d="M 243.10125 177.262615 
+L 235.55125 178.673177 
+L 235.55125 178.225625 
+L 235.55125 177.768651 
+L 235.55125 177.301955 
+L 235.55125 176.825222 
+L 235.55125 176.338125 
+L 235.55125 175.840323 
+L 235.55125 175.331458 
+L 235.55125 174.811159 
+L 235.55125 174.279034 
+L 235.55125 173.734677 
+L 235.55125 173.17766 
+L 235.55125 172.607537 
+L 235.55125 172.023839 
+L 235.55125 171.426077 
+L 235.55125 170.813735 
+L 235.55125 170.186273 
+L 228.00125 171.808125 
+L 228.00125 171.177366 
+L 228.00125 170.530433 
+L 228.00125 169.866696 
+L 228.00125 169.185493 
+L 228.00125 168.486125 
+L 228.00125 167.767855 
+L 228.00125 167.029906 
+L 228.00125 166.271458 
+L 228.00125 165.491646 
+L 228.00125 164.689554 
+L 228.00125 163.864212 
+L 228.00125 163.014596 
+L 228.00125 162.139618 
+L 228.00125 161.238125 
+L 228.00125 160.308894 
+L 228.00125 159.350625 
+L 228.00125 158.361935 
+L 228.00125 157.341351 
+L 228.00125 156.287305 
+L 228.00125 155.198125 
+L 228.00125 154.072023 
+L 228.00125 152.907091 
+L 228.00125 151.701283 
+L 228.00125 150.452411 
+L 220.45125 152.45267 
+L 220.45125 151.171458 
+L 220.45125 149.841899 
+L 220.45125 148.461202 
+L 220.45125 147.02636 
+L 220.45125 145.534125 
+L 220.45125 143.980982 
+L 220.45125 142.363125 
+L 220.45125 140.676423 
+L 220.45125 138.916386 
+L 220.45125 137.078125 
+L 220.45125 135.156307 
+L 220.45125 133.145102 
+L 220.45125 131.038125 
+L 220.45125 128.828369 
+L 220.45125 126.508125 
+L 220.45125 124.068894 
+L 220.45125 121.501283 
+L 220.45125 118.794882 
+L 212.90125 120.971458 
+L 212.90125 118.095268 
+L 212.90125 115.04989 
+L 212.90125 111.819943 
+L 205.35125 114.050625 
+L 205.35125 110.58006 
+L 205.35125 106.878125 
+L 205.35125 102.920884 
+L 205.35125 98.680982 
+L 197.80125 100.838125 
+L 190.25125 103.161202 
+L 182.70125 105.670125 
+L 182.70125 100.838125 
+L 175.15125 103.464212 
+L 167.60125 106.329034 
+L 167.60125 100.838125 
+L 160.05125 103.858125 
+L 152.50125 107.19602 
+L 152.50125 100.838125 
+L 144.95125 104.391066 
+L 144.95125 97.063125 
+L 137.40125 100.838125 
+L 137.40125 92.209554 
+L 129.85125 96.191971 
+L 122.30125 100.838125 
+L 122.30125 89.856307 
+L 114.75125 94.798125 
+L 114.75125 80.704792 
+L 107.20125 85.738125 
+L 107.20125 66.323839 
+L 99.65125 70.638125 
+L 92.10125 76.678125 
+L 84.55125 85.738125 
+L 77.00125 100.838125 
+L 69.45125 131.038125 
+L 69.45125 40.438125 
+L 61.90125 40.438125 
+" style="fill:none;stroke:#ff7f0e;stroke-linecap:square;stroke-width:1.5;"/>
+   </g>
+   <g id="line2d_15">
+    <path clip-path="url(#p5b5048a65a)" d="M 243.10125 169.242944 
+L 235.55125 170.813735 
+L 235.55125 170.186273 
+L 235.55125 169.543125 
+L 235.55125 168.883695 
+L 235.55125 168.207356 
+L 235.55125 167.51345 
+L 235.55125 166.801283 
+L 228.00125 168.486125 
+L 228.00125 167.767855 
+L 228.00125 167.029906 
+L 228.00125 166.271458 
+L 228.00125 165.491646 
+L 228.00125 164.689554 
+L 228.00125 163.864212 
+L 228.00125 163.014596 
+L 228.00125 162.139618 
+L 228.00125 161.238125 
+L 228.00125 160.308894 
+L 228.00125 159.350625 
+L 228.00125 158.361935 
+L 228.00125 157.341351 
+L 228.00125 156.287305 
+L 220.45125 158.218125 
+L 220.45125 157.14321 
+L 220.45125 156.031228 
+L 220.45125 154.88023 
+L 220.45125 153.688125 
+L 220.45125 152.45267 
+L 220.45125 151.171458 
+L 220.45125 149.841899 
+L 220.45125 148.461202 
+L 220.45125 147.02636 
+L 220.45125 145.534125 
+L 220.45125 143.980982 
+L 220.45125 142.363125 
+L 220.45125 140.676423 
+L 220.45125 138.916386 
+L 220.45125 137.078125 
+L 220.45125 135.156307 
+L 220.45125 133.145102 
+L 220.45125 131.038125 
+L 212.90125 133.247881 
+L 212.90125 131.038125 
+L 212.90125 128.715048 
+L 205.35125 131.038125 
+L 197.80125 133.486774 
+L 197.80125 131.038125 
+L 190.25125 133.626696 
+L 190.25125 131.038125 
+L 182.70125 133.78358 
+L 182.70125 131.038125 
+L 175.15125 133.960706 
+L 175.15125 131.038125 
+L 175.15125 127.913987 
+L 167.60125 131.038125 
+L 167.60125 127.682569 
+L 160.05125 131.038125 
+L 160.05125 127.414125 
+L 160.05125 123.488125 
+L 160.05125 119.220734 
+L 152.50125 122.801761 
+L 144.95125 126.723839 
+L 137.40125 131.038125 
+L 137.40125 126.269704 
+L 137.40125 120.971458 
+L 129.85125 125.708713 
+L 122.30125 131.038125 
+L 122.30125 124.998125 
+L 122.30125 118.095268 
+L 122.30125 110.130433 
+L 122.30125 100.838125 
+L 114.75125 106.329034 
+L 114.75125 94.798125 
+L 114.75125 80.704792 
+L 114.75125 63.088125 
+L 114.75125 40.438125 
+L 107.20125 40.438125 
+L 99.65125 40.438125 
+L 92.10125 40.438125 
+L 84.55125 40.438125 
+L 77.00125 40.438125 
+L 69.45125 40.438125 
+L 61.90125 40.438125 
+" style="fill:none;stroke:#2ca02c;stroke-linecap:square;stroke-width:1.5;"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 43.78125 239.758125 
+L 43.78125 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 261.22125 239.758125 
+L 261.22125 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 43.78125 239.758125 
+L 261.22125 239.758125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 43.78125 22.318125 
+L 261.22125 22.318125 
+" style="fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.8;"/>
+   </g>
+   <g id="text_15">
+    <!-- PR curve -->
+    <g transform="translate(125.99625 16.318125)scale(0.12 -0.12)">
+     <defs>
+      <path id="DejaVuSans-20" transform="scale(0.015625)"/>
+      <path d="M 544 1381 
+L 544 3500 
+L 1119 3500 
+L 1119 1403 
+Q 1119 906 1312 657 
+Q 1506 409 1894 409 
+Q 2359 409 2629 706 
+Q 2900 1003 2900 1516 
+L 2900 3500 
+L 3475 3500 
+L 3475 0 
+L 2900 0 
+L 2900 538 
+Q 2691 219 2414 64 
+Q 2138 -91 1772 -91 
+Q 1169 -91 856 284 
+Q 544 659 544 1381 
+z
+M 1991 3584 
+L 1991 3584 
+z
+" id="DejaVuSans-75" transform="scale(0.015625)"/>
+      <path d="M 191 3500 
+L 800 3500 
+L 1894 563 
+L 2988 3500 
+L 3597 3500 
+L 2284 0 
+L 1503 0 
+L 191 3500 
+z
+" id="DejaVuSans-76" transform="scale(0.015625)"/>
      </defs>
-     <use xlink:href="#DejaVuSans-54"/>
-     <use x="44.083984" xlink:href="#DejaVuSans-65"/>
-     <use x="105.607422" xlink:href="#DejaVuSans-73"/>
-     <use x="157.707031" xlink:href="#DejaVuSans-74"/>
-     <use x="196.916016" xlink:href="#DejaVuSans-20"/>
-     <use x="228.703125" xlink:href="#DejaVuSans-62"/>
-     <use x="292.179688" xlink:href="#DejaVuSans-79"/>
-     <use x="351.359375" xlink:href="#DejaVuSans-20"/>
-     <use x="383.146484" xlink:href="#DejaVuSans-35"/>
-     <use x="446.769531" xlink:href="#DejaVuSans-2d"/>
-     <use x="482.853516" xlink:href="#DejaVuSans-66"/>
-     <use x="518.058594" xlink:href="#DejaVuSans-6f"/>
-     <use x="579.240234" xlink:href="#DejaVuSans-6c"/>
-     <use x="607.023438" xlink:href="#DejaVuSans-64"/>
-     <use x="670.5" xlink:href="#DejaVuSans-20"/>
-     <use x="702.287109" xlink:href="#DejaVuSans-43"/>
-     <use x="772.111328" xlink:href="#DejaVuSans-56"/>
-     <use x="840.519531" xlink:href="#DejaVuSans-20"/>
-     <use x="872.306641" xlink:href="#DejaVuSans-28"/>
-     <use x="911.320312" xlink:href="#DejaVuSans-32"/>
-     <use x="974.943359" xlink:href="#DejaVuSans-35"/>
-     <use x="1038.566406" xlink:href="#DejaVuSans-20"/>
-     <use x="1070.353516" xlink:href="#DejaVuSans-76"/>
-     <use x="1129.533203" xlink:href="#DejaVuSans-61"/>
-     <use x="1190.8125" xlink:href="#DejaVuSans-72"/>
-     <use x="1231.925781" xlink:href="#DejaVuSans-69"/>
-     <use x="1259.708984" xlink:href="#DejaVuSans-61"/>
-     <use x="1320.988281" xlink:href="#DejaVuSans-62"/>
-     <use x="1384.464844" xlink:href="#DejaVuSans-6c"/>
-     <use x="1412.248047" xlink:href="#DejaVuSans-65"/>
-     <use x="1473.771484" xlink:href="#DejaVuSans-73"/>
-     <use x="1525.871094" xlink:href="#DejaVuSans-29"/>
+     <use xlink:href="#DejaVuSans-50"/>
+     <use x="60.302734" xlink:href="#DejaVuSans-52"/>
+     <use x="129.785156" xlink:href="#DejaVuSans-20"/>
+     <use x="161.572266" xlink:href="#DejaVuSans-63"/>
+     <use x="216.552734" xlink:href="#DejaVuSans-75"/>
+     <use x="279.931641" xlink:href="#DejaVuSans-72"/>
+     <use x="321.044922" xlink:href="#DejaVuSans-76"/>
+     <use x="380.224609" xlink:href="#DejaVuSans-65"/>
+    </g>
+   </g>
+   <g id="legend_1">
+    <g id="patch_7">
+     <path d="M 215.238438 74.3525 
+L 254.22125 74.3525 
+Q 256.22125 74.3525 256.22125 72.3525 
+L 256.22125 29.318125 
+Q 256.22125 27.318125 254.22125 27.318125 
+L 215.238438 27.318125 
+Q 213.238438 27.318125 213.238438 29.318125 
+L 213.238438 72.3525 
+Q 213.238438 74.3525 215.238438 74.3525 
+z
+" style="fill:#ffffff;opacity:0.8;stroke:#cccccc;stroke-linejoin:miter;"/>
+    </g>
+    <g id="line2d_16">
+     <path d="M 217.238438 35.416562 
+L 237.238438 35.416562 
+" style="fill:none;stroke:#1f77b4;stroke-linecap:square;stroke-width:1.5;"/>
+    </g>
+    <g id="line2d_17"/>
+    <g id="text_16">
+     <!-- A -->
+     <g transform="translate(245.238438 38.916562)scale(0.1 -0.1)">
+      <defs>
+       <path d="M 2188 4044 
+L 1331 1722 
+L 3047 1722 
+L 2188 4044 
+z
+M 1831 4666 
+L 2547 4666 
+L 4325 0 
+L 3669 0 
+L 3244 1197 
+L 1141 1197 
+L 716 0 
+L 50 0 
+L 1831 4666 
+z
+" id="DejaVuSans-41" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#DejaVuSans-41"/>
+     </g>
+    </g>
+    <g id="line2d_18">
+     <path d="M 217.238438 50.094687 
+L 237.238438 50.094687 
+" style="fill:none;stroke:#ff7f0e;stroke-linecap:square;stroke-width:1.5;"/>
+    </g>
+    <g id="line2d_19"/>
+    <g id="text_17">
+     <!-- B -->
+     <g transform="translate(245.238438 53.594687)scale(0.1 -0.1)">
+      <defs>
+       <path d="M 1259 2228 
+L 1259 519 
+L 2272 519 
+Q 2781 519 3026 730 
+Q 3272 941 3272 1375 
+Q 3272 1813 3026 2020 
+Q 2781 2228 2272 2228 
+L 1259 2228 
+z
+M 1259 4147 
+L 1259 2741 
+L 2194 2741 
+Q 2656 2741 2882 2914 
+Q 3109 3088 3109 3444 
+Q 3109 3797 2882 3972 
+Q 2656 4147 2194 4147 
+L 1259 4147 
+z
+M 628 4666 
+L 2241 4666 
+Q 2963 4666 3353 4366 
+Q 3744 4066 3744 3513 
+Q 3744 3084 3544 2831 
+Q 3344 2578 2956 2516 
+Q 3422 2416 3680 2098 
+Q 3938 1781 3938 1306 
+Q 3938 681 3513 340 
+Q 3088 0 2303 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-42" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#DejaVuSans-42"/>
+     </g>
+    </g>
+    <g id="line2d_20">
+     <path d="M 217.238438 64.772812 
+L 237.238438 64.772812 
+" style="fill:none;stroke:#2ca02c;stroke-linecap:square;stroke-width:1.5;"/>
+    </g>
+    <g id="line2d_21"/>
+    <g id="text_18">
+     <!-- C -->
+     <g transform="translate(245.238438 68.272812)scale(0.1 -0.1)">
+      <defs>
+       <path d="M 4122 4306 
+L 4122 3641 
+Q 3803 3938 3442 4084 
+Q 3081 4231 2675 4231 
+Q 1875 4231 1450 3742 
+Q 1025 3253 1025 2328 
+Q 1025 1406 1450 917 
+Q 1875 428 2675 428 
+Q 3081 428 3442 575 
+Q 3803 722 4122 1019 
+L 4122 359 
+Q 3791 134 3420 21 
+Q 3050 -91 2638 -91 
+Q 1578 -91 968 557 
+Q 359 1206 359 2328 
+Q 359 3453 968 4101 
+Q 1578 4750 2638 4750 
+Q 3056 4750 3426 4639 
+Q 3797 4528 4122 4306 
+z
+" id="DejaVuSans-43" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#DejaVuSans-43"/>
+     </g>
     </g>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p5d7990d275">
-   <rect height="217.44" width="217.44" x="48.982813" y="22.318125"/>
+  <clipPath id="p5b5048a65a">
+   <rect height="217.44" width="217.44" x="43.78125" y="22.318125"/>
   </clipPath>
  </defs>
 </svg>
@@ -15578,6 +16998,240 @@ z
 
 </div>
 
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="(Accuracy-around-high-score-predictions-to-see-the-meaning-of-PR-curves)">(Accuracy around high score predictions to see the meaning of PR curves)<a class="anchor-link" href="#(Accuracy-around-high-score-predictions-to-see-the-meaning-of-PR-curves)">&#182;</a></h4><p>accuracy: B &gt; A &gt; C (this corresponds to PR-AUC)</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span><span class="s1">&#39;A&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>label</th>
+      <th>A</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>77</th>
+      <td>0</td>
+      <td>0.998814</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1</td>
+      <td>0.994271</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>0</td>
+      <td>0.993428</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>1</td>
+      <td>0.974442</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>1</td>
+      <td>0.973028</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>label</th>
+      <th>B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>89</th>
+      <td>1</td>
+      <td>0.988786</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>0</td>
+      <td>0.986668</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>1</td>
+      <td>0.965966</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>1</td>
+      <td>0.965702</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>1</td>
+      <td>0.954733</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>label</th>
+      <th>C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>75</th>
+      <td>1</td>
+      <td>0.984956</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>1</td>
+      <td>0.981697</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>1</td>
+      <td>0.977844</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>1</td>
+      <td>0.975034</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>1</td>
+      <td>0.938435</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
 </div>
 
 </div>
