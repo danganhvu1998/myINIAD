@@ -38,6 +38,8 @@ int main(int argc, char const *argv[])
 	send(sock , message , strlen(message) , 0 );
 	while(1){
 		scanf("%s", message);
+		if(strlen(message)==1) break;
+		printf("message: %s\n", message);
 		send(sock , message , strlen(message) , 0 );
 		printf("message message sent\n");
 		valread = read( sock , buffer, 1024);
