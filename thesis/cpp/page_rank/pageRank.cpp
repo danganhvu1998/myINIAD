@@ -1,7 +1,7 @@
 // https://codeforces.com/contest/1336/problem/C
 #include <bits/stdc++.h>
 using namespace std;
- 
+
 #define II pair<long long, long long>
 #define III pair<II, long long>
 #define X first.first
@@ -22,23 +22,23 @@ long long toNodesCount[MAXIMUM_NODE_SUPPORT];
 long long N, M;
 long long lastRound = 0;
 
-void calculation(long long round){
+void calculation(long long round) {
     int lastRound = round % 2;
     int currRound = 1 - lastRound;
-    for0(i, N){
+    for0(i, N) {
         double weight = 0;
-        for0(j, edgesTo[i].size()){
+        for0(j, edgesTo[i].size()) {
             const int fromNode = edgesTo[i][j];
             weight += nodeWeight[lastRound][fromNode] / toNodesCount[fromNode];
         }
-        nodeWeight[currRound][i] =  weight;
+        nodeWeight[currRound][i] = weight;
     }
 }
 
-bool isAcceptErrorSastified(){
+bool isAcceptErrorSastisfied() {
     for0(i, N) {
         double error = abs(nodeWeight[0][i] - nodeWeight[1][i]);
-        if( error > ACCEPT_ERROR ) {
+        if (error > ACCEPT_ERROR) {
             // cout<<error<<'\n';
             return false;
         }
@@ -46,29 +46,29 @@ bool isAcceptErrorSastified(){
     return true;
 }
 
-int main(){
+int main() {
     ios_base::sync_with_stdio(false); cin.tie(0);
-    freopen("graph_10e5.out","r",stdin);
-    freopen("result.out","w",stdout);
+    freopen("graph_10e5.out", "r", stdin);
+    freopen("result.out", "w", stdout);
     // INPUT GRAPH
-    cin>>N>>M;
+    cin >> N >> M;
     for0(i, N) toNodesCount[i] = 0;
-    for0(i, M){
+    for0(i, M) {
         long long a, b;
-        cin>>a>>b; // From a we can go to b
+        cin >> a >> b; // From a we can go to b
         ++toNodesCount[a];
         edgesTo[b].push_back(a);
     }
 
     // INIT WEIGHT
     for0(i, N) nodeWeight[0][i] = 1;
-    for0(i, MAX_ROUND){
+    for0(i, MAX_ROUND) {
         calculation(i);
-        cout<<"DONE "<<lastRound<<'\n';
+        cout << "DONE " << lastRound << '\n';
         lastRound = i;
-        if( isAcceptErrorSastified() ) break;
+        if (isAcceptErrorSastisfied()) break;
     }
     const int lastRoundWeightIndex = lastRound % 2 ? 1 : 0;
-    for0(i, N) cout<<nodeWeight[ lastRoundWeightIndex ][i]<<' ';
-    cout<<'\n'<<lastRound<<' '<<lastRoundWeightIndex;
+    for0(i, N) cout << nodeWeight[lastRoundWeightIndex][i] << ' ';
+    cout << '\n' << lastRound << ' ' << lastRoundWeightIndex;
 }

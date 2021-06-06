@@ -43,7 +43,7 @@ void calculation(long long round) {
     }
 }
 
-bool isAcceptErrorSastified() {
+bool isAcceptErrorSatisfied() {
     for0(i, N) {
         double error = abs(getNodeVal(i, lastRound) - getNodeVal(i, lastRound - 1));
         if (error > ACCEPT_ERROR) {
@@ -74,7 +74,7 @@ int main() {
         if (i >= 2) delAllNodesAtRound(i - 2);
         calculation(i);
         lastRound = i;
-        if (isAcceptErrorSastified()) break;
+        if (isAcceptErrorSatisfied()) break;
     }
     for0(i, N) cout << getNodeVal(i, lastRound) << ' ';
     cout << '\n' << lastRound << " " << redisGetCount << " " << redisSetCount << " " << redisCommandCount;
