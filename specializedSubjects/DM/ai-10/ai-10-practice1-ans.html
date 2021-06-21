@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>collaborative_filtering_user</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>ai-10-practice1-ans</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14259,7 +14259,7 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Sample-script-for-user-based-collaborative-filtering">Sample script for user-based collaborative filtering<a class="anchor-link" href="#Sample-script-for-user-based-collaborative-filtering">&#182;</a></h3>
+<h3 id="AI-10-Practice-1">AI-10 Practice 1<a class="anchor-link" href="#AI-10-Practice-1">&#182;</a></h3>
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
@@ -14269,11 +14269,17 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVR</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span><span class="p">,</span> <span class="n">KFold</span><span class="p">,</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">dump</span>
 </pre></div>
 
      </div>
@@ -14289,18 +14295,10 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">csv_in</span> <span class="o">=</span> <span class="s1">&#39;sushi3b.5000.10.score.csv&#39;</span>
-<span class="c1"># min number of common items between target user and users in DB</span>
-<span class="n">min_common_items</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="c1"># min number of users who evaluated an item to be recommended</span>
-<span class="n">min_eval_users</span> <span class="o">=</span> <span class="mi">3</span>
-
-<span class="c1"># To show more rows and columns</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">max_rows</span> <span class="o">=</span> <span class="mi">999</span> 
-<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">max_columns</span> <span class="o">=</span> <span class="mi">999</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">csv_in</span> <span class="o">=</span> <span class="s1">&#39;../ai-09/ai-09-practice1.csv&#39;</span>
 </pre></div>
 
      </div>
@@ -14316,12 +14314,12 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_in</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
 <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
 
@@ -14342,130 +14340,22 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>(5000, 100)
+<pre>(350, 5)
 &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 5000 entries, 0 to 4999
-Data columns (total 100 columns):
- #   Column          Non-Null Count  Dtype
----  ------          --------------  -----
- 0   ebi             5000 non-null   int64
- 1   anago           5000 non-null   int64
- 2   maguro          5000 non-null   int64
- 3   ika             5000 non-null   int64
- 4   uni             5000 non-null   int64
- 5   tako            5000 non-null   int64
- 6   ikura           5000 non-null   int64
- 7   tamago          5000 non-null   int64
- 8   toro            5000 non-null   int64
- 9   amaebi          5000 non-null   int64
- 10  hotategai       5000 non-null   int64
- 11  tai             5000 non-null   int64
- 12  akagai          5000 non-null   int64
- 13  hamachi         5000 non-null   int64
- 14  awabi           5000 non-null   int64
- 15  samon           5000 non-null   int64
- 16  kazunoko        5000 non-null   int64
- 17  shako           5000 non-null   int64
- 18  saba            5000 non-null   int64
- 19  chu_toro        5000 non-null   int64
- 20  hirame          5000 non-null   int64
- 21  aji             5000 non-null   int64
- 22  kani            5000 non-null   int64
- 23  kohada          5000 non-null   int64
- 24  torigai         5000 non-null   int64
- 25  unagi           5000 non-null   int64
- 26  tekka_maki      5000 non-null   int64
- 27  kanpachi        5000 non-null   int64
- 28  mirugai         5000 non-null   int64
- 29  kappa_maki      5000 non-null   int64
- 30  geso            5000 non-null   int64
- 31  katsuo          5000 non-null   int64
- 32  iwashi          5000 non-null   int64
- 33  hokkigai        5000 non-null   int64
- 34  shimaaji        5000 non-null   int64
- 35  kanimiso        5000 non-null   int64
- 36  engawa          5000 non-null   int64
- 37  negi_toro       5000 non-null   int64
- 38  nattou_maki     5000 non-null   int64
- 39  sayori          5000 non-null   int64
- 40  takuwan_maki    5000 non-null   int64
- 41  botanebi        5000 non-null   int64
- 42  tobiko          5000 non-null   int64
- 43  inari           5000 non-null   int64
- 44  mentaiko        5000 non-null   int64
- 45  sarada          5000 non-null   int64
- 46  suzuki          5000 non-null   int64
- 47  tarabagani      5000 non-null   int64
- 48  ume_shiso_maki  5000 non-null   int64
- 49  komochi_konbu   5000 non-null   int64
- 50  tarako          5000 non-null   int64
- 51  sazae           5000 non-null   int64
- 52  aoyagi          5000 non-null   int64
- 53  toro_samon      5000 non-null   int64
- 54  sanma           5000 non-null   int64
- 55  hamo            5000 non-null   int64
- 56  nasu            5000 non-null   int64
- 57  shirauo         5000 non-null   int64
- 58  nattou          5000 non-null   int64
- 59  ankimo          5000 non-null   int64
- 60  kanpyo_maki     5000 non-null   int64
- 61  negi_toro_maki  5000 non-null   int64
- 62  gyusashi        5000 non-null   int64
- 63  hamaguri        5000 non-null   int64
- 64  basashi         5000 non-null   int64
- 65  fugu            5000 non-null   int64
- 66  tsubugai        5000 non-null   int64
- 67  ana_kyu_maki    5000 non-null   int64
- 68  hiragai         5000 non-null   int64
- 69  okura           5000 non-null   int64
- 70  ume_maki        5000 non-null   int64
- 71  sarada_maki     5000 non-null   int64
- 72  mentaiko_maki   5000 non-null   int64
- 73  buri            5000 non-null   int64
- 74  shiso_maki      5000 non-null   int64
- 75  ika_nattou      5000 non-null   int64
- 76  zuke            5000 non-null   int64
- 77  himo            5000 non-null   int64
- 78  kaiware         5000 non-null   int64
- 79  kurumaebi       5000 non-null   int64
- 80  mekabu          5000 non-null   int64
- 81  kue             5000 non-null   int64
- 82  sawara          5000 non-null   int64
- 83  sasami          5000 non-null   int64
- 84  kujira          5000 non-null   int64
- 85  kamo            5000 non-null   int64
- 86  himo_kyu_maki   5000 non-null   int64
- 87  tobiuo          5000 non-null   int64
- 88  ishigakidai     5000 non-null   int64
- 89  mamakari        5000 non-null   int64
- 90  hoya            5000 non-null   int64
- 91  battera         5000 non-null   int64
- 92  kyabia          5000 non-null   int64
- 93  karasumi        5000 non-null   int64
- 94  uni_kurage      5000 non-null   int64
- 95  karei           5000 non-null   int64
- 96  hiramasa        5000 non-null   int64
- 97  namako          5000 non-null   int64
- 98  shishamo        5000 non-null   int64
- 99  kaki            5000 non-null   int64
-dtypes: int64(100)
-memory usage: 3.8 MB
+RangeIndex: 350 entries, 0 to 349
+Data columns (total 5 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   d1      350 non-null    float64
+ 1   d2      350 non-null    float64
+ 2   d3      350 non-null    float64
+ 3   d4      350 non-null    float64
+ 4   w       350 non-null    float64
+dtypes: float64(5)
+memory usage: 13.8 KB
+None
 </pre>
 </div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output " data-mime-type="text/plain">
-<pre>None</pre>
-</div>
-
 </div>
 
 <div class="jp-OutputArea-child">
@@ -14494,623 +14384,53 @@ memory usage: 3.8 MB
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>ebi</th>
-      <th>anago</th>
-      <th>maguro</th>
-      <th>ika</th>
-      <th>uni</th>
-      <th>tako</th>
-      <th>ikura</th>
-      <th>tamago</th>
-      <th>toro</th>
-      <th>amaebi</th>
-      <th>hotategai</th>
-      <th>tai</th>
-      <th>akagai</th>
-      <th>hamachi</th>
-      <th>awabi</th>
-      <th>samon</th>
-      <th>kazunoko</th>
-      <th>shako</th>
-      <th>saba</th>
-      <th>chu_toro</th>
-      <th>hirame</th>
-      <th>aji</th>
-      <th>kani</th>
-      <th>kohada</th>
-      <th>torigai</th>
-      <th>unagi</th>
-      <th>tekka_maki</th>
-      <th>kanpachi</th>
-      <th>mirugai</th>
-      <th>kappa_maki</th>
-      <th>geso</th>
-      <th>katsuo</th>
-      <th>iwashi</th>
-      <th>hokkigai</th>
-      <th>shimaaji</th>
-      <th>kanimiso</th>
-      <th>engawa</th>
-      <th>negi_toro</th>
-      <th>nattou_maki</th>
-      <th>sayori</th>
-      <th>takuwan_maki</th>
-      <th>botanebi</th>
-      <th>tobiko</th>
-      <th>inari</th>
-      <th>mentaiko</th>
-      <th>sarada</th>
-      <th>suzuki</th>
-      <th>tarabagani</th>
-      <th>ume_shiso_maki</th>
-      <th>komochi_konbu</th>
-      <th>tarako</th>
-      <th>sazae</th>
-      <th>aoyagi</th>
-      <th>toro_samon</th>
-      <th>sanma</th>
-      <th>hamo</th>
-      <th>nasu</th>
-      <th>shirauo</th>
-      <th>nattou</th>
-      <th>ankimo</th>
-      <th>kanpyo_maki</th>
-      <th>negi_toro_maki</th>
-      <th>gyusashi</th>
-      <th>hamaguri</th>
-      <th>basashi</th>
-      <th>fugu</th>
-      <th>tsubugai</th>
-      <th>ana_kyu_maki</th>
-      <th>hiragai</th>
-      <th>okura</th>
-      <th>ume_maki</th>
-      <th>sarada_maki</th>
-      <th>mentaiko_maki</th>
-      <th>buri</th>
-      <th>shiso_maki</th>
-      <th>ika_nattou</th>
-      <th>zuke</th>
-      <th>himo</th>
-      <th>kaiware</th>
-      <th>kurumaebi</th>
-      <th>mekabu</th>
-      <th>kue</th>
-      <th>sawara</th>
-      <th>sasami</th>
-      <th>kujira</th>
-      <th>kamo</th>
-      <th>himo_kyu_maki</th>
-      <th>tobiuo</th>
-      <th>ishigakidai</th>
-      <th>mamakari</th>
-      <th>hoya</th>
-      <th>battera</th>
-      <th>kyabia</th>
-      <th>karasumi</th>
-      <th>uni_kurage</th>
-      <th>karei</th>
-      <th>hiramasa</th>
-      <th>namako</th>
-      <th>shishamo</th>
-      <th>kaki</th>
+      <th>d1</th>
+      <th>d2</th>
+      <th>d3</th>
+      <th>d4</th>
+      <th>w</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>-1</td>
-      <td>0</td>
-      <td>-1</td>
-      <td>4</td>
-      <td>2</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>4</td>
-      <td>-1</td>
-      <td>2</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>0</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>0</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>2</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
+      <td>5.18</td>
+      <td>7.39</td>
+      <td>-1.68</td>
+      <td>0.33</td>
+      <td>37.78</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>0</td>
-      <td>-1</td>
-      <td>1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>0</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>0</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>-1</td>
-      <td>0</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>0</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
+      <td>3.67</td>
+      <td>8.26</td>
+      <td>1.02</td>
+      <td>-0.17</td>
+      <td>30.18</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>-1</td>
-      <td>3</td>
-      <td>4</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>3</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>4</td>
-      <td>-1</td>
-      <td>4</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>3</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>2</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>2</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
+      <td>4.02</td>
+      <td>8.27</td>
+      <td>-1.44</td>
+      <td>-1.59</td>
+      <td>35.58</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>4</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>3</td>
-      <td>4</td>
-      <td>1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>4</td>
-      <td>3</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>3</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>2</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>2</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>3</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
+      <td>4.29</td>
+      <td>6.99</td>
+      <td>-1.34</td>
+      <td>0.26</td>
+      <td>29.61</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>4</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>0</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>4</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>3</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>0</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>0</td>
+      <td>3.45</td>
+      <td>8.34</td>
+      <td>-0.36</td>
+      <td>0.93</td>
+      <td>28.42</td>
     </tr>
   </tbody>
 </table>
@@ -15126,16 +14446,20 @@ memory usage: 3.8 MB
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Replace--1-into-NaN-(for-not-to-be-used-during-calculation)">Replace -1 into NaN (for not to be used during calculation)<a class="anchor-link" href="#Replace--1-into-NaN-(for-not-to-be-used-during-calculation)">&#182;</a></h4>
+<h4 id="Get-X-and-y">Get X and y<a class="anchor-link" href="#Get-X-and-y">&#182;</a></h4>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;d1&#39;</span><span class="p">:</span><span class="s1">&#39;d4&#39;</span><span class="p">]</span>  <span class="c1"># explanatory variables</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span>  <span class="c1"># objective variable</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;X:&#39;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;y:&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
 
      </div>
@@ -15147,6 +14471,18 @@ memory usage: 3.8 MB
 
 
 <div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>X: (350, 4)
+</pre>
+</div>
+</div>
 
 <div class="jp-OutputArea-child">
 
@@ -15174,623 +14510,47 @@ memory usage: 3.8 MB
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>ebi</th>
-      <th>anago</th>
-      <th>maguro</th>
-      <th>ika</th>
-      <th>uni</th>
-      <th>tako</th>
-      <th>ikura</th>
-      <th>tamago</th>
-      <th>toro</th>
-      <th>amaebi</th>
-      <th>hotategai</th>
-      <th>tai</th>
-      <th>akagai</th>
-      <th>hamachi</th>
-      <th>awabi</th>
-      <th>samon</th>
-      <th>kazunoko</th>
-      <th>shako</th>
-      <th>saba</th>
-      <th>chu_toro</th>
-      <th>hirame</th>
-      <th>aji</th>
-      <th>kani</th>
-      <th>kohada</th>
-      <th>torigai</th>
-      <th>unagi</th>
-      <th>tekka_maki</th>
-      <th>kanpachi</th>
-      <th>mirugai</th>
-      <th>kappa_maki</th>
-      <th>geso</th>
-      <th>katsuo</th>
-      <th>iwashi</th>
-      <th>hokkigai</th>
-      <th>shimaaji</th>
-      <th>kanimiso</th>
-      <th>engawa</th>
-      <th>negi_toro</th>
-      <th>nattou_maki</th>
-      <th>sayori</th>
-      <th>takuwan_maki</th>
-      <th>botanebi</th>
-      <th>tobiko</th>
-      <th>inari</th>
-      <th>mentaiko</th>
-      <th>sarada</th>
-      <th>suzuki</th>
-      <th>tarabagani</th>
-      <th>ume_shiso_maki</th>
-      <th>komochi_konbu</th>
-      <th>tarako</th>
-      <th>sazae</th>
-      <th>aoyagi</th>
-      <th>toro_samon</th>
-      <th>sanma</th>
-      <th>hamo</th>
-      <th>nasu</th>
-      <th>shirauo</th>
-      <th>nattou</th>
-      <th>ankimo</th>
-      <th>kanpyo_maki</th>
-      <th>negi_toro_maki</th>
-      <th>gyusashi</th>
-      <th>hamaguri</th>
-      <th>basashi</th>
-      <th>fugu</th>
-      <th>tsubugai</th>
-      <th>ana_kyu_maki</th>
-      <th>hiragai</th>
-      <th>okura</th>
-      <th>ume_maki</th>
-      <th>sarada_maki</th>
-      <th>mentaiko_maki</th>
-      <th>buri</th>
-      <th>shiso_maki</th>
-      <th>ika_nattou</th>
-      <th>zuke</th>
-      <th>himo</th>
-      <th>kaiware</th>
-      <th>kurumaebi</th>
-      <th>mekabu</th>
-      <th>kue</th>
-      <th>sawara</th>
-      <th>sasami</th>
-      <th>kujira</th>
-      <th>kamo</th>
-      <th>himo_kyu_maki</th>
-      <th>tobiuo</th>
-      <th>ishigakidai</th>
-      <th>mamakari</th>
-      <th>hoya</th>
-      <th>battera</th>
-      <th>kyabia</th>
-      <th>karasumi</th>
-      <th>uni_kurage</th>
-      <th>karei</th>
-      <th>hiramasa</th>
-      <th>namako</th>
-      <th>shishamo</th>
-      <th>kaki</th>
+      <th>d1</th>
+      <th>d2</th>
+      <th>d3</th>
+      <th>d4</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>4.0</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>5.18</td>
+      <td>7.39</td>
+      <td>-1.68</td>
+      <td>0.33</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>3.67</td>
+      <td>8.26</td>
+      <td>1.02</td>
+      <td>-0.17</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>NaN</td>
-      <td>3.0</td>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>4.02</td>
+      <td>8.27</td>
+      <td>-1.44</td>
+      <td>-1.59</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3.0</td>
-      <td>4.0</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4.0</td>
-      <td>3.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>4.29</td>
+      <td>6.99</td>
+      <td>-1.34</td>
+      <td>0.26</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.0</td>
+      <td>3.45</td>
+      <td>8.34</td>
+      <td>-0.36</td>
+      <td>0.93</td>
     </tr>
   </tbody>
 </table>
@@ -15799,121 +14559,52 @@ memory usage: 3.8 MB
 
 </div>
 
-</div>
+<div class="jp-OutputArea-child">
 
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Return-Series-of-similiarity-of-users">Return Series of similiarity of users<a class="anchor-link" href="#Return-Series-of-similiarity-of-users">&#182;</a></h4><p>by using Pearson correlation coefficient (-1 .. 1).</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_sim_ser_by_pearson</span><span class="p">(</span><span class="n">df_users</span><span class="p">,</span> <span class="n">ser_target</span><span class="p">):</span>
-    <span class="n">corr_all</span> <span class="o">=</span> <span class="n">df_users</span><span class="o">.</span><span class="n">corrwith</span><span class="p">(</span><span class="n">ser_target</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">corr_all</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">similarity</span> <span class="o">=</span> <span class="s1">&#39;pearson2&#39;</span>
-<span class="k">def</span> <span class="nf">get_sim_ser_by_pearson2</span><span class="p">(</span><span class="n">df_users</span><span class="p">,</span> <span class="n">ser_target</span><span class="p">):</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">df_users</span><span class="o">.</span><span class="n">corrwith</span><span class="p">(</span><span class="n">ser_target</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">c</span> <span class="k">if</span> <span class="n">similarity</span> <span class="o">==</span> <span class="s1">&#39;pearson&#39;</span> <span class="k">else</span> <span class="p">(</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Prediction-of-scores-for-the-target-user">Prediction of scores for the target user<a class="anchor-link" href="#Prediction-of-scores-for-the-target-user">&#182;</a></h4><p>(for items with no score)<br>
-based on deviation from average</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict_scores</span><span class="p">(</span><span class="n">df_sim</span><span class="p">,</span> <span class="n">ser_sim</span><span class="p">,</span> <span class="n">ser_target</span><span class="p">):</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">df_sim_ave</span> <span class="o">=</span> <span class="n">df_sim</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c1">#print(df_sim.head())  # debug</span>
-    <span class="n">target_ave</span> <span class="o">=</span> <span class="n">ser_target</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="c1">#print(target_ave)  # debug</span>
-    <span class="k">for</span> <span class="n">item1</span> <span class="ow">in</span> <span class="n">df_sim</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">item1</span> <span class="ow">in</span> <span class="n">ser_target</span><span class="o">.</span><span class="n">index</span><span class="p">:</span> <span class="k">continue</span>
-        <span class="n">v1</span> <span class="o">=</span> <span class="n">df_sim</span><span class="p">[</span><span class="n">item1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">v1</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">min_eval_users</span><span class="p">:</span> <span class="k">continue</span>
-        <span class="n">v1</span> <span class="o">-=</span> <span class="n">df_sim_ave</span>
-        <span class="n">v11</span> <span class="o">=</span> <span class="n">v1</span><span class="p">[</span> <span class="n">v1</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span> <span class="p">]</span>
-        <span class="n">t11</span> <span class="o">=</span> <span class="n">ser_sim</span><span class="p">[</span> <span class="n">v1</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span> <span class="p">]</span>
-        <span class="n">pred1</span> <span class="o">=</span> <span class="n">target_ave</span> <span class="o">+</span> <span class="p">(</span><span class="n">v11</span> <span class="o">*</span> <span class="n">t11</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t11</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-        <span class="n">ret</span><span class="p">[</span><span class="n">item1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred1</span>
     
-    <span class="n">ser_ret</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">ser_ret</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
-     </div>
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>y: (350,)
+0    37.78
+1    30.18
+2    35.58
+3    29.61
+4    28.42
+Name: w, dtype: float64
+</pre>
 </div>
 </div>
+
+</div>
+
 </div>
 
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Function-for-user-based-collaborative-filtering.">Function for user-based collaborative filtering.<a class="anchor-link" href="#Function-for-user-based-collaborative-filtering.">&#182;</a></h4><p>arguments: dictionary of scores for the target user</p>
-<p>ex)
-get_recomm_by_user_sim({'maguro':1, 'ika':1, 'uni':3,
-                        'awabi':4, 'hirame':4, 'aoyagi':4})<br>
--&gt; return list such as [('akagai', 2.9835603009918303), ('mirugai', 2.945676429588114), ...]</p>
-
+<h4 id="Make-pipeline-and-set-parameters-for-grid-search">Make pipeline and set parameters for grid search<a class="anchor-link" href="#Make-pipeline-and-set-parameters-for-grid-search">&#182;</a></h4>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_recomm_by_user_sim</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">target_dic</span><span class="p">):</span>
-    <span class="n">ser_target</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">target_dic</span><span class="p">)</span>
-    <span class="c1"># make dataframe with columns included in target_dic</span>
-    <span class="n">df_scores</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span> <span class="n">ser_target</span><span class="o">.</span><span class="n">index</span> <span class="p">]</span>
-    <span class="c1">#display(df_scores)  # debug</span>
-    <span class="n">n_same_items</span> <span class="o">=</span> <span class="n">df_scores</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c1">#display(df_scores.notnull())  # debug</span>
-    <span class="n">df_common</span> <span class="o">=</span> <span class="n">df_scores</span><span class="p">[</span> <span class="n">n_same_items</span><span class="o">&gt;=</span><span class="n">min_common_items</span> <span class="p">]</span>
-    <span class="c1">#display(df_common)  # debug</span>
-    
-    <span class="n">ser_sim</span> <span class="o">=</span> <span class="n">get_sim_ser_by_pearson2</span><span class="p">(</span><span class="n">df_common</span><span class="p">,</span> <span class="n">ser_target</span><span class="p">)</span>    
-    <span class="c1">#print(ser_sim)  # debug</span>
-    <span class="n">df_sim</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span> <span class="n">ser_sim</span><span class="o">.</span><span class="n">index</span> <span class="p">]</span>
-    <span class="c1">#display(df_sim)  # debug</span>
-    <span class="n">recomm</span> <span class="o">=</span> <span class="n">predict_scores</span><span class="p">(</span><span class="n">df_sim</span><span class="p">,</span> <span class="n">ser_sim</span><span class="p">,</span> <span class="n">ser_target</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">MinMaxScaler</span><span class="p">(</span><span class="n">feature_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+                 <span class="p">(</span><span class="s1">&#39;svr&#39;</span><span class="p">,</span> <span class="n">SVR</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">))])</span>
 
-    <span class="k">return</span> <span class="n">recomm</span>
+<span class="n">C_grid</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">]</span>
+<span class="n">g_grid</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+<span class="n">e_grid</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]</span>
+
+<span class="c1"># Hyper paramet settings for grid search</span>
+<span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;svr__C&#39;</span><span class="p">:</span> <span class="n">C_grid</span><span class="p">,</span>
+    <span class="s1">&#39;svr__gamma&#39;</span> <span class="p">:</span> <span class="n">g_grid</span><span class="p">,</span>
+    <span class="s1">&#39;svr__epsilon&#39;</span> <span class="p">:</span> <span class="n">e_grid</span><span class="p">,</span>
+<span class="p">}</span>
 </pre></div>
 
      </div>
@@ -15924,51 +14615,58 @@ get_recomm_by_user_sim({'maguro':1, 'ika':1, 'uni':3,
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Do-recommendation">Do recommendation<a class="anchor-link" href="#Do-recommendation">&#182;</a></h4>
+<h4 id="Preparation-of-objects-for-cross-validation">Preparation of objects for cross validation<a class="anchor-link" href="#Preparation-of-objects-for-cross-validation">&#182;</a></h4>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">grid_cv</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>  <span class="c1"># for grid search</span>
+<span class="n">gen_cv</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>  <span class="c1"># for estimation of generalization performance</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Number of items calculated: 46
-Recommendation:
-ankimo     4.176725
-kohada     3.716200
-mirugai    3.598203
-shako      3.581244
-akagai     3.539989
-dtype: float64
-Number of items calculated: 73
-Recommendation:
-toro_samon    3.993705
-okura         3.607180
-negi_toro     3.338903
-tarabagani    3.312345
-kanpachi      3.228670
-dtype: float64</p>
+<h4 id="Define-the-grid-search-for-hyper-parameters">Define the grid search for hyper parameters<a class="anchor-link" href="#Define-the-grid-search-for-hyper-parameters">&#182;</a></h4>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">param_grid</span> <span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">grid_cv</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">)</span>
+</pre></div>
 
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Estimation-of-generalization-performance">Estimation of generalization performance<a class="anchor-link" href="#Estimation-of-generalization-performance">&#182;</a></h4>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">similarity</span> <span class="o">=</span> <span class="s1">&#39;pearson&#39;</span>
-<span class="n">recomm</span> <span class="o">=</span> <span class="n">get_recomm_by_user_sim</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
-                                <span class="p">{</span><span class="s1">&#39;maguro&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ika&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;uni&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
-                                 <span class="s1">&#39;awabi&#39;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;hirame&#39;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;aoyagi&#39;</span><span class="p">:</span><span class="mi">4</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of items calculated:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">recomm</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recommendation:&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">recomm</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
-
-<span class="n">recomm</span> <span class="o">=</span> <span class="n">get_recomm_by_user_sim</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
-                                <span class="p">{</span><span class="s1">&#39;anago&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;maguro&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;ikura&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-                                 <span class="s1">&#39;hamachi&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;samon&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;unagi&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-                                 <span class="s1">&#39;suzuki&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;hamo&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;nasu&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                                 <span class="s1">&#39;shiso_maki&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of items calculated:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">recomm</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recommendation:&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">recomm</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">nested_score</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">gs</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">gen_cv</span><span class="p">,</span>
+                               <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">nested_score</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="n">nested_score</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
 </pre></div>
 
      </div>
@@ -15988,22 +14686,9 @@ dtype: float64</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Number of items calculated: 46
-Recommendation:
-ankimo     4.176725
-kohada     3.716200
-mirugai    3.598203
-shako      3.581244
-akagai     3.539989
-dtype: float64
-Number of items calculated: 73
-Recommendation:
-toro_samon    3.993705
-okura         3.607180
-negi_toro     3.338903
-tarabagani    3.312345
-kanpachi      3.228670
-dtype: float64
+<pre>[-0.00802145 -0.00486169 -0.00395723 -0.00618702]
+0.07587388149037098
+Wall time: 14.9 s
 </pre>
 </div>
 </div>
@@ -16012,28 +14697,29 @@ dtype: float64
 
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><strong>Ans. 0.076</strong></p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Cross-validation-to-obtain-the-model-with-the-best-hyperparameter-set-(best-estimator)">Cross-validation to obtain the model with the best hyperparameter set (best estimator)<a class="anchor-link" href="#Cross-validation-to-obtain-the-model-with-the-best-hyperparameter-set-(best-estimator)">&#182;</a></h4><ul>
+<li>Note: gs_best is already fit to the whole data (X) in gs.fit(X,y)  </li>
+</ul>
+
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">similarity</span> <span class="o">=</span> <span class="s1">&#39;pearson2&#39;</span>
-<span class="n">recomm</span> <span class="o">=</span> <span class="n">get_recomm_by_user_sim</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
-                                <span class="p">{</span><span class="s1">&#39;maguro&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ika&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;uni&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
-                                 <span class="s1">&#39;awabi&#39;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;hirame&#39;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;aoyagi&#39;</span><span class="p">:</span><span class="mi">4</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of items calculated:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">recomm</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recommendation:&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">recomm</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
-
-<span class="n">recomm</span> <span class="o">=</span> <span class="n">get_recomm_by_user_sim</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
-                                <span class="p">{</span><span class="s1">&#39;anago&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;maguro&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;ikura&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-                                 <span class="s1">&#39;hamachi&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;samon&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;unagi&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-                                 <span class="s1">&#39;suzuki&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;hamo&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;nasu&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                                 <span class="s1">&#39;shiso_maki&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of items calculated:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">recomm</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recommendation:&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">recomm</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">gs_best</span> <span class="o">=</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_estimator_</span>
 </pre></div>
 
      </div>
@@ -16053,24 +14739,95 @@ dtype: float64
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Number of items calculated: 46
-Recommendation:
-toro_samon    3.933693
-kurumaebi     3.715042
-hotategai     3.629251
-chu_toro      3.628787
-amaebi        3.610793
-dtype: float64
-Number of items calculated: 73
-Recommendation:
-toro_samon    3.707632
-negi_toro     3.586865
-toro          3.530291
-tarabagani    3.343768
-zuke          3.327067
-dtype: float64
+<pre>Wall time: 5.14 s
 </pre>
 </div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">gs_best</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Pipeline(steps=[(&#39;scaler&#39;, MinMaxScaler()),
+                (&#39;svr&#39;, SVR(C=500, epsilon=0.01, gamma=0.5))])
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><strong>Ans. C=500, epsilon=0.01, gamma=0.5</strong></p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Save-the-best-predictor">Save the best predictor<a class="anchor-link" href="#Save-the-best-predictor">&#182;</a></h4>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tag</span> <span class="o">=</span> <span class="s1">&#39;ai-10-practice1&#39;</span>
+<span class="n">model_file</span> <span class="o">=</span> <span class="s1">&#39;svr_best_</span><span class="si">{}</span><span class="s1">.joblib&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+<span class="n">dump</span><span class="p">(</span><span class="n">gs_best</span><span class="p">,</span> <span class="n">model_file</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>[&#39;svr_best_ai-10-practice1.joblib&#39;]</pre>
+</div>
+
 </div>
 
 </div>
