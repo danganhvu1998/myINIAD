@@ -3,7 +3,7 @@
 #include "dataReader.h"
 
 using namespace std;
- 
+
 #define II pair<long long, long long>
 #define III pair<II, long long>
 #define X first.first
@@ -24,17 +24,17 @@ long long toNodesCount[MAXIMUM_NODE_SUPPORT];
 long long N, M;
 long long lastRound = 0;
 
-void calculation(long long round){
-    int lastRound = round -1;
-    for0(i, N){
+void calculation(long long round) {
+    int lastRound = round - 1;
+    for0(i, N) {
         double weight = 0;
-        long long* nodesId = new long long [edgesTo[i].size()];
-        for0(j, edgesTo[i].size()){
+        long long* nodesId = new long long[edgesTo[i].size()];
+        for0(j, edgesTo[i].size()) {
             nodesId[j] = edgesTo[i][j];
         }
         double* values = getNodesVal(nodesId, edgesTo[i].size(), lastRound);
         free(nodesId);
-        for0(j, edgesTo[i].size()){
+        for0(j, edgesTo[i].size()) {
             const int fromNode = edgesTo[i][j];
             weight += values[j] / toNodesCount[fromNode];
         }
@@ -43,26 +43,26 @@ void calculation(long long round){
     }
 }
 
-bool isAcceptErrorSastified(){
+bool isAcceptErrorSatisfied() {
     for0(i, N) {
-        double error = abs(getNodeVal(i, lastRound)-getNodeVal(i, lastRound-1));
-        if( error > ACCEPT_ERROR ) {
+        double error = abs(getNodeVal(i, lastRound) - getNodeVal(i, lastRound - 1));
+        if (error > ACCEPT_ERROR) {
             return false;
         }
     }
     return true;
 }
 
-int main(){
+int main() {
     ios_base::sync_with_stdio(false); cin.tie(0);
-    freopen("graph_10e5.out","r",stdin);
-    freopen("result.out","w",stdout);
+    freopen("graph_10e5.out", "r", stdin);
+    freopen("result.out", "w", stdout);
     // INPUT GRAPH
-    cin>>N>>M;
+    cin >> N >> M;
     for0(i, N) toNodesCount[i] = 0;
-    for0(i, M){
+    for0(i, M) {
         long long a, b;
-        cin>>a>>b; // From a we can go to b
+        cin >> a >> b; // From a we can go to b
         ++toNodesCount[a];
         edgesTo[b].push_back(a);
     }
@@ -70,12 +70,12 @@ int main(){
     // INIT WEIGHT
     // for0(i, N) nodeWeight[0][i] = 1;
     for0(i, N) setNodeVal(i, 1.0, 0);
-    for1(i, MAX_ROUND){
-        if(i>=2) delAllNodesAtRound(i-2);
+    for1(i, MAX_ROUND) {
+        if (i >= 2) delAllNodesAtRound(i - 2);
         calculation(i);
         lastRound = i;
-        if( isAcceptErrorSastified() ) break;
+        if (isAcceptErrorSatisfied()) break;
     }
-    for0(i, N) cout<<getNodeVal(i, lastRound)<<' ';
-    cout<<'\n'<<lastRound<<" "<<redisGetCount<<" "<<redisSetCount<<" "<<redisCommandCount;
+    for0(i, N) cout << getNodeVal(i, lastRound) << ' ';
+    cout << '\n' << lastRound << " " << redisGetCount << " " << redisSetCount << " " << redisCommandCount;
 }
