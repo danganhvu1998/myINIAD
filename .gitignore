@@ -17,3 +17,4 @@ settings.json
 *.o
 **/data/*
 out.txt
+**/.ipynb_checkpoints/*
